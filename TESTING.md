@@ -4,7 +4,15 @@ Group 4 · Section S3102 · MO-IT200D1 Capstone 1
 
 Fill in the **Result**, **Tester**, and **Date** columns as you work through each case. The **Auto** column marks cases already verified by the headless Chromium script during development; those still deserve a manual confirmation, but they are not where your time is best spent.
 
-**Automated baseline: 56 of 56 checks passed on the final build**, 32 free-tier, 24 premium-tier.
+**Automated baseline: 81 of 81 checks passed on the final build.**
+
+| Suite | Checks | Covers |
+|---|---|---|
+| Free tier | 32 | Page loads, dead links, content, quiz randomisation and scoring, chatbot, login-free access, responsive layout |
+| Premium tier | 25 | Registration, login, logout, assessment, dashboard, gating, admin CRUD, guest experience unchanged |
+| Deep QA | 24 | Accessibility, duplicate IDs, heading order, WCAG contrast, all five quizzes, video embeds, subpath deployment, content hygiene |
+
+A separate scope test confirms the AI assistant answers 10 of 10 in-scope questions and refuses 10 of 10 out-of-scope ones.
 
 ---
 
@@ -14,7 +22,7 @@ Fill in the **Result**, **Tester**, and **Date** columns as you work through eac
 |---|---|---|---|---|---|---|---|
 | FT-01 | Module display | Open all six module pages and confirm content loads | All six load with complete content, correct headings, proper formatting | PASS | | | |
 | FT-02 | Reading materials | Verify reading material is fully visible with no missing text | All content renders fully and legibly | PASS | | | |
-| FT-03 | Embedded videos | Play the embedded video on each module page where provided | Videos load and play without errors | PASS (slot) | | | |
+| FT-03 | Embedded videos | Play the embedded video on each module page | Videos load and play without errors | PASS | | | |
 | FT-04 | Quiz loading | Complete a module and confirm the quiz is presented | A ten-question quiz appears specific to that module | PASS | | | |
 | FT-05 | Quiz randomisation | Take the same quiz twice and compare question order and selection | Questions and option order differ between attempts | PASS | | | |
 | FT-06 | Scenario items | Review questions for scenario-based items | Every bank contains scenario items (6 of 15 per module) | PASS | | | |
@@ -25,7 +33,6 @@ Fill in the **Result**, **Tester**, and **Date** columns as you work through eac
 | FT-11 | Navigation | Use every navigation link and button on the site | All links route correctly; no dead ends or 404s | PASS | | | |
 | FT-12 | Login-free access | Access all pages and features without an account | Everything remains fully accessible | PASS | | | |
 
-**Notes on FT-03.** The video slot, responsive 16:9 container, and caption are implemented and verified. Actual playback cannot pass until the team pastes real video IDs into `MODULE_VIDEO_ID` on each module page.
 
 ---
 

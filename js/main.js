@@ -60,8 +60,62 @@
     }
   }
 
+
   /* ----------------------------------------------------------------------
-     4. Shared helpers exposed for quiz.js and chatbot.js
+     4. Hero shield: tilt toward the pointer
+
+     Adds depth to the homepage artwork without any library or media file.
+     Skipped entirely when the visitor has no pointer (touch) or has asked
+     their system to reduce motion. Reads are batched into one animation
+     frame so moving the mouse never causes layout thrash.
+     ---------------------------------------------------------------------- */
+  function initHeroTilt() {
+    var art = document.getElementById("seHeroArt");
+    if (!art) return;
+
+    var shield = art.querySelector(".se-hero-shield");
+    if (!shield) return;
+
+    // Respect the visitor's motion preference and skip touch devices.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    var hero = art.closest(".se-hero") || art;
+    var frame = null;
+    var rx = 0, ry = 0;
+
+    var MAX_X = 13;   // degrees of vertical tilt
+    var MAX_Y = 17;   // degrees of horizontal tilt
+
+    function apply() {
+      frame = null;
+      shield.style.transform = "rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg)";
+      // Move the glow the opposite way, so the light reads as fixed in space.
+      art.style.setProperty("--gx", (50 + ry * 1.4).toFixed(1) + "%");
+      art.style.setProperty("--gy", (50 - rx * 1.4).toFixed(1) + "%");
+    }
+
+    function schedule() {
+      if (!frame) frame = window.requestAnimationFrame(apply);
+    }
+
+    hero.addEventListener("mousemove", function (e) {
+      var r = hero.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5;    // -0.5 .. 0.5
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      rx = -py * 2 * MAX_X;
+      ry = px * 2 * MAX_Y;
+      schedule();
+    });
+
+    hero.addEventListener("mouseleave", function () {
+      rx = 0; ry = 0;
+      schedule();
+    });
+  }
+
+  /* ----------------------------------------------------------------------
+     5. Shared helpers exposed for quiz.js and chatbot.js
      ---------------------------------------------------------------------- */
   window.SEUtil = {
     /** Escape a string before inserting it into innerHTML. */
@@ -108,5 +162,6 @@
     setActiveNav();
     setFooterYear();
     collapseNavOnClick();
+    initHeroTilt();
   });
 })();

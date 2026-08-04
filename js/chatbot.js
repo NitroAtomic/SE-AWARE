@@ -142,6 +142,83 @@
     "What should I do to stay safe while working remotely?"
   ];
 
+
+  /* ======================================================================
+     SCOPE GUARD
+
+     The assistant answers on six topics only: phishing, spear phishing,
+     smishing, vishing, pretexting, and safe practices for remote workers.
+
+     This is enforced in two places, deliberately:
+
+       1. Here in the browser, so an obviously off-topic question never
+          reaches the API at all. That protects the Gemini quota and makes
+          the refusal instant.
+       2. Again in the n8n system prompt, so the model itself refuses even
+          if a question slips past the keyword check. See N8N-CHATBOT-SETUP.md.
+
+     Never rely on the client alone. Anyone can edit client-side JavaScript,
+     which is exactly the lesson the Phishing module teaches.
+     ====================================================================== */
+
+  var IN_SCOPE_TERMS = [
+    // attack types and their variants
+    "phish", "spear", "smish", "vish", "pretext", "quish", "social engineer",
+    "scam", "fraud", "fake", "spoof", "impersonat", "lookalike", "clone",
+    // channels and artefacts
+    "email", "e-mail", "inbox", "sms", "text message", "link", "url", "domain",
+    "attachment", "qr", "caller", "phone call", "voice", "voicemail", "dm",
+    "message", "sender", "subject line", "invoice", "payment", "bank details",
+    "remittance", "recruiter", "job offer", "client", "vendor", "supplier",
+    // credentials and account security
+    "password", "passphrase", "otp", "one-time", "one time", "code", "pin",
+    "mfa", "2fa", "two-factor", "two factor", "multi-factor", "authenticator",
+    "credential", "login", "log in", "sign in", "account", "session",
+    "password manager", "breach", "leaked", "compromis", "hacked", "takeover",
+    // practices and response
+    "safe practice", "verify", "verification", "report", "incident", "backup",
+    "vpn", "wifi", "wi-fi", "router", "network", "device", "update", "patch",
+    "remote work", "work from home", "freelanc", "virtual assistant",
+    "antivirus", "encrypt", "privacy", "data", "security", "cyber", "awareness",
+    "suspicious", "red flag", "warning sign", "what should i do", "is this safe",
+    "is it safe", "was i", "am i", "clicked", "tapped", "scanned", "replied",
+    // platform navigation
+    "module", "quiz", "assessment", "dashboard", "course", "lesson", "platform"
+  ];
+
+  /* Questions that are clearly outside the course, refused without an API call. */
+  var OFF_TOPIC = [
+    /\b(write|compose|make)\b.*\b(poem|song|lyric|story|essay|joke|rap)\b/i,
+    /\brecipe\b|\bcook\b|\bbake\b/i,
+    /\b(translate|translation)\b/i,
+    /\bweather\b|\bforecast\b/i,
+    /\bhomework\b|\bassignment\b(?!.*(phish|security|cyber))/i,
+    /\b(who|what) (is|was|are|were)\b.*\b(president|capital|actor|singer|movie|team)\b/i,
+    /\bmath\b|\bsolve\b.*\bequation\b|\bcalculate\b(?!.*risk)/i,
+    /\bwrite\b.*\b(code|program|script|function)\b(?!.*phish)/i,
+    /\bmedical\b|\bdiagnos|\bsymptom|\bmedicine\b/i,
+    /\bstock\b|\binvest\b|\bcrypto\b(?!.*(scam|fraud|payment))/i
+  ];
+
+  /* Set once the visitor has asked something in scope, so short follow-ups
+     such as "what do I do next?" are not refused for lacking a keyword. */
+  var hasInScopeContext = false;
+
+  function isInScope(question) {
+    var q = " " + String(question).toLowerCase().trim() + " ";
+
+    for (var i = 0; i < OFF_TOPIC.length; i++) {
+      if (OFF_TOPIC[i].test(q)) return false;
+    }
+    for (var t = 0; t < IN_SCOPE_TERMS.length; t++) {
+      if (q.indexOf(IN_SCOPE_TERMS[t]) !== -1) return true;
+    }
+    // A short follow-up inside an existing on-topic conversation is allowed.
+    if (hasInScopeContext && q.trim().split(/\s+/).length <= 8) return true;
+
+    return false;
+  }
+
   /* ======================================================================
      STATE: held in memory for this page view only.
      Nothing is written to localStorage, cookies, or any analytics service.
@@ -319,6 +396,16 @@
     els.send.disabled = true;
     addMessage("<p>" + window.SEUtil.escapeHtml(question) + "</p>", "user");
     els.input.value = "";
+
+    // Scope check first: an off-topic question is refused here and never
+    // reaches the API.
+    if (!isInScope(question)) {
+      addMessage(OUT_OF_SCOPE, "bot");
+      finish();
+      return;
+    }
+    hasInScopeContext = true;
+
     showTyping();
 
     if (!isConfigured()) {

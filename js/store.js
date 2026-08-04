@@ -34,6 +34,19 @@
 
   var KEY = "se-prototype-state";
 
+  /* --------------------------------------------------------------------
+     Built-in demo account.
+
+     Registration only exists inside the current browser tab, so a fresh
+     visitor (or a panel member on their own laptop) would otherwise have to
+     register before they could see the premium journey. This account is
+     recognised by login() without registering, arrives on the Premium plan,
+     and comes with sample progress so the dashboard has something to show.
+
+     Password is validated for format only, exactly like every other account.
+     -------------------------------------------------------------------- */
+  var DEMO_EMAIL = "demo@seaware.ph";
+
   var DEFAULT_STATE = {
     user: null,          // { firstName, lastName, email, subscription, createdAt }
     accounts: [],        // registered emails, for the login lookup only
@@ -86,7 +99,55 @@
     { slug: "client-data",     title: "Secure Client Data Handling",    type: "Premium", category: "Role-based",     quiz: false }
   ];
 
+  /**
+   * Populate the demo account with believable progress, quiz history, and an
+   * assessment result, so the dashboard demonstrates every section at once.
+   * Only runs when the demo account has no history yet.
+   */
+  function seedDemoData() {
+    var s = read();
+    if (s.quizHistory.length) return;
+
+    var now = Date.now();
+    var day = 86400000;
+    var stamp = function (daysAgo) { return new Date(now - daysAgo * day).toISOString(); };
+
+    s.progress = {
+      "phishing":       { status: "Completed", completedAt: stamp(6) },
+      "spear-phishing": { status: "Completed", completedAt: stamp(4) },
+      "smishing":       { status: "Completed", completedAt: stamp(2) },
+      "safe-practices": { status: "Completed", completedAt: stamp(1) }
+    };
+
+    s.quizHistory = [
+      { slug: "phishing",       title: "Phishing",       score: 9, total: 10, at: stamp(6) },
+      { slug: "spear-phishing", title: "Spear Phishing", score: 8, total: 10, at: stamp(4) },
+      { slug: "smishing",       title: "Smishing",       score: 6, total: 10, at: stamp(2) }
+    ];
+
+    s.assessment = {
+      score: 11, total: 15,
+      level: "Intermediate", levelKey: "intermediate",
+      blurb: "You have solid instincts and a real gap or two. The modules below target exactly where you lost marks.",
+      byTopic: {
+        "phishing":       { correct: 3, total: 3 },
+        "spear-phishing": { correct: 2, total: 2 },
+        "smishing":       { correct: 2, total: 2 },
+        "vishing":        { correct: 1, total: 3 },
+        "pretexting":     { correct: 1, total: 2 },
+        "safe-practices": { correct: 2, total: 3 }
+      },
+      weakAreas: ["vishing", "pretexting"],
+      at: stamp(3)
+    };
+
+    write(s);
+  }
+
   window.SEStore = {
+
+    /** The address anyone can sign in with to see the premium experience. */
+    DEMO_EMAIL: DEMO_EMAIL,
 
     /* ==================== identity ==================== */
 
@@ -137,6 +198,20 @@
     login: function (email) {
       var s = read();
       var mail = String(email).trim().toLowerCase();
+
+      if (mail === DEMO_EMAIL) {
+        s.user = {
+          firstName: "Demo",
+          lastName: "User",
+          email: DEMO_EMAIL,
+          subscription: "Premium",
+          createdAt: new Date().toISOString()
+        };
+        if (s.accounts.indexOf(mail) === -1) s.accounts.push(mail);
+        write(s);
+        seedDemoData();
+        return { ok: true, user: read().user, demo: true };
+      }
 
       if (s.accounts.indexOf(mail) === -1) {
         return { ok: false, error: "No account with that email was registered in this session. Register first." };

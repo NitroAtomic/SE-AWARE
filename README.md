@@ -88,6 +88,8 @@ To connect the live Gemini model, edit **one line** at the top of `js/chatbot.js
 var N8N_WEBHOOK_URL = "REPLACE_WITH_YOUR_N8N_PRODUCTION_WEBHOOK_URL";
 ```
 
+**Full setup guide, including the ready-to-paste system prompt that locks the assistant to the six course topics: [`N8N-CHATBOT-SETUP.md`](N8N-CHATBOT-SETUP.md).**
+
 ### The n8n workflow
 
 ```
@@ -184,6 +186,7 @@ Deploy early. Appendix A of the paper needs a live link, and having a stable URL
 │   ├── dashboard.js            Progress, quiz history, recommendations
 │   └── admin.js                Admin panel CRUD
 ├── assets/img/                 Image assets
+├── N8N-CHATBOT-SETUP.md        Live Gemini setup and the topic-lock system prompt
 ├── TESTING.md                  Test matrix for the testing phase
 └── README.md
 ```
@@ -232,10 +235,13 @@ That is both accurate and stronger than either overclaiming a database or having
 
 | What | Username / email | Password |
 |---|---|---|
-| **Learner account** | any email you register with | any 8+ characters with a letter and a number |
+| **Demo learner account** (no registration needed) | `demo@seaware.ph` | `seaware2026` |
+| **Your own learner account** | any email you register with | any 8+ characters with a letter and a number |
 | **Administrator panel** (`admin.html`) | `admin` | `seaware2026` |
 
 The admin sign-in is a mock and accepts any username of 3 or more characters with any password of 8 or more, because there is no server to authenticate against. The credentials above are simply the ones printed on the sign-in card so the team demonstrates the same thing every time.
+
+The demo account signs in without registering first, arrives on the Premium plan, and is pre-loaded with four completed modules, three quiz attempts, and an Intermediate assessment result, so the dashboard demonstrates progress, quiz history, and recommendations all at once.
 
 **New accounts are created on the Premium plan**, so registering gives immediate access to the awareness assessment, the dashboard, and the role-based modules. To demonstrate the Free-tier gate, open the account menu, go to Go Premium, and use **Revert to Free**, or change the plan on your own row in the admin panel's Users tab.
 
