@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SE Aware — Social Engineering Awareness for Remote Workers</title>
+  <meta name="description" content="A free, login-free platform teaching remote workers, freelancers, and virtual assistants how to recognise phishing, spear phishing, smishing, vishing, and pretexting.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home" data-root="">
+  <a class="se-skip-link" href="#main">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg se-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <span>SE Aware<small>Stay Sharp Online</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
+              aria-controls="seNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="seNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" data-nav="home" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="modules" href="modules.html">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="safe" href="modules/safe-practices.html">Safe Practices</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="about" href="about.html">About</a></li>
+          <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
+          <!-- Populated by js/account.js: guest sees Go Premium + Log in,
+               a signed-in user sees Dashboard + an account menu. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- ===================== HERO ===================== -->
+    <section class="se-hero">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <span class="se-hero-badge"><i class="bi bi-people-fill" aria-hidden="true"></i> Built for remote workers, freelancers &amp; VAs</span>
+            <h1>Learn to spot the scam <span style="color:#F2A44A;">before</span> it costs you.</h1>
+            <p class="se-hero-lead mt-3">Social engineering does not break your software. It persuades you to open the
+              door yourself. This platform teaches you exactly how phishing, smishing, vishing, spear phishing, and
+              pretexting work &mdash; in plain language, with real examples from remote work.</p>
+            <p class="se-freeline mt-4 mb-4"><i class="bi bi-unlock-fill me-2" aria-hidden="true"></i>Free. No account. No signup.</p>
+            <div class="d-flex flex-wrap gap-3">
+              <a class="btn btn-se-light btn-lg" href="modules.html">Start Learning <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+              <a class="btn btn-se-light btn-lg" style="background:transparent;color:#fff;border-color:rgba(255,255,255,.6);" href="about.html">What is this?</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WHY THIS MATTERS ===================== -->
+    <section class="se-section se-section-alt">
+      <div class="container">
+        <div class="row mb-4">
+          <div class="col-lg-8">
+            <p class="se-eyebrow">Why this matters</p>
+            <h2>Remote workers are already being targeted</h2>
+            <p class="mb-0" style="max-width:66ch;">We surveyed 54 remote professionals, freelancers, and hybrid workers
+              about their real experiences with digital scams. Almost every one of them had already been approached.</p>
+          </div>
+        </div>
+        <div class="row g-3">
+          <div class="col-6 col-lg-3">
+            <div class="se-stat">
+              <div class="se-stat-value">85.2%</div>
+              <p class="se-stat-label">received a suspicious email claiming to be from a bank or company</p>
+              <div class="se-stat-source">Group 4 survey, n=54</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="se-stat">
+              <div class="se-stat-value">92.6%</div>
+              <p class="se-stat-label">received a prize or raffle scam text message</p>
+              <div class="se-stat-source">Group 4 survey, n=54</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="se-stat">
+              <div class="se-stat-value">53.7%</div>
+              <p class="se-stat-label">clicked a link that only afterwards seemed suspicious</p>
+              <div class="se-stat-source">Group 4 survey, n=54</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="se-stat">
+              <div class="se-stat-value">100%</div>
+              <p class="se-stat-label">agree remote workers need more cybersecurity awareness training</p>
+              <div class="se-stat-source">Group 4 survey, n=54</div>
+            </div>
+          </div>
+        </div>
+        <p class="text-body-secondary mt-4 mb-0" style="font-size:.88rem;">
+          Source: primary survey conducted by Group 4, Section S3102, for the capstone study
+          &ldquo;Web-Based Social Engineering Awareness Platform for Remote Workers&rdquo; (n=54).
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== MODULES ===================== -->
+    <section class="se-section">
+      <div class="container">
+        <div class="row mb-4">
+          <div class="col-lg-8">
+            <p class="se-eyebrow">Learning modules</p>
+            <h2>Six modules. Start anywhere.</h2>
+            <p class="mb-0" style="max-width:66ch;">Each module explains one attack type, shows you a realistic example,
+              gives you a checklist of red flags, and tells you what to do if it happens to you. Five of them end with a
+              ten-question quiz that is randomised every time you take it.</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <article class="se-card">
+              <div class="card-body d-flex flex-column">
+                <div class="se-card-icon"><i class="bi bi-envelope-exclamation-fill" aria-hidden="true"></i></div>
+                <h3 class="h5">Phishing</h3>
+                <p class="text-body-secondary mb-3" style="font-size:.94rem;">Fake emails, cloned login pages, and QR codes designed to capture your password or one-time PIN.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <span class="se-pill"><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-item quiz</span>
+                  <span class="se-pill muted"><i class="bi bi-clock" aria-hidden="true"></i> 6 min read</span>
+                </div>
+                <a class="btn btn-se-outline mt-auto align-self-start" href="modules/phishing.html">
+                  Open module <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <article class="se-card">
+              <div class="card-body d-flex flex-column">
+                <div class="se-card-icon"><i class="bi bi-crosshair" aria-hidden="true"></i></div>
+                <h3 class="h5">Spear Phishing</h3>
+                <p class="text-body-secondary mb-3" style="font-size:.94rem;">Targeted messages built from your LinkedIn, portfolio, and public posts — fake recruiters, fake clients, fake bosses.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <span class="se-pill"><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-item quiz</span>
+                  <span class="se-pill muted"><i class="bi bi-clock" aria-hidden="true"></i> 6 min read</span>
+                </div>
+                <a class="btn btn-se-outline mt-auto align-self-start" href="modules/spear-phishing.html">
+                  Open module <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <article class="se-card">
+              <div class="card-body d-flex flex-column">
+                <div class="se-card-icon"><i class="bi bi-chat-left-text-fill" aria-hidden="true"></i></div>
+                <h3 class="h5">Smishing</h3>
+                <p class="text-body-secondary mb-3" style="font-size:.94rem;">Package fees, prize draws, and bank alerts sent by text — the scam 92.6% of surveyed remote workers had already received.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <span class="se-pill"><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-item quiz</span>
+                  <span class="se-pill muted"><i class="bi bi-clock" aria-hidden="true"></i> 5 min read</span>
+                </div>
+                <a class="btn btn-se-outline mt-auto align-self-start" href="modules/smishing.html">
+                  Open module <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <article class="se-card">
+              <div class="card-body d-flex flex-column">
+                <div class="se-card-icon"><i class="bi bi-telephone-fill" aria-hidden="true"></i></div>
+                <h3 class="h5">Vishing</h3>
+                <p class="text-body-secondary mb-3" style="font-size:.94rem;">Fake IT support, fake bank fraud teams, and OTP harvesting calls — plus AI voice cloning.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <span class="se-pill"><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-item quiz</span>
+                  <span class="se-pill muted"><i class="bi bi-clock" aria-hidden="true"></i> 6 min read</span>
+                </div>
+                <a class="btn btn-se-outline mt-auto align-self-start" href="modules/vishing.html">
+                  Open module <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <article class="se-card">
+              <div class="card-body d-flex flex-column">
+                <div class="se-card-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></div>
+                <h3 class="h5">Pretexting</h3>
+                <p class="text-body-secondary mb-3" style="font-size:.94rem;">Invoice fraud, fake vendor onboarding, and impersonated supervisors — the slow attacks that cost the most.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <span class="se-pill"><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-item quiz</span>
+                  <span class="se-pill muted"><i class="bi bi-clock" aria-hidden="true"></i> 6 min read</span>
+                </div>
+                <a class="btn btn-se-outline mt-auto align-self-start" href="modules/pretexting.html">
+                  Open module <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <article class="se-card">
+              <div class="card-body d-flex flex-column">
+                <div class="se-card-icon"><i class="bi bi-shield-check" aria-hidden="true"></i></div>
+                <h3 class="h5">Safe Practices for Remote Workers</h3>
+                <p class="text-body-secondary mb-3" style="font-size:.94rem;">MFA, password managers, second-channel verification, home network security, and how to report an incident.</p>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <span class="se-pill muted"><i class="bi bi-journal-text" aria-hidden="true"></i> Reference guide</span>
+                  <span class="se-pill muted"><i class="bi bi-clock" aria-hidden="true"></i> 8 min read</span>
+                </div>
+                <a class="btn btn-se-outline mt-auto align-self-start" href="modules/safe-practices.html">
+                  Open module <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ASSISTANT ===================== -->
+    <section class="se-section se-section-alt">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <p class="se-eyebrow">Ask anything</p>
+            <h2>Not sure about a message you just received?</h2>
+            <p style="max-width:62ch;">Open the assistant in the bottom-right corner of any page and describe what you
+              got. It will tell you which attack pattern it matches, what to look for, and what to do next &mdash; in
+              plain language, without asking who you are.</p>
+            <ul class="se-flags" style="margin-top:1.25rem;">
+              <li>&ldquo;I got a text about a package I need to pay for. Is it safe to click?&rdquo;</li>
+              <li>&ldquo;Someone called saying they are from IT and asked for my OTP.&rdquo;</li>
+              <li>&ldquo;A new client wants my bank details before we sign anything.&rdquo;</li>
+            </ul>
+          </div>
+          <div class="col-lg-5">
+            <div class="se-card">
+              <div class="card-body">
+                <div class="se-card-icon"><i class="bi bi-chat-dots-fill" aria-hidden="true"></i></div>
+                <h3 class="h5">Learning Assistant</h3>
+                <p class="text-body-secondary" style="font-size:.94rem;">Available on every page of this site. It answers
+                  only questions about social engineering and safe remote-work practices, and it never asks for personal
+                  information.</p>
+                <p class="mb-0"><span class="se-pill muted"><i class="bi bi-shield-lock" aria-hidden="true"></i> Your messages are not stored</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CTA ===================== -->
+    <section class="se-section">
+      <div class="container">
+        <div class="se-card">
+          <div class="card-body text-center py-5">
+            <h2 class="mb-3">Thirty minutes now, or a stolen account later.</h2>
+            <p class="mx-auto mb-4" style="max-width:56ch;">Start with phishing &mdash; it is the foundation every other
+              attack on this site builds on.</p>
+            <a class="btn btn-se-primary btn-lg" href="modules/phishing.html">Start with Phishing <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="se-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h5><i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>SE Aware</h5>
+          <p class="mb-3" style="font-size:.9rem;">A free, public learning platform that helps remote workers,
+            freelancers, and virtual assistants recognise and respond to social engineering attacks.</p>
+          <p class="mb-0"><span class="se-pill amber"><i class="bi bi-unlock-fill" aria-hidden="true"></i> Free &middot; No account &middot; No signup</span></p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Learn</h5>
+          <ul>
+            <li><a href="modules/phishing.html">Phishing</a></li>
+            <li><a href="modules/spear-phishing.html">Spear Phishing</a></li>
+            <li><a href="modules/smishing.html">Smishing</a></li>
+            <li><a href="modules/vishing.html">Vishing</a></li>
+            <li><a href="modules/pretexting.html">Pretexting</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="modules.html">All Modules</a></li>
+            <li><a href="modules/safe-practices.html">Safe Practices</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="go-premium.html">Go Premium</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h5>Important</h5>
+          <div class="se-footer-disclaimer">
+            This platform is for <strong>education and awareness only</strong>. It does not scan emails,
+            links, QR codes, or SMS messages, it does not detect threats in real time, and the AI assistant
+            is not a substitute for professional cybersecurity consultation or incident response.
+          </div>
+        </div>
+      </div>
+      <div class="se-footer-note">
+        <div class="row gy-2 align-items-center">
+          <div class="col-md-8">
+            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
+          </div>
+          <div class="col-md-4 text-md-end">
+            <span style="font-size:.82rem;">No personal data is collected on this site.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/account.js"></script>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>

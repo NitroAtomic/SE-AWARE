@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vishing — SE Aware</title>
+  <meta name="description" content="A scam phone call that uses live pressure to make you act before you have time to verify anything.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="modules" data-root="../" data-module="vishing">
+  <a class="se-skip-link" href="#main">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg se-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <span>SE Aware<small>Stay Sharp Online</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
+              aria-controls="seNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="seNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" data-nav="home" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="modules" href="../modules.html">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="safe" href="../modules/safe-practices.html">Safe Practices</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="about" href="../about.html">About</a></li>
+          <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
+          <!-- Populated by js/account.js: guest sees Go Premium + Log in,
+               a signed-in user sees Dashboard + an account menu. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="se-pagehead">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb mb-2" style="font-size:.9rem;">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="../modules.html">Learning Modules</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Vishing</li>
+          </ol>
+        </nav>
+        <h1><i class="bi bi-telephone-fill me-2" aria-hidden="true"></i>Vishing</h1>
+        <p>A scam phone call that uses live pressure to make you act before you have time to verify anything.</p>
+        <div class="se-meta">
+          <span><i class="bi bi-clock" aria-hidden="true"></i> 6 min read</span>
+          <span><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-question quiz at the end</span>
+          <span><i class="bi bi-unlock-fill" aria-hidden="true"></i> No account needed</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="se-section">
+      <div class="container">
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-8 se-prose se-module-body">
+
+            <h2>What it is</h2>
+
+<p>Vishing is a scam conducted by voice &mdash; a phone call, or sometimes a voice note, where the attacker talks you
+into giving up a code, a password, or remote access to your computer. The name comes from &ldquo;voice
+phishing&rdquo;, and the goal is identical to email phishing. What changes is the medium, and the medium changes
+everything.</p>
+
+<p>A phishing email waits for you. You can leave it unopened, read it twice, forward it to someone, or check the sender
+address at your own pace. A phone call does none of that. Someone is speaking to you right now, expecting an answer
+right now, and the social cost of being rude to a stranger who sounds professional is surprisingly effective at
+overriding caution. Skepticism that comes easily in writing is genuinely harder to hold onto out loud.</p>
+
+<p>In the survey conducted for this project, <strong>81.5% of the 54 remote workers had already received suspicious
+phone calls</strong>. The two dominant patterns are a fake bank fraud team calling about a transaction you did not
+make, and fake IT support calling about a problem with your account &mdash; a pretext that works particularly well on
+remote workers, who genuinely do receive help from IT people they have never met in person.</p>
+
+
+            <h2>How the attack works</h2>
+            <p>The sequence below is the pattern behind almost every version of this attack. Recognising the shape
+              matters more than memorising any single example.</p>
+            <ol class="se-steps mt-4">
+            <li><strong>Gather just enough detail.</strong> Your name, your employer, the bank you use &mdash; often from a previous breach or from your own public profiles. A caller who opens with a fact about you buys instant credibility.</li>
+            <li><strong>Spoof the caller ID.</strong> Caller ID is trivially forged. A call can display your bank's real hotline number, so seeing a familiar number on screen proves nothing at all.</li>
+            <li><strong>Open with authority and alarm.</strong> &ldquo;This is the fraud team. We've blocked a ₱48,000 transfer from your account. I need to verify your identity to release the hold.&rdquo; Fear plus authority produces compliance faster than any other combination.</li>
+            <li><strong>Build credibility with facts you already know.</strong> The caller recites your full name and the last four digits of your card. These usually come from a breach, and they are offered specifically so that you will conclude the call is genuine.</li>
+            <li><strong>Keep you on the line.</strong> Verification is easy when you have time to think, so the caller creates continuous pressure and often explicitly asks you not to hang up.</li>
+            <li><strong>Make the real request.</strong> Read back the code we just sent you. Install this support tool so we can secure your device. Move your money to a safe holding account while we investigate.</li>
+            <li><strong>Use it immediately.</strong> The code is entered on the real site within seconds. The remote-access tool gives full control of your machine. The &ldquo;safe account&rdquo; belongs to the attacker.</li>
+            </ol>
+
+            <h2>A real-world example</h2>
+            <p>A vishing call script. This is a reconstruction built for teaching &mdash; no real person or company is
+              involved.</p>
+            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack &mdash; example only</span>
+
+        <div class="se-example">
+          <div class="se-call">
+            <div class="se-call-num">+63 2 8631 8000</div>
+            <div class="se-call-sub">Incoming call &middot; matches a saved contact</div>
+            <div class="se-call-actions">
+              <span class="se-call-btn se-call-decline"><i class="bi bi-telephone-x-fill" aria-hidden="true"></i></span>
+              <span class="se-call-btn se-call-accept"><i class="bi bi-telephone-fill" aria-hidden="true"></i></span>
+            </div>
+          </div>
+          <div class="se-call-script">
+            &ldquo;Good afternoon, am I speaking with Juan Paolo Dente? This is Reggie from the fraud monitoring
+            department. I'm calling about an attempted transfer of ₱48,750 to an account in Cebu at 2:14 this afternoon.
+            Did you authorise that?
+            <br><br>
+            No? Good, we've held it &mdash; but the hold expires in fifteen minutes and after that it processes
+            automatically. I can cancel it permanently, I just need to verify I'm speaking to the account holder.
+            <br><br>
+            I'm sending a six-digit code to the mobile number ending in 4471 right now. Please read it back to me so I
+            can confirm your identity and release the block. And please stay on the line &mdash; if we disconnect I
+            can't guarantee the hold will hold.&rdquo;
+          </div>
+        </div>
+        <div class="se-callout">
+          <strong>What gives it away.</strong> The caller ID displays the bank's genuine hotline, which is spoofed and
+          means nothing. The script uses your real full name and a plausible card ending, both cheap to obtain. But the
+          entire call collapses on one request: <strong>read the code back to me.</strong> The code was generated
+          because the attacker was already logging in as you. No bank on earth needs you to read an OTP aloud &mdash;
+          they sent it, so they know what it is. The instruction not to hang up exists solely to prevent you from
+          verifying.
+        </div>
+
+
+            <h2>Red flags to look for</h2>
+            <p>Each of these is something you can actually observe in the message or the call, not a vague feeling.
+              One flag is reason to slow down. Two is reason to stop.</p>
+            <ul class="se-flags mt-4">
+            <li>Anyone asks you to read out, type, or forward a one-time PIN, verification code, or authentication code. This is always an attack. There is no legitimate exception.</li>
+            <li>The caller creates urgency measured in minutes and discourages you from hanging up, calling back, or checking with anyone.</li>
+            <li>You are asked to install remote-access software &mdash; AnyDesk, TeamViewer, QuickSupport, or anything similar &mdash; so someone can &ldquo;fix&rdquo; or &ldquo;secure&rdquo; your device.</li>
+            <li>You are told to move money to a &ldquo;safe&rdquo;, &ldquo;holding&rdquo;, or &ldquo;verification&rdquo; account. No such thing exists in real banking.</li>
+            <li>The caller asks for your full password, your PIN, your full card number, or your card's CVV.</li>
+            <li>The caller ID matches a real institution but the request does not. Caller ID is display text, not proof of origin.</li>
+            <li>Payment is requested in gift cards, e-wallet transfers, or cryptocurrency &mdash; all chosen because they are irreversible.</li>
+            <li>Someone claims to be from IT support about a problem you never reported, and asks you to confirm credentials.</li>
+            <li>A familiar voice on a call or voice note makes an unusual and urgent request for money. AI voice cloning now needs only a short sample of public audio.</li>
+            </ul>
+
+            <h2>What to do if it happens to you</h2>
+            <p>Work through these in order. The first hour matters far more than getting every step perfect.</p>
+            <ol class="se-todo mt-4">
+            <li><strong>Hang up.</strong> This is not rude, and it costs you nothing if the call was genuine. Ending a call is always safe; staying on one is where the risk lives.</li>
+            <li><strong>Wait a moment, then call back on a number you already have</strong> &mdash; printed on your card, on your statement, or on the company's official website. Never a number the caller gave you, and never by redialling the incoming number.</li>
+            <li><strong>Use a different phone if you can.</strong> Some scams keep the line open so your &ldquo;callback&rdquo; reaches the same person. Waiting a minute or using another device removes that risk.</li>
+            <li><strong>If you read out a code, act immediately.</strong> Change that account's password from another device, revoke all active sessions, and call your bank on their official hotline if money is involved.</li>
+            <li><strong>If you installed remote-access software, disconnect from the internet first</strong>, then uninstall it, then change every important password from a <em>different</em> device &mdash; assume anything typed on the compromised machine was seen.</li>
+            <li><strong>If money moved, call your bank within minutes.</strong> Recall is sometimes possible in the first hour and rarely possible after that. Ask them to file a fraud report and give you a reference number.</li>
+            <li><strong>Agree a code word with family and key clients.</strong> Against AI voice cloning, a shared word that has never been posted online is the simplest defence that actually works.</li>
+            </ol>
+
+<p>If you remember nothing else from this module, remember this: <strong>an OTP is a password that expires quickly.</strong>
+No bank, courier, employer, platform, or IT department will ever ask you to read one out. The moment a caller asks for a
+code, the call is over &mdash; not because you have been rude, but because you have just been told exactly what the call
+was for.</p>
+
+
+            <div id="seModuleProgress"></div>
+
+            <h2>Watch</h2>
+            <div class="se-video-wrap" id="seVideoSlot">
+              <div class="se-video-placeholder">
+                <div>
+                  <i class="bi bi-play-btn" style="font-size:2.5rem;" aria-hidden="true"></i>
+                  <p class="mb-1 mt-2" style="font-weight:600;">Instructional video slot</p>
+                  <p class="mb-0" style="font-size:.86rem;opacity:.8;">A curated video for this module will appear here.</p>
+                </div>
+              </div>
+            </div>
+            <p class="se-video-caption">Video content is embedded from external hosting and is not stored on this
+              platform. Playback is subject to the host provider's own terms.</p>
+
+            <div class="se-card mt-5">
+              <div class="card-body text-center py-4">
+                <h3 class="h4 mb-2">Ready to test yourself?</h3>
+                <p class="mb-4" style="max-width:52ch;margin-inline:auto;">Ten questions, drawn at random from a larger
+                  bank and reshuffled every attempt. Most of them describe a situation and ask what you would do.</p>
+                <a class="btn btn-se-primary btn-lg" href="../quiz.html?module=vishing">
+                  Take the Vishing Quiz <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+
+            <h2>Related modules</h2>
+            <div class="row g-3 mt-1">
+            <div class="col-md-6">
+              <a class="se-card d-block text-decoration-none h-100" href="pretexting.html">
+                <div class="card-body">
+                  <div class="se-card-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></div>
+                  <h3 class="h6 mb-1">Pretexting</h3>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Invoice fraud, fake vendor onboarding, and impersonated supervisors — the slow attacks that cost the most.</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a class="se-card d-block text-decoration-none h-100" href="phishing.html">
+                <div class="card-body">
+                  <div class="se-card-icon"><i class="bi bi-envelope-exclamation-fill" aria-hidden="true"></i></div>
+                  <h3 class="h6 mb-1">Phishing</h3>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Fake emails, cloned login pages, and QR codes designed to capture your password or one-time PIN.</p>
+                </div>
+              </a>
+            </div>
+            </div>
+
+          </div>
+
+          <aside class="col-lg-4">
+            <div class="se-card mb-4">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">On this page</h3>
+                <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                  <li><a href="#main">What it is</a></li>
+                  <li><a href="#main">How the attack works</a></li>
+                  <li><a href="#main">A real-world example</a></li>
+                  <li><a href="#main">Red flags to look for</a></li>
+                  <li><a href="#main">What to do if it happens</a></li>
+                  <li><a href="../quiz.html?module=vishing">Take the quiz</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="se-card mb-4">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">The one rule</h3>
+                <p class="mb-0" style="font-size:.95rem;">A scam phone call that uses live pressure to make you act before you have time to verify anything.</p>
+              </div>
+            </div>
+
+            <div class="se-card">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">All modules</h3>
+                <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                  <li><a href="phishing.html">Phishing</a></li>
+                  <li><a href="spear-phishing.html">Spear Phishing</a></li>
+                  <li><a href="smishing.html">Smishing</a></li>
+                  <li><a href="vishing.html">Vishing</a></li>
+                  <li><a href="pretexting.html">Pretexting</a></li>
+                  <li><a href="safe-practices.html">Safe Practices</a></li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="se-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h5><i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>SE Aware</h5>
+          <p class="mb-3" style="font-size:.9rem;">A free, public learning platform that helps remote workers,
+            freelancers, and virtual assistants recognise and respond to social engineering attacks.</p>
+          <p class="mb-0"><span class="se-pill amber"><i class="bi bi-unlock-fill" aria-hidden="true"></i> Free &middot; No account &middot; No signup</span></p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Learn</h5>
+          <ul>
+            <li><a href="../modules/phishing.html">Phishing</a></li>
+            <li><a href="../modules/spear-phishing.html">Spear Phishing</a></li>
+            <li><a href="../modules/smishing.html">Smishing</a></li>
+            <li><a href="../modules/vishing.html">Vishing</a></li>
+            <li><a href="../modules/pretexting.html">Pretexting</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../modules.html">All Modules</a></li>
+            <li><a href="../modules/safe-practices.html">Safe Practices</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../go-premium.html">Go Premium</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h5>Important</h5>
+          <div class="se-footer-disclaimer">
+            This platform is for <strong>education and awareness only</strong>. It does not scan emails,
+            links, QR codes, or SMS messages, it does not detect threats in real time, and the AI assistant
+            is not a substitute for professional cybersecurity consultation or incident response.
+          </div>
+        </div>
+      </div>
+      <div class="se-footer-note">
+        <div class="row gy-2 align-items-center">
+          <div class="col-md-8">
+            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
+          </div>
+          <div class="col-md-4 text-md-end">
+            <span style="font-size:.82rem;">No personal data is collected on this site.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/account.js"></script>
+  <script>
+    /* ====================================================================
+       EDIT ME — instructional video for this module
+       Paste the YouTube video ID between the quotes (the part after
+       "watch?v=") and the embed will render automatically. Leave it empty
+       and a placeholder card is shown instead, so the page never breaks.
+       ==================================================================== */
+    var MODULE_VIDEO_ID = "";
+    var MODULE_VIDEO_TITLE = "Vishing — instructional video";
+
+    (function () {
+      var slot = document.getElementById("seVideoSlot");
+      if (!slot) return;
+      if (MODULE_VIDEO_ID) {
+        slot.innerHTML =
+          '<div class="ratio ratio-16x9">' +
+          '<iframe src="https://www.youtube-nocookie.com/embed/' + MODULE_VIDEO_ID + '" ' +
+          'title="' + MODULE_VIDEO_TITLE + '" allowfullscreen ' +
+          'allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+          'referrerpolicy="strict-origin-when-cross-origin"></iframe></div>';
+      }
+    })();
+  </script>
+  <script src="../js/chatbot.js"></script>
+</body>
+</html>

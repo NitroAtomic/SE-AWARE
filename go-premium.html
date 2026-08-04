@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Go Premium — SE Aware</title>
+  <meta name="description" content="Compare the free and premium tiers of the SE Aware social engineering awareness platform.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="" data-root="">
+  <a class="se-skip-link" href="#main">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg se-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <span>SE Aware<small>Stay Sharp Online</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
+              aria-controls="seNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="seNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" data-nav="home" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="modules" href="modules.html">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="safe" href="modules/safe-practices.html">Safe Practices</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="about" href="about.html">About</a></li>
+          <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
+          <!-- Populated by js/account.js: guest sees Go Premium + Log in,
+               a signed-in user sees Dashboard + an account menu. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="se-pagehead">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb mb-2" style="font-size:.9rem;">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Go Premium</li>
+          </ol>
+        </nav>
+        <h1>Go Premium</h1>
+        <p>The essential awareness content stays free and open to everyone, forever. Premium adds the personalised layer: an assessment of where you actually stand, and modules matched to the work you do.</p>
+      </div>
+    </section>
+
+    <section class="se-section">
+      <div class="container">
+        <div data-prototype-badge></div>
+
+        <div class="row g-4 mb-5">
+          <div class="col-lg-6">
+            <div class="se-plan">
+              <p class="se-eyebrow mb-1">Free</p>
+              <div class="se-plan-price">₱0<span style="font-size:1rem;font-weight:500;color:var(--se-muted);"> forever</span></div>
+              <p class="text-body-secondary mt-2 mb-0" style="font-size:.94rem;">Everything a remote worker needs to
+                recognise the five main attack types. No account, no signup, no catch.</p>
+              <ul>
+                <li>All six learning modules</li>
+                <li>Reading materials and videos</li>
+                <li>Randomised quizzes after every module</li>
+                <li>AI learning assistant</li>
+                <li class="se-off">Progress tracking and dashboard</li>
+                <li class="se-off">Awareness assessment</li>
+                <li class="se-off">Role-based modules</li>
+              </ul>
+              <a class="btn btn-se-outline mt-auto" href="modules.html">Start learning free</a>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="se-plan is-featured">
+              <p class="se-eyebrow mb-1">Premium</p>
+              <div class="se-plan-price">₱149<span style="font-size:1rem;font-weight:500;color:var(--se-muted);"> / month</span></div>
+              <p class="text-body-secondary mt-2 mb-0" style="font-size:.94rem;">Adds the personalised learning layer:
+                know where you stand, then work on what you are weakest at.</p>
+              <ul>
+                <li>Everything in Free</li>
+                <li>Cybersecurity awareness assessment</li>
+                <li>Personalised dashboard</li>
+                <li>Learning progress tracking</li>
+                <li>Quiz history across all attempts</li>
+                <li>Recommended modules from your results</li>
+                <li>Role-based modules for client work</li>
+              </ul>
+              <div class="mt-auto">
+                <button class="btn btn-se-primary w-100" id="seUpgradeBtn" type="button">Simulate Upgrade</button>
+                <div class="text-center mt-3" id="seUpgradeStatus"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="h4 mb-3">Feature by feature</h2>
+        <div class="se-compare mb-4">
+          <div class="se-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Feature</th>
+                  <th scope="col" style="width:22%;">Free</th>
+                  <th scope="col" class="se-col-premium" style="width:22%;">Premium</th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>All six learning modules</td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Reading materials and videos</td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Randomised ten-question quizzes</td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>AI learning assistant on every page</td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Safe practices reference guide</td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>No account required</td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+                <td class="se-no"><i class="bi bi-dash" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Registered user account</td>
+                <td class="se-no"><i class="bi bi-dash" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Cybersecurity awareness assessment</td>
+                <td class="se-no"><i class="bi bi-dash" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Personalised dashboard</td>
+                <td class="se-no"><i class="bi bi-dash" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Learning progress tracking</td>
+                <td class="se-no"><i class="bi bi-dash" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Quiz history</td>
+                <td class="se-no"><i class="bi bi-dash" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Recommended modules from your weak areas</td>
+                <td class="se-no"><i class="bi bi-dash" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              <tr>
+                <td>Role-based modules for client work</td>
+                <td class="se-no"><i class="bi bi-dash" aria-hidden="true"></i></td>
+                <td class="se-yes"><i class="bi bi-check-lg" aria-hidden="true"></i></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="se-callout" style="max-width:none;">
+          <strong>No payment is processed anywhere on this site.</strong> Payment gateway integration, automatic
+          billing, multiple subscription tiers, and financial transaction processing are all explicitly outside this
+          capstone's scope. The button above flips a flag in your browser tab so the premium journey can be
+          demonstrated end to end, and the price shown is illustrative only.
+        </div>
+
+        <div class="row g-4 mt-2">
+          <div class="col-md-4">
+            <div class="se-card h-100"><div class="card-body">
+              <div class="se-card-icon"><i class="bi bi-clipboard-check" aria-hidden="true"></i></div>
+              <h3 class="h6">Know where you stand</h3>
+              <p class="text-body-secondary mb-0" style="font-size:.92rem;">A fifteen-question assessment across all six
+                topics places you at Beginner, Intermediate, or Advanced, and names the topics you are weakest on.</p>
+            </div></div>
+          </div>
+          <div class="col-md-4">
+            <div class="se-card h-100"><div class="card-body">
+              <div class="se-card-icon"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i></div>
+              <h3 class="h6">See it improve</h3>
+              <p class="text-body-secondary mb-0" style="font-size:.92rem;">Your dashboard keeps completion status and
+                every quiz attempt, so progress is something you can point at rather than guess at.</p>
+            </div></div>
+          </div>
+          <div class="col-md-4">
+            <div class="se-card h-100"><div class="card-body">
+              <div class="se-card-icon"><i class="bi bi-person-workspace" aria-hidden="true"></i></div>
+              <h3 class="h6">Made for client work</h3>
+              <p class="text-body-secondary mb-0" style="font-size:.92rem;">Role-based modules cover client
+                impersonation, invoice fraud, fake recruiters, and handling client data &mdash; the situations
+                freelancers and VAs actually meet.</p>
+            </div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="se-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h5><i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>SE Aware</h5>
+          <p class="mb-3" style="font-size:.9rem;">A free, public learning platform that helps remote workers,
+            freelancers, and virtual assistants recognise and respond to social engineering attacks.</p>
+          <p class="mb-0"><span class="se-pill amber"><i class="bi bi-unlock-fill" aria-hidden="true"></i> Free &middot; No account &middot; No signup</span></p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Learn</h5>
+          <ul>
+            <li><a href="modules/phishing.html">Phishing</a></li>
+            <li><a href="modules/spear-phishing.html">Spear Phishing</a></li>
+            <li><a href="modules/smishing.html">Smishing</a></li>
+            <li><a href="modules/vishing.html">Vishing</a></li>
+            <li><a href="modules/pretexting.html">Pretexting</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="modules.html">All Modules</a></li>
+            <li><a href="modules/safe-practices.html">Safe Practices</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="go-premium.html">Go Premium</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h5>Important</h5>
+          <div class="se-footer-disclaimer">
+            This platform is for <strong>education and awareness only</strong>. It does not scan emails,
+            links, QR codes, or SMS messages, it does not detect threats in real time, and the AI assistant
+            is not a substitute for professional cybersecurity consultation or incident response.
+          </div>
+        </div>
+      </div>
+      <div class="se-footer-note">
+        <div class="row gy-2 align-items-center">
+          <div class="col-md-8">
+            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
+          </div>
+          <div class="col-md-4 text-md-end">
+            <span style="font-size:.82rem;">No personal data is collected on this site.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/account.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/chatbot.js"></script>
+</body>
+</html>

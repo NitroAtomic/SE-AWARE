@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phishing — SE Aware</title>
+  <meta name="description" content="A fake message that impersonates a trusted organisation to steal your credentials, your money, or your access.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="modules" data-root="../" data-module="phishing">
+  <a class="se-skip-link" href="#main">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg se-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <span>SE Aware<small>Stay Sharp Online</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
+              aria-controls="seNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="seNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" data-nav="home" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="modules" href="../modules.html">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="safe" href="../modules/safe-practices.html">Safe Practices</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="about" href="../about.html">About</a></li>
+          <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
+          <!-- Populated by js/account.js: guest sees Go Premium + Log in,
+               a signed-in user sees Dashboard + an account menu. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="se-pagehead">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb mb-2" style="font-size:.9rem;">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="../modules.html">Learning Modules</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Phishing</li>
+          </ol>
+        </nav>
+        <h1><i class="bi bi-envelope-exclamation-fill me-2" aria-hidden="true"></i>Phishing</h1>
+        <p>A fake message that impersonates a trusted organisation to steal your credentials, your money, or your access.</p>
+        <div class="se-meta">
+          <span><i class="bi bi-clock" aria-hidden="true"></i> 6 min read</span>
+          <span><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-question quiz at the end</span>
+          <span><i class="bi bi-unlock-fill" aria-hidden="true"></i> No account needed</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="se-section">
+      <div class="container">
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-8 se-prose se-module-body">
+
+            <h2>What it is</h2>
+
+<p>Phishing is a message that pretends to come from an organisation you already trust, sent for one purpose: to make you
+hand over something valuable before you stop to think. That something is usually a password, a one-time PIN, a card
+number, or an approval that moves money. The message itself carries no virus and exploits no software bug. It works
+entirely on you.</p>
+
+<p>The word covers a family of related attacks that share the same shape but arrive by different routes. <strong>Email
+phishing</strong> is the classic version: a message that appears to come from your bank, a courier, a marketplace, or a
+platform you use for work. <strong>Fake login pages</strong> are the second half of that attack &mdash; the link in the
+email leads to a page that is a pixel-accurate copy of the real sign-in screen, and anything you type into it goes
+straight to the attacker. <strong>QR phishing</strong>, sometimes called quishing, replaces the visible link with a
+square of pixels, which is a particularly effective trick because a QR code gives you nothing to inspect before you
+scan it.</p>
+
+<p>What makes phishing worth understanding first is that it is the foundation. Spear phishing is phishing with research
+behind it. Smishing is phishing delivered by text. Vishing is phishing conducted by voice. Learn to read one phishing
+email properly and you have most of what you need for everything else on this site.</p>
+
+
+            <h2>How the attack works</h2>
+            <p>The sequence below is the pattern behind almost every version of this attack. Recognising the shape
+              matters more than memorising any single example.</p>
+            <ol class="se-steps mt-4">
+            <li><strong>Choose a brand worth impersonating.</strong> The attacker picks an organisation you are likely to deal with and likely to obey &mdash; a bank, a courier, a government agency, a payment platform, or a workplace tool like Microsoft 365 or Google Workspace.</li>
+            <li><strong>Build the message.</strong> Real logos are copied from the company's own website. The layout is lifted from a genuine notification. Machine translation and large language models have removed the clumsy grammar that used to give these away, so bad English is no longer a reliable signal.</li>
+            <li><strong>Manufacture a reason to hurry.</strong> Your account will be suspended. A payment failed. A package is held at customs. Someone signed in from another country. The emotion varies but the function is identical: compress the time between reading and clicking.</li>
+            <li><strong>Send at scale.</strong> Ordinary phishing is a numbers game. Millions of messages go out, and a response rate of a fraction of a percent is a profitable campaign.</li>
+            <li><strong>Capture the credentials.</strong> The link opens a copy of the real login page, often on a domain that reads correctly at a glance. You type your username and password. The page captures both.</li>
+            <li><strong>Defeat the second factor in real time.</strong> Modern phishing kits do not stop at the password. The fake page immediately asks for your one-time PIN and relays it to the real site while the code is still valid &mdash; so the attacker signs in as you within seconds.</li>
+            <li><strong>Use the access.</strong> Sometimes immediately: transfer funds, redirect a payout. Sometimes patiently: read your mail for weeks to learn who pays you and when, then send an invoice with new bank details.</li>
+            </ol>
+
+            <h2>A real-world example</h2>
+            <p>A phishing email aimed at a freelancer. This is a reconstruction built for teaching &mdash; no real person or company is
+              involved.</p>
+            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack &mdash; example only</span>
+
+        <div class="se-example">
+          <div class="se-email-head">
+            <div><span class="se-lbl">From:</span> PayPal Service &lt;service@paypal-secure-verify.com&gt;</div>
+            <div><span class="se-lbl">To:</span> you@example.com</div>
+            <div><span class="se-lbl">Subject:</span> Action required: your account will be limited in 24 hours</div>
+          </div>
+          <div class="se-email-body">
+            <p class="mb-2"><strong>We noticed unusual activity on your account.</strong></p>
+            <p class="mb-2">A login attempt from <em>Lagos, Nigeria</em> was blocked on 14 March at 03:12. For your
+              protection we have placed a temporary limitation on your account.</p>
+            <p class="mb-2">You must confirm your identity within <strong>24 hours</strong> or your account will be
+              permanently restricted and any pending payouts will be reversed.</p>
+            <p class="mb-1"><a class="se-fake-btn" href="#" onclick="return false;">Verify My Account Now</a></p>
+            <p class="mb-0" style="font-size:.82rem;color:#6b7280;">PayPal will never ask for your password by email.</p>
+          </div>
+        </div>
+        <div class="se-callout">
+          <strong>What gives it away.</strong> The sender domain is <code>paypal-secure-verify.com</code>, not
+          <code>paypal.com</code> &mdash; everything before the final dot is attacker-controlled, so a real brand name
+          in the middle of a domain means nothing. The greeting is generic where a real service would use your name.
+          The deadline is artificial. And note the last line: quoting the company's real security policy is a common
+          trick to borrow credibility. The fastest response is not to examine the email harder, but to ignore it
+          entirely and open the PayPal app you already have.
+        </div>
+
+
+            <h2>Red flags to look for</h2>
+            <p>Each of these is something you can actually observe in the message or the call, not a vague feeling.
+              One flag is reason to slow down. Two is reason to stop.</p>
+            <ul class="se-flags mt-4">
+            <li>The domain after the final dot is not the company's real one. <code>paypal.com.secure-login.net</code> belongs to <code>secure-login.net</code>, not to PayPal &mdash; read domains from the right.</li>
+            <li>The reply-to address does not match the sender's display name. The display name is free text; anyone can set it to anything.</li>
+            <li>You are addressed as &ldquo;Dear Customer&rdquo; or &ldquo;Dear User&rdquo; by a company that has always used your actual name.</li>
+            <li>There is a deadline measured in hours, paired with a consequence you would not want &mdash; suspension, reversal, a lost payment.</li>
+            <li>A link's visible text does not match where it actually goes. Hover on desktop, long-press on mobile, and read the real address before you tap.</li>
+            <li>You are asked to log in from a link rather than from the app or bookmark you normally use.</li>
+            <li>An attachment arrives unexpectedly, especially .html, .htm, .zip, .iso, or a document that demands you enable macros.</li>
+            <li>The message asks for a one-time PIN, a password, or a full card number. No legitimate organisation ever asks for these by email.</li>
+            <li>Something is slightly off in the branding &mdash; an old logo, a stretched image, inconsistent fonts, a footer address that no longer exists.</li>
+            </ul>
+
+            <h2>What to do if it happens to you</h2>
+            <p>Work through these in order. The first hour matters far more than getting every step perfect.</p>
+            <ol class="se-todo mt-4">
+            <li><strong>Stop before you type anything.</strong> If you have only opened the message, you are fine. Reading a phishing email does not compromise you; responding to it does.</li>
+            <li><strong>Do not use any link, number, or address in the message</strong> &mdash; including the one in the footer that looks official. Open the app you already have installed, or type the address you already know.</li>
+            <li><strong>If you entered a password, change it now, from a different device.</strong> Change it anywhere else you reused it too. Then look for &ldquo;sign out of all sessions&rdquo; or &ldquo;active devices&rdquo; in the account's security settings and revoke everything.</li>
+            <li><strong>If you entered a one-time PIN, treat the account as already compromised.</strong> The attacker most likely used it within seconds. Change the password, revoke sessions, and check for forwarding rules or new recovery addresses that were added without your knowledge.</li>
+            <li><strong>Check your email rules specifically.</strong> A common follow-up move is to add a silent forwarding rule so the attacker keeps reading your mail long after you have changed the password.</li>
+            <li><strong>Tell your client or employer the same day.</strong> An early report is inconvenient. A late one is a much bigger problem for everyone.</li>
+            <li><strong>Report it, then delete it.</strong> Use your mail client's report-phishing button, forward it to your organisation's security contact, and in the Philippines you can report to the PNP Anti-Cybercrime Group or the NBI Cybercrime Division.</li>
+            </ol>
+
+<p>One habit is worth more than every checklist above: <strong>never sign in from a link you did not go looking for.</strong>
+If a message says your account needs attention, close it, open the app or the bookmark you already trust, and see whether
+the same notice is waiting for you there. If it is real, it will be. If it is not, you have lost ten seconds.</p>
+
+
+            <div id="seModuleProgress"></div>
+
+            <h2>Watch</h2>
+            <div class="se-video-wrap" id="seVideoSlot">
+              <div class="se-video-placeholder">
+                <div>
+                  <i class="bi bi-play-btn" style="font-size:2.5rem;" aria-hidden="true"></i>
+                  <p class="mb-1 mt-2" style="font-weight:600;">Instructional video slot</p>
+                  <p class="mb-0" style="font-size:.86rem;opacity:.8;">A curated video for this module will appear here.</p>
+                </div>
+              </div>
+            </div>
+            <p class="se-video-caption">Video content is embedded from external hosting and is not stored on this
+              platform. Playback is subject to the host provider's own terms.</p>
+
+            <div class="se-card mt-5">
+              <div class="card-body text-center py-4">
+                <h3 class="h4 mb-2">Ready to test yourself?</h3>
+                <p class="mb-4" style="max-width:52ch;margin-inline:auto;">Ten questions, drawn at random from a larger
+                  bank and reshuffled every attempt. Most of them describe a situation and ask what you would do.</p>
+                <a class="btn btn-se-primary btn-lg" href="../quiz.html?module=phishing">
+                  Take the Phishing Quiz <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+
+            <h2>Related modules</h2>
+            <div class="row g-3 mt-1">
+            <div class="col-md-6">
+              <a class="se-card d-block text-decoration-none h-100" href="spear-phishing.html">
+                <div class="card-body">
+                  <div class="se-card-icon"><i class="bi bi-crosshair" aria-hidden="true"></i></div>
+                  <h3 class="h6 mb-1">Spear Phishing</h3>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Targeted messages built from your LinkedIn, portfolio, and public posts — fake recruiters, fake clients, fake bosses.</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a class="se-card d-block text-decoration-none h-100" href="smishing.html">
+                <div class="card-body">
+                  <div class="se-card-icon"><i class="bi bi-chat-left-text-fill" aria-hidden="true"></i></div>
+                  <h3 class="h6 mb-1">Smishing</h3>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Package fees, prize draws, and bank alerts sent by text — the scam 92.6% of surveyed remote workers had already received.</p>
+                </div>
+              </a>
+            </div>
+            </div>
+
+          </div>
+
+          <aside class="col-lg-4">
+            <div class="se-card mb-4">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">On this page</h3>
+                <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                  <li><a href="#main">What it is</a></li>
+                  <li><a href="#main">How the attack works</a></li>
+                  <li><a href="#main">A real-world example</a></li>
+                  <li><a href="#main">Red flags to look for</a></li>
+                  <li><a href="#main">What to do if it happens</a></li>
+                  <li><a href="../quiz.html?module=phishing">Take the quiz</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="se-card mb-4">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">The one rule</h3>
+                <p class="mb-0" style="font-size:.95rem;">A fake message that impersonates a trusted organisation to steal your credentials, your money, or your access.</p>
+              </div>
+            </div>
+
+            <div class="se-card">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">All modules</h3>
+                <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                  <li><a href="phishing.html">Phishing</a></li>
+                  <li><a href="spear-phishing.html">Spear Phishing</a></li>
+                  <li><a href="smishing.html">Smishing</a></li>
+                  <li><a href="vishing.html">Vishing</a></li>
+                  <li><a href="pretexting.html">Pretexting</a></li>
+                  <li><a href="safe-practices.html">Safe Practices</a></li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="se-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h5><i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>SE Aware</h5>
+          <p class="mb-3" style="font-size:.9rem;">A free, public learning platform that helps remote workers,
+            freelancers, and virtual assistants recognise and respond to social engineering attacks.</p>
+          <p class="mb-0"><span class="se-pill amber"><i class="bi bi-unlock-fill" aria-hidden="true"></i> Free &middot; No account &middot; No signup</span></p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Learn</h5>
+          <ul>
+            <li><a href="../modules/phishing.html">Phishing</a></li>
+            <li><a href="../modules/spear-phishing.html">Spear Phishing</a></li>
+            <li><a href="../modules/smishing.html">Smishing</a></li>
+            <li><a href="../modules/vishing.html">Vishing</a></li>
+            <li><a href="../modules/pretexting.html">Pretexting</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../modules.html">All Modules</a></li>
+            <li><a href="../modules/safe-practices.html">Safe Practices</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../go-premium.html">Go Premium</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h5>Important</h5>
+          <div class="se-footer-disclaimer">
+            This platform is for <strong>education and awareness only</strong>. It does not scan emails,
+            links, QR codes, or SMS messages, it does not detect threats in real time, and the AI assistant
+            is not a substitute for professional cybersecurity consultation or incident response.
+          </div>
+        </div>
+      </div>
+      <div class="se-footer-note">
+        <div class="row gy-2 align-items-center">
+          <div class="col-md-8">
+            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
+          </div>
+          <div class="col-md-4 text-md-end">
+            <span style="font-size:.82rem;">No personal data is collected on this site.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/account.js"></script>
+  <script>
+    /* ====================================================================
+       EDIT ME — instructional video for this module
+       Paste the YouTube video ID between the quotes (the part after
+       "watch?v=") and the embed will render automatically. Leave it empty
+       and a placeholder card is shown instead, so the page never breaks.
+       ==================================================================== */
+    var MODULE_VIDEO_ID = "";
+    var MODULE_VIDEO_TITLE = "Phishing — instructional video";
+
+    (function () {
+      var slot = document.getElementById("seVideoSlot");
+      if (!slot) return;
+      if (MODULE_VIDEO_ID) {
+        slot.innerHTML =
+          '<div class="ratio ratio-16x9">' +
+          '<iframe src="https://www.youtube-nocookie.com/embed/' + MODULE_VIDEO_ID + '" ' +
+          'title="' + MODULE_VIDEO_TITLE + '" allowfullscreen ' +
+          'allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+          'referrerpolicy="strict-origin-when-cross-origin"></iframe></div>';
+      }
+    })();
+  </script>
+  <script src="../js/chatbot.js"></script>
+</body>
+</html>

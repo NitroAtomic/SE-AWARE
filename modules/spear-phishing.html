@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spear Phishing — SE Aware</title>
+  <meta name="description" content="Phishing written specifically for you, using real details gathered from your public professional footprint.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="modules" data-root="../" data-module="spear-phishing">
+  <a class="se-skip-link" href="#main">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg se-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <span>SE Aware<small>Stay Sharp Online</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
+              aria-controls="seNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="seNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" data-nav="home" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="modules" href="../modules.html">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="safe" href="../modules/safe-practices.html">Safe Practices</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="about" href="../about.html">About</a></li>
+          <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
+          <!-- Populated by js/account.js: guest sees Go Premium + Log in,
+               a signed-in user sees Dashboard + an account menu. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="se-pagehead">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb mb-2" style="font-size:.9rem;">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="../modules.html">Learning Modules</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Spear Phishing</li>
+          </ol>
+        </nav>
+        <h1><i class="bi bi-crosshair me-2" aria-hidden="true"></i>Spear Phishing</h1>
+        <p>Phishing written specifically for you, using real details gathered from your public professional footprint.</p>
+        <div class="se-meta">
+          <span><i class="bi bi-clock" aria-hidden="true"></i> 6 min read</span>
+          <span><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-question quiz at the end</span>
+          <span><i class="bi bi-unlock-fill" aria-hidden="true"></i> No account needed</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="se-section">
+      <div class="container">
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-8 se-prose se-module-body">
+
+            <h2>What it is</h2>
+
+<p>Spear phishing is phishing written for one specific person. Where ordinary phishing is a net thrown across millions of
+inboxes hoping a few people bite, spear phishing is a single message built after someone has spent real time reading
+about you. It names your actual client. It refers to the project you posted about last week. It arrives from a person
+whose job title makes the request sound completely ordinary.</p>
+
+<p>Remote workers are unusually exposed to this, and the reason is structural rather than careless. Finding work online
+requires being findable. A freelancer's LinkedIn lists their skills, their rates, and their recent clients. A portfolio
+site names the companies they have worked with. A public post celebrates landing a new contract. Every one of those is
+reasonable professional behaviour, and every one of them is free reconnaissance.</p>
+
+<p>The uncomfortable thing about spear phishing is that the usual advice stops working. &ldquo;Watch for generic
+greetings&rdquo; is useless when the message opens with your first name and mentions your actual deliverable. The
+detail that would normally reassure you is precisely what has been weaponised. So the defence has to shift: instead of
+asking <em>does this message look legitimate</em>, you ask <em>can I confirm this person through a channel I already
+had before this message arrived</em>.</p>
+
+
+            <h2>How the attack works</h2>
+            <p>The sequence below is the pattern behind almost every version of this attack. Recognising the shape
+              matters more than memorising any single example.</p>
+            <ol class="se-steps mt-4">
+            <li><strong>Pick the target.</strong> Often someone with access but without a security team behind them &mdash; a freelancer, a virtual assistant, a contractor, or a junior employee who handles invoices or scheduling.</li>
+            <li><strong>Research from public sources.</strong> LinkedIn gives the job history, the connections, and the current employer. A portfolio site gives client names. Social media gives the tone of voice, the timezone, and often the current project.</li>
+            <li><strong>Map the relationships.</strong> Who does this person report to? Who pays them? Which platform do they invoice through? Impersonating the right person matters more than writing the perfect email.</li>
+            <li><strong>Craft one message.</strong> Correct names, correct project, correct timing. Frequently sent on a Friday afternoon or just before a holiday, when verification is hardest and the pressure to finish is highest.</li>
+            <li><strong>Make a request that fits the story.</strong> Review the attached brief. Sign in to the client portal. Update the payment details for this month's invoice. Nothing dramatic &mdash; the request has to sound like a normal Tuesday.</li>
+            <li><strong>Sustain the conversation if needed.</strong> Unlike bulk phishing, a spear phisher will happily exchange several friendly messages first, because the payoff justifies the patience.</li>
+            </ol>
+
+            <h2>A real-world example</h2>
+            <p>A fake recruiter approach on a professional network. This is a reconstruction built for teaching &mdash; no real person or company is
+              involved.</p>
+            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack &mdash; example only</span>
+
+        <div class="se-example">
+          <div class="se-dm">
+            <div class="se-dm-head">
+              <div class="se-dm-avatar">MR</div>
+              <div>
+                <div style="font-weight:600;">Maria Reyes</div>
+                <div style="font-size:.82rem;color:#5A6473;">Senior Talent Partner &middot; Northbridge Digital</div>
+              </div>
+            </div>
+            <div class="se-dm-msg se-dm-them">Hi Juan! I came across your portfolio &mdash; the analytics dashboard you
+              built for Cortez Logistics is exactly the kind of work our client is after.</div>
+            <div class="se-dm-msg se-dm-them">We're hiring a remote data visualisation contractor, ₱95k/month, fully
+              async, starting in two weeks. Given your background I'd like to fast-track you past the first screen.</div>
+            <div class="se-dm-msg se-dm-them">Could you complete the short skills assessment on our portal? It takes
+              about 15 minutes. You'll need to sign in with your Google account so the results attach to your profile:
+              <span style="color:#2F6FD0;text-decoration:underline;">northbridge-careers.talentportal-hr.com</span></div>
+            <div class="se-dm-msg se-dm-them">Let me know once it's done and I'll set up the call. 🙂</div>
+          </div>
+        </div>
+        <div class="se-callout">
+          <strong>What gives it away.</strong> Everything factual in this message is true and publicly available &mdash;
+          the portfolio, the client name, the skill. That is the point. The single manipulated element is the last one:
+          a &ldquo;skills assessment&rdquo; that requires signing in with Google on a domain owned by
+          <code>talentportal-hr.com</code>, not by Northbridge. A real assessment never needs your email credentials.
+          Note also the flattery, the above-market rate, and the offer to skip a screening step &mdash; three ways of
+          making you feel you have something to lose by being cautious.
+        </div>
+
+
+            <h2>Red flags to look for</h2>
+            <p>Each of these is something you can actually observe in the message or the call, not a vague feeling.
+              One flag is reason to slow down. Two is reason to stop.</p>
+            <ul class="se-flags mt-4">
+            <li>The message is unusually well-informed about your work but arrives from someone you have never interacted with before.</li>
+            <li>You are asked to sign in with Google, Microsoft, or Apple on a domain that is not the company's own &mdash; a recruitment portal has no reason to want your email credentials.</li>
+            <li>The offer is noticeably better than market rate, or a normal step in the process is being skipped &ldquo;because of your background&rdquo;.</li>
+            <li>The sender's domain is close to a real company's but not identical: an extra hyphen, a swapped letter, <code>.co</code> instead of <code>.com</code>, or a plausible-sounding subdomain.</li>
+            <li>A supervisor, client, or accounts contact emails about payment from a slightly different address than the one in your existing thread &mdash; check the full address, not the display name.</li>
+            <li>The request arrives late on a Friday, just before a holiday, or while the person it claims to be from is known to be travelling.</li>
+            <li>You are asked to keep the matter confidential, or discouraged from raising it with anyone else.</li>
+            <li>An attachment or link is framed as a brief, contract, NDA, or assessment and requires credentials to open.</li>
+            <li>The tone pushes urgency in a relationship that has never been urgent before.</li>
+            </ul>
+
+            <h2>What to do if it happens to you</h2>
+            <p>Work through these in order. The first hour matters far more than getting every step perfect.</p>
+            <ol class="se-todo mt-4">
+            <li><strong>Verify the person, not the message.</strong> Look the company up independently, find its real website, and contact the person through a number or address you found yourself &mdash; never one supplied in the message.</li>
+            <li><strong>Use a channel that predates the message.</strong> If it claims to be your client, reply in the thread you already have with them, or call the number in your existing contacts. Do not reply to the new email.</li>
+            <li><strong>Check whether the person exists at all.</strong> A real recruiter has a history: a profile with connections, activity, and a company page that matches. A profile created three weeks ago with forty connections is a strong signal.</li>
+            <li><strong>Never enter email credentials for a job assessment.</strong> There is no legitimate version of that request.</li>
+            <li><strong>Treat any change in payment details as a stop signal.</strong> Confirm it by voice with someone you already know, using a number you already had.</li>
+            <li><strong>If you already signed in on the fake page,</strong> change that password immediately from another device, revoke all active sessions, turn on multi-factor authentication, and check for forwarding rules added to your mailbox.</li>
+            <li><strong>Warn the impersonated party.</strong> If someone is using your client's name to reach you, that client needs to know, and so do their other contractors.</li>
+            </ol>
+
+<p>The single rule that survives contact with a well-crafted spear phishing message is this: <strong>detail is not
+identity</strong>. Someone knowing your project, your client, and your rate proves only that they can read. Before you
+act on anything involving credentials, money, or access, confirm the person through a channel that existed before their
+message arrived.</p>
+
+
+            <div id="seModuleProgress"></div>
+
+            <h2>Watch</h2>
+            <div class="se-video-wrap" id="seVideoSlot">
+              <div class="se-video-placeholder">
+                <div>
+                  <i class="bi bi-play-btn" style="font-size:2.5rem;" aria-hidden="true"></i>
+                  <p class="mb-1 mt-2" style="font-weight:600;">Instructional video slot</p>
+                  <p class="mb-0" style="font-size:.86rem;opacity:.8;">A curated video for this module will appear here.</p>
+                </div>
+              </div>
+            </div>
+            <p class="se-video-caption">Video content is embedded from external hosting and is not stored on this
+              platform. Playback is subject to the host provider's own terms.</p>
+
+            <div class="se-card mt-5">
+              <div class="card-body text-center py-4">
+                <h3 class="h4 mb-2">Ready to test yourself?</h3>
+                <p class="mb-4" style="max-width:52ch;margin-inline:auto;">Ten questions, drawn at random from a larger
+                  bank and reshuffled every attempt. Most of them describe a situation and ask what you would do.</p>
+                <a class="btn btn-se-primary btn-lg" href="../quiz.html?module=spear-phishing">
+                  Take the Spear Phishing Quiz <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+
+            <h2>Related modules</h2>
+            <div class="row g-3 mt-1">
+            <div class="col-md-6">
+              <a class="se-card d-block text-decoration-none h-100" href="smishing.html">
+                <div class="card-body">
+                  <div class="se-card-icon"><i class="bi bi-chat-left-text-fill" aria-hidden="true"></i></div>
+                  <h3 class="h6 mb-1">Smishing</h3>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Package fees, prize draws, and bank alerts sent by text — the scam 92.6% of surveyed remote workers had already received.</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-md-6">
+              <a class="se-card d-block text-decoration-none h-100" href="vishing.html">
+                <div class="card-body">
+                  <div class="se-card-icon"><i class="bi bi-telephone-fill" aria-hidden="true"></i></div>
+                  <h3 class="h6 mb-1">Vishing</h3>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Fake IT support, fake bank fraud teams, and OTP harvesting calls — plus AI voice cloning.</p>
+                </div>
+              </a>
+            </div>
+            </div>
+
+          </div>
+
+          <aside class="col-lg-4">
+            <div class="se-card mb-4">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">On this page</h3>
+                <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                  <li><a href="#main">What it is</a></li>
+                  <li><a href="#main">How the attack works</a></li>
+                  <li><a href="#main">A real-world example</a></li>
+                  <li><a href="#main">Red flags to look for</a></li>
+                  <li><a href="#main">What to do if it happens</a></li>
+                  <li><a href="../quiz.html?module=spear-phishing">Take the quiz</a></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="se-card mb-4">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">The one rule</h3>
+                <p class="mb-0" style="font-size:.95rem;">Phishing written specifically for you, using real details gathered from your public professional footprint.</p>
+              </div>
+            </div>
+
+            <div class="se-card">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">All modules</h3>
+                <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                  <li><a href="phishing.html">Phishing</a></li>
+                  <li><a href="spear-phishing.html">Spear Phishing</a></li>
+                  <li><a href="smishing.html">Smishing</a></li>
+                  <li><a href="vishing.html">Vishing</a></li>
+                  <li><a href="pretexting.html">Pretexting</a></li>
+                  <li><a href="safe-practices.html">Safe Practices</a></li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="se-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h5><i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>SE Aware</h5>
+          <p class="mb-3" style="font-size:.9rem;">A free, public learning platform that helps remote workers,
+            freelancers, and virtual assistants recognise and respond to social engineering attacks.</p>
+          <p class="mb-0"><span class="se-pill amber"><i class="bi bi-unlock-fill" aria-hidden="true"></i> Free &middot; No account &middot; No signup</span></p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Learn</h5>
+          <ul>
+            <li><a href="../modules/phishing.html">Phishing</a></li>
+            <li><a href="../modules/spear-phishing.html">Spear Phishing</a></li>
+            <li><a href="../modules/smishing.html">Smishing</a></li>
+            <li><a href="../modules/vishing.html">Vishing</a></li>
+            <li><a href="../modules/pretexting.html">Pretexting</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../modules.html">All Modules</a></li>
+            <li><a href="../modules/safe-practices.html">Safe Practices</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../go-premium.html">Go Premium</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h5>Important</h5>
+          <div class="se-footer-disclaimer">
+            This platform is for <strong>education and awareness only</strong>. It does not scan emails,
+            links, QR codes, or SMS messages, it does not detect threats in real time, and the AI assistant
+            is not a substitute for professional cybersecurity consultation or incident response.
+          </div>
+        </div>
+      </div>
+      <div class="se-footer-note">
+        <div class="row gy-2 align-items-center">
+          <div class="col-md-8">
+            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
+          </div>
+          <div class="col-md-4 text-md-end">
+            <span style="font-size:.82rem;">No personal data is collected on this site.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/account.js"></script>
+  <script>
+    /* ====================================================================
+       EDIT ME — instructional video for this module
+       Paste the YouTube video ID between the quotes (the part after
+       "watch?v=") and the embed will render automatically. Leave it empty
+       and a placeholder card is shown instead, so the page never breaks.
+       ==================================================================== */
+    var MODULE_VIDEO_ID = "";
+    var MODULE_VIDEO_TITLE = "Spear Phishing — instructional video";
+
+    (function () {
+      var slot = document.getElementById("seVideoSlot");
+      if (!slot) return;
+      if (MODULE_VIDEO_ID) {
+        slot.innerHTML =
+          '<div class="ratio ratio-16x9">' +
+          '<iframe src="https://www.youtube-nocookie.com/embed/' + MODULE_VIDEO_ID + '" ' +
+          'title="' + MODULE_VIDEO_TITLE + '" allowfullscreen ' +
+          'allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+          'referrerpolicy="strict-origin-when-cross-origin"></iframe></div>';
+      }
+    })();
+  </script>
+  <script src="../js/chatbot.js"></script>
+</body>
+</html>

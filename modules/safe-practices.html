@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safe Practices for Remote Workers — SE Aware</title>
+  <meta name="description" content="Practical cybersecurity habits for remote workers: MFA, password managers, second-channel verification, home network security, device separation, and incident reporting.">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body data-page="safe" data-root="../" data-module="safe-practices">
+  <a class="se-skip-link" href="#main">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg se-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <span>SE Aware<small>Stay Sharp Online</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
+              aria-controls="seNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="seNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" data-nav="home" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="modules" href="../modules.html">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="safe" href="../modules/safe-practices.html">Safe Practices</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="about" href="../about.html">About</a></li>
+          <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
+          <!-- Populated by js/account.js: guest sees Go Premium + Log in,
+               a signed-in user sees Dashboard + an account menu. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="se-pagehead">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb mb-2" style="font-size:.9rem;">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="../modules.html">Learning Modules</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Safe Practices</li>
+          </ol>
+        </nav>
+        <h1><i class="bi bi-shield-check me-2" aria-hidden="true"></i>Safe Practices for Remote Workers</h1>
+        <p>The everyday habits that make every attack on this platform harder to pull off against you. Work down the
+          list in order &mdash; it is arranged by how much protection each habit buys for the effort it costs.</p>
+        <div class="se-meta">
+          <span><i class="bi bi-clock" aria-hidden="true"></i> 8 min read</span>
+          <span><i class="bi bi-journal-text" aria-hidden="true"></i> Reference guide &mdash; no quiz</span>
+          <span><i class="bi bi-unlock-fill" aria-hidden="true"></i> No account needed</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="se-section">
+      <div class="container">
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-8">
+            <div class="se-callout" style="max-width:none;margin-top:0;">
+              <strong>If you only do two things,</strong> turn on multi-factor authentication for your email account and
+              start using a password manager. Between them those two habits neutralise the majority of what a stolen
+              password can be used for.
+            </div>
+
+            <div class="accordion se-accordion mt-4" id="safeAccordion">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="head-mfa">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#body-mfa" aria-expanded="true" aria-controls="body-mfa">
+                  <i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>1. Turn on multi-factor authentication — email first
+                </button>
+              </h3>
+              <div id="body-mfa" class="accordion-collapse collapse show" aria-labelledby="head-mfa">
+                <div class="accordion-body se-prose">
+
+<p>Multi-factor authentication (MFA, sometimes called two-factor authentication or 2FA) means a stolen password on its
+own is not enough to get into your account. After the password, the service asks for a second thing: a code from an app,
+a tap on your phone, or a physical key.</p>
+<p><strong>Start with your email account, not your bank.</strong> This surprises people, but your email is the master key
+to everything else you own &mdash; every &ldquo;forgot password&rdquo; link on every other service lands there. An
+attacker who controls your email can reset your bank, your marketplace accounts, and your client portals at leisure.
+Secure it first, then work outward.</p>
+<p>Not all second factors are equal. From weakest to strongest:</p>
+<ul>
+  <li><strong>SMS codes</strong> &mdash; far better than nothing, but vulnerable to SIM-swap fraud and to the vishing
+    calls covered in this platform's Vishing module.</li>
+  <li><strong>Authenticator apps</strong> (Google Authenticator, Microsoft Authenticator, Authy) &mdash; codes are
+    generated on your device and never travel over the network. This is the right default for most people.</li>
+  <li><strong>Hardware security keys</strong> (YubiKey and similar) &mdash; the strongest option, and effectively immune
+    to phishing because the key checks the website's real address before it responds.</li>
+</ul>
+<div class="se-callout"><strong>Before you finish setup, save your backup codes offline.</strong> Print them, or write
+them down and keep them somewhere physical. Losing your phone without backup codes can lock you out of your own accounts
+permanently.</div>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="head-passwords">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#body-passwords" aria-expanded="false" aria-controls="body-passwords">
+                  <i class="bi bi-key-fill me-2" aria-hidden="true"></i>2. Use a password manager and stop reusing passwords
+                </button>
+              </h3>
+              <div id="body-passwords" class="accordion-collapse collapse" aria-labelledby="head-passwords">
+                <div class="accordion-body se-prose">
+
+<p>The single most damaging password habit is not weakness &mdash; it is <strong>reuse</strong>. When any site you have
+an account with is breached, attackers take the leaked email-and-password pairs and try them automatically across
+hundreds of other services. This is called credential stuffing, and it is why one forgotten forum account from 2016 can
+cost you your email today.</p>
+<p>Length beats complexity. <code>correct-horse-battery-staple</code> is far stronger and far easier to remember than
+<code>P@ssw0rd1</code>, which follows a substitution pattern every cracking tool already knows. Aim for at least 16
+characters and prefer a passphrase of several unrelated words.</p>
+<p>Nobody can remember a hundred unique passphrases, which is exactly the problem a <strong>password manager</strong>
+solves. Bitwarden, 1Password, and KeePassXC all generate, store, and fill unique credentials for every site. You memorise
+one strong master passphrase and the manager handles the rest.</p>
+<p>A password manager also quietly defends you against phishing: it fills credentials based on the site's real domain, so
+if you land on a convincing fake, it simply will not autofill. That silence is a warning worth listening to.</p>
+<div class="se-callout"><strong>Check your exposure.</strong> Free breach-notification services such as Have I Been
+Pwned let you see whether an address of yours has appeared in a known breach. If it has, change that password and
+anywhere you reused it.</div>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="head-verify">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#body-verify" aria-expanded="false" aria-controls="body-verify">
+                  <i class="bi bi-telephone-outbound-fill me-2" aria-hidden="true"></i>3. Verify money and credential requests through a second channel
+                </button>
+              </h3>
+              <div id="body-verify" class="accordion-collapse collapse" aria-labelledby="head-verify">
+                <div class="accordion-body se-prose">
+
+<p>This is the habit that defeats the most expensive attacks on this platform, and it fits in one sentence:
+<strong>if a request involves money, credentials, or access, confirm it through a different channel than the one it
+arrived on.</strong></p>
+<p>An email asking you to change bank details gets confirmed by phone. A chat message from a client asking for
+credentials gets confirmed by email in the thread you already had. A call asking you to approve something gets confirmed
+by hanging up and calling back on a number you already had.</p>
+<p>The word <em>already</em> is doing the real work. Use contact details you had <strong>before</strong> the request
+arrived &mdash; from your contacts list, an old invoice, or the company's official website. Never the number in the new
+email's signature, and never the number the caller reads out to you.</p>
+<ul class="se-flags">
+  <li>Any change to bank details, payee names, or remittance addresses &mdash; without exception, no matter how well you
+    know the sender</li>
+  <li>Any request for a password, PIN, one-time code, or account access</li>
+  <li>Any urgent payment, especially one framed as confidential or as a favour</li>
+  <li>Any request to install software so someone can help you remotely</li>
+</ul>
+<p>A genuine colleague or client will never object to a two-minute verification call. Only an attacker cannot afford
+one. If someone becomes irritated that you are checking, that reaction is itself the answer.</p>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="head-network">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#body-network" aria-expanded="false" aria-controls="body-network">
+                  <i class="bi bi-router-fill me-2" aria-hidden="true"></i>4. Secure your home network
+                </button>
+              </h3>
+              <div id="body-network" class="accordion-collapse collapse" aria-labelledby="head-network">
+                <div class="accordion-body se-prose">
+
+<p>Working from home means your router is now part of your professional security, and most home routers ship in a state
+nobody ever revisits.</p>
+<ul>
+  <li><strong>Change the router's admin password.</strong> Not the Wi-Fi password &mdash; the separate one that protects
+    the router's settings page. Factory defaults like <code>admin/admin</code> are published online for every model.</li>
+  <li><strong>Use WPA3 if your router supports it, WPA2 otherwise.</strong> If your network is still on WEP or has no
+    password, fix that today.</li>
+  <li><strong>Install firmware updates.</strong> Many routers can do this automatically; if yours cannot, check
+    manually every few months.</li>
+  <li><strong>Turn off WPS and remote administration</strong> unless you genuinely use them. Both are convenience
+    features with a poor security history.</li>
+  <li><strong>Put smart devices on a guest network.</strong> Smart TVs, cameras, and plugs are rarely well maintained.
+    Keeping them off the network your work laptop uses limits the damage if one is compromised.</li>
+</ul>
+<p>On public Wi-Fi &mdash; cafés, airports, coworking spaces &mdash; assume the network is hostile. Use a reputable VPN
+or your phone's mobile hotspot for anything involving client data, and never dismiss a browser certificate warning to get
+online faster.</p>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="head-devices">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#body-devices" aria-expanded="false" aria-controls="body-devices">
+                  <i class="bi bi-laptop me-2" aria-hidden="true"></i>5. Separate work and personal devices
+                </button>
+              </h3>
+              <div id="body-devices" class="accordion-collapse collapse" aria-labelledby="head-devices">
+                <div class="accordion-body se-prose">
+
+<p>The cleanest version of this is a device used only for work. That is not always affordable, so here is the practical
+ladder, from best to still-worthwhile:</p>
+<ol class="se-steps">
+  <li><strong>A separate physical device for client work.</strong> Ideal, and worth budgeting for if your income depends
+    on it.</li>
+  <li><strong>A separate user account on the same machine.</strong> Free, takes ten minutes, and keeps files, browser
+    profiles, and saved logins genuinely separated.</li>
+  <li><strong>At minimum, a separate browser profile</strong> for work, with its own extensions and saved sessions.</li>
+</ol>
+<p>Whichever level you reach, keep two rules. First, <strong>nobody else uses your work profile</strong> &mdash; a family
+member installing a game or clicking a link is a real and common route to compromise. Second, <strong>keep client data
+off shared computers entirely</strong>, including the family desktop.</p>
+<p>Also: enable full-disk encryption (BitLocker on Windows, FileVault on macOS), set a short auto-lock timeout, and turn
+on remote-wipe if your device supports it. A stolen unencrypted laptop hands over every client file on it.</p>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="head-clientdata">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#body-clientdata" aria-expanded="false" aria-controls="body-clientdata">
+                  <i class="bi bi-folder-lock me-2" aria-hidden="true"></i>6. Handle client data carefully
+                </button>
+              </h3>
+              <div id="body-clientdata" class="accordion-collapse collapse" aria-labelledby="head-clientdata">
+                <div class="accordion-body se-prose">
+
+<p>As a freelancer or virtual assistant you are often trusted with more than your job title suggests &mdash; inboxes,
+customer lists, financial records, and admin credentials. That trust makes you a target, and it also makes you
+accountable.</p>
+<ul>
+  <li><strong>Collect and keep only what the work requires.</strong> Data you never held cannot leak from you.</li>
+  <li><strong>Delete client files when a project ends</strong>, unless you have been asked to retain them. Old archives
+    are pure liability.</li>
+  <li><strong>Never send credentials over chat or email.</strong> Ask the client to share access through their platform's
+    own permission system, or use a password manager's secure sharing feature.</li>
+  <li><strong>Ask for delegated access rather than shared logins.</strong> Being added as a user on their account is
+    safer for both of you than being handed the owner's password.</li>
+  <li><strong>Use the client's own tools where possible</strong> &mdash; their Drive, their project system &mdash; rather
+    than copying data into your personal accounts.</li>
+  <li><strong>Report incidents immediately.</strong> Clients forgive fast disclosure far more readily than they forgive
+    discovering it themselves weeks later.</li>
+</ul>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="head-updates">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#body-updates" aria-expanded="false" aria-controls="body-updates">
+                  <i class="bi bi-arrow-repeat me-2" aria-hidden="true"></i>7. Keep software updated
+                </button>
+              </h3>
+              <div id="body-updates" class="accordion-collapse collapse" aria-labelledby="head-updates">
+                <div class="accordion-body se-prose">
+
+<p>Updates are unglamorous and they matter. A large share of successful intrusions exploit vulnerabilities that were
+patched months or years earlier &mdash; the fix existed and simply was not installed.</p>
+<ul>
+  <li>Turn on automatic updates for your operating system and restart when asked, rather than postponing for weeks.</li>
+  <li>Keep your browser current &mdash; it is the single most exposed piece of software you run.</li>
+  <li>Audit browser extensions periodically and remove anything you no longer use. Extensions can read everything on the
+    pages you visit, and popular ones are sometimes sold to new owners with different intentions.</li>
+  <li>Update your phone too. It holds your authenticator app and your one-time codes.</li>
+  <li>Install software only from official app stores or the vendor's real website. &ldquo;Cracked&rdquo; and repackaged
+    software is a reliable delivery route for malware.</li>
+</ul>
+
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="head-report">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#body-report" aria-expanded="false" aria-controls="body-report">
+                  <i class="bi bi-megaphone-fill me-2" aria-hidden="true"></i>8. Know how to report an incident
+                </button>
+              </h3>
+              <div id="body-report" class="accordion-collapse collapse" aria-labelledby="head-report">
+                <div class="accordion-body se-prose">
+
+<p>Decide where you would report something <em>before</em> you need to. Under pressure, having to research this costs the
+hour that matters most.</p>
+<p><strong>If you think you have just been caught, in this order:</strong></p>
+<ol class="se-todo">
+  <li><strong>Disconnect the device from the internet</strong> if you installed anything or granted remote access.</li>
+  <li><strong>Change the affected password from a different device</strong>, then revoke all active sessions in that
+    account's security settings.</li>
+  <li><strong>Call your bank immediately if money is involved</strong> &mdash; recall is sometimes possible within the
+    first hour and rarely after. Ask for a fraud reference number.</li>
+  <li><strong>Tell your client or employer the same day.</strong> Early beats tidy, every time.</li>
+  <li><strong>Preserve evidence</strong> &mdash; screenshots, full email headers, phone numbers, transaction references.
+    Do not delete the message until it has been reported.</li>
+</ol>
+<p><strong>Where to report in the Philippines:</strong></p>
+<ul>
+  <li><strong>PNP Anti-Cybercrime Group</strong> &mdash; for cybercrime complaints, including online fraud</li>
+  <li><strong>NBI Cybercrime Division</strong> &mdash; for investigation of cyber-related offences</li>
+  <li><strong>Your bank's official fraud hotline</strong> &mdash; the number printed on your card or statement</li>
+  <li><strong>The National Privacy Commission</strong> &mdash; if personal data belonging to others was exposed</li>
+  <li><strong>The impersonated platform</strong> &mdash; Google, Meta, and most marketplaces have dedicated phishing
+    report channels</li>
+</ul>
+<p>Finally, tell the people around you. Scam campaigns run in waves through the same networks, and a short warning to
+your family, your colleagues, and your client's other contractors is one of the most effective things you can do.</p>
+
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <div class="se-callout mt-5" style="max-width:none;">
+              <strong>A note on perfection.</strong> No one does all of this at once, and treating security as
+              all-or-nothing is how people end up doing none of it. Pick the first item you have not done, do it this
+              week, then come back for the next one.
+            </div>
+
+            <div id="seModuleProgress"></div>
+
+            <h2 class="mt-5" style="border-bottom:2px solid var(--se-border);padding-bottom:.55rem;">Watch</h2>
+            <div class="se-video-wrap" id="seVideoSlot">
+              <div class="se-video-placeholder">
+                <div>
+                  <i class="bi bi-play-btn" style="font-size:2.5rem;" aria-hidden="true"></i>
+                  <p class="mb-1 mt-2" style="font-weight:600;">Instructional video slot</p>
+                  <p class="mb-0" style="font-size:.86rem;opacity:.8;">A curated video for this module will appear here.</p>
+                </div>
+              </div>
+            </div>
+            <p class="se-video-caption">Video content is embedded from external hosting and is not stored on this
+              platform. Playback is subject to the host provider's own terms.</p>
+
+            <div class="se-card mt-5">
+              <div class="card-body text-center py-4">
+                <h3 class="h4 mb-2">Now put it into practice</h3>
+                <p class="mb-4" style="max-width:52ch;margin-inline:auto;">This module has no quiz. If you have not yet
+                  worked through the five attack types, phishing is the one everything else builds on.</p>
+                <a class="btn btn-se-primary btn-lg" href="phishing.html">Go to the Phishing module <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <aside class="col-lg-4">
+            <div class="se-card mb-4">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">The eight habits</h3>
+                <ol style="font-size:.93rem;padding-left:1.2rem;line-height:1.9;">
+                  <li>Multi-factor authentication</li>
+                  <li>Password manager, no reuse</li>
+                  <li>Verify through a second channel</li>
+                  <li>Secure your home network</li>
+                  <li>Separate work and personal devices</li>
+                  <li>Handle client data carefully</li>
+                  <li>Keep software updated</li>
+                  <li>Know how to report</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="se-card mb-4">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">Report an incident</h3>
+                <ul style="font-size:.93rem;padding-left:1.1rem;line-height:1.9;">
+                  <li>PNP Anti-Cybercrime Group</li>
+                  <li>NBI Cybercrime Division</li>
+                  <li>Your bank's official fraud hotline</li>
+                  <li>National Privacy Commission</li>
+                </ul>
+                <p class="mb-0" style="font-size:.87rem;color:var(--se-muted);">Keep screenshots and full message
+                  headers before you delete anything.</p>
+              </div>
+            </div>
+
+            <div class="se-card">
+              <div class="card-body">
+                <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">All modules</h3>
+                <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                  <li><a href="phishing.html">Phishing</a></li>
+                  <li><a href="spear-phishing.html">Spear Phishing</a></li>
+                  <li><a href="smishing.html">Smishing</a></li>
+                  <li><a href="vishing.html">Vishing</a></li>
+                  <li><a href="pretexting.html">Pretexting</a></li>
+                  <li><a href="safe-practices.html">Safe Practices</a></li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="se-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h5><i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>SE Aware</h5>
+          <p class="mb-3" style="font-size:.9rem;">A free, public learning platform that helps remote workers,
+            freelancers, and virtual assistants recognise and respond to social engineering attacks.</p>
+          <p class="mb-0"><span class="se-pill amber"><i class="bi bi-unlock-fill" aria-hidden="true"></i> Free &middot; No account &middot; No signup</span></p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Learn</h5>
+          <ul>
+            <li><a href="../modules/phishing.html">Phishing</a></li>
+            <li><a href="../modules/spear-phishing.html">Spear Phishing</a></li>
+            <li><a href="../modules/smishing.html">Smishing</a></li>
+            <li><a href="../modules/vishing.html">Vishing</a></li>
+            <li><a href="../modules/pretexting.html">Pretexting</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h5>Platform</h5>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../modules.html">All Modules</a></li>
+            <li><a href="../modules/safe-practices.html">Safe Practices</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../go-premium.html">Go Premium</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h5>Important</h5>
+          <div class="se-footer-disclaimer">
+            This platform is for <strong>education and awareness only</strong>. It does not scan emails,
+            links, QR codes, or SMS messages, it does not detect threats in real time, and the AI assistant
+            is not a substitute for professional cybersecurity consultation or incident response.
+          </div>
+        </div>
+      </div>
+      <div class="se-footer-note">
+        <div class="row gy-2 align-items-center">
+          <div class="col-md-8">
+            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
+          </div>
+          <div class="col-md-4 text-md-end">
+            <span style="font-size:.82rem;">No personal data is collected on this site.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/account.js"></script>
+  <script>
+    /* ====================================================================
+       EDIT ME — instructional video for this module
+       Paste the YouTube video ID between the quotes and the embed renders
+       automatically. Leave it empty to keep the placeholder card.
+       ==================================================================== */
+    var MODULE_VIDEO_ID = "";
+    var MODULE_VIDEO_TITLE = "Safe Practices for Remote Workers — instructional video";
+
+    (function () {
+      var slot = document.getElementById("seVideoSlot");
+      if (!slot || !MODULE_VIDEO_ID) return;
+      slot.innerHTML =
+        '<div class="ratio ratio-16x9">' +
+        '<iframe src="https://www.youtube-nocookie.com/embed/' + MODULE_VIDEO_ID + '" ' +
+        'title="' + MODULE_VIDEO_TITLE + '" allowfullscreen ' +
+        'allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+        'referrerpolicy="strict-origin-when-cross-origin"></iframe></div>';
+    })();
+  </script>
+  <script src="../js/chatbot.js"></script>
+</body>
+</html>
