@@ -27,7 +27,7 @@ This repository implements the **free tier** of the documented system in full, e
 | FR-03 | Embedded educational videos where available | Complete, all six videos embedded |
 | FR-04 | Ten-question randomised quiz after every attack module | Complete, 15-question bank per module, 10 drawn |
 | FR-05 | Safe Practices section for remote workers | Complete, 8-topic accordion |
-| FR-06 | AI chatbot as a floating widget on every page | Complete, n8n + Gemini, with offline fallback |
+| FR-06 | AI chatbot as a floating widget on every page | Complete, **CyberWise**, n8n + Gemini, with offline fallback |
 | FR-07 | Fully accessible without registration or login | Complete, no accounts, no database, no cookies |
 | FR-08 | Responsive across desktop, tablet, and mobile | Complete, verified at 360 / 768 / 1024 / 1440px |
 
@@ -79,6 +79,26 @@ Then visit <http://localhost:8000>.
 Serving the folder is preferable to opening the file directly, because `quiz.html` reads a `?module=` query parameter and some browsers restrict that on `file://` URLs.
 
 ---
+
+## CyberWise, the learning assistant
+
+The assistant is named **CyberWise** and appears as a floating shield on every page.
+The platform is SE Aware; CyberWise is the assistant inside it. It is locked to the six
+course topics by two independent layers, a browser-side guard and the n8n system prompt,
+and it distinguishes three outcomes rather than two: a real answer, a request to clarify
+when the question is on topic but vague, and a refusal only when the question genuinely
+belongs to another subject.
+
+## Appearance: light and dark
+
+Every page supports a light and a dark theme. The toggle sits in the navigation bar.
+With no explicit choice the site follows the operating system's setting, and an explicit
+choice is remembered in `localStorage` under a single key holding only the string
+`light` or `dark`. `js/theme.js` is the one script loaded synchronously in `<head>`,
+because applying the theme after first paint would flash a white page at anyone who
+prefers dark. Colour is expressed entirely in design tokens, so the dark theme overrides
+variables rather than duplicating component rules. Contrast is verified by the QA suite
+in both themes.
 
 ## Configuring the AI chatbot
 
@@ -257,8 +277,9 @@ The demo account signs in without registering first, arrives on the Premium plan
 
 `TESTING.md` holds the test matrix. During development the build was verified automatically with headless Chromium across two suites:
 
+- **Deep QA, 31 checks.** Duplicate IDs, image alt text, heading order, form labels, link text, unique titles, colour contrast sampled across **both themes**, every quiz end to end, video embeds, the demo account journey, the admin portal, deployment under a GitHub Pages project subpath, content hygiene, and the theme switch itself.
 - **Free tier, 32 checks.** Page loads, dead links, content completeness, quiz randomisation and scoring, chatbot behaviour including out-of-scope refusal, login-free access, responsive layout at four widths, clean JavaScript console.
-- **Premium tier, 24 checks.** Registration validation and success, no password leakage into storage, login and logout, assessment scoring and level derivation, weak-area detection and recommendations, dashboard progress and quiz history accuracy, free-tier gating and premium access, admin login and CRUD across modules, questions and users, and confirmation that the guest experience is completely unchanged.
+- **Premium tier, 25 checks.** Registration validation and success, no password leakage into storage, login and logout, assessment scoring and level derivation, weak-area detection and recommendations, dashboard progress and quiz history accuracy, free-tier gating and premium access, admin login and CRUD across modules, questions and users, and confirmation that the guest experience is completely unchanged.
 
 **All 56 passed on the final build.**
 

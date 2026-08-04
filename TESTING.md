@@ -4,7 +4,12 @@ Group 4 · Section S3102 · MO-IT200D1 Capstone 1
 
 Fill in the **Result**, **Tester**, and **Date** columns as you work through each case. The **Auto** column marks cases already verified by the headless Chromium script during development; those still deserve a manual confirmation, but they are not where your time is best spent.
 
-**Automated baseline: 81 of 81 checks passed on the final build.**
+**Automated baseline: 88 of 88 checks passed on the final build**, across three suites: 32 free-tier, 25 premium, and 31 deep-QA including light and dark contrast.
+
+A further 32-case scope suite exercises the CyberWise assistant: 20 in-scope questions
+answered (including the misspellings people actually type, such as *pishing*, *smshing*,
+and *vising*) and 12 off-topic questions refused, including traps that use the word
+*help* to smuggle in an unrelated request.
 
 | Suite | Checks | Covers |
 |---|---|---|

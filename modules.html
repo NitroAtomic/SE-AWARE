@@ -8,12 +8,13 @@
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <meta name="theme-color" content="#0B2545">
+  <script src="js/theme.js?v=6"></script>
   <meta property="og:title" content="Learning Modules | SE Aware">
   <meta property="og:description" content="Six free learning modules on phishing, spear phishing, smishing, vishing, pretexting, and safe practices for remote workers.">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="css/style.css?v=5">
+  <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body data-page="modules" data-root="">
   <a class="se-skip-link" href="#main">Skip to main content</a>
@@ -35,6 +36,13 @@
           <li class="nav-item"><a class="nav-link" data-nav="safe" href="modules/safe-practices.html">Safe Practices</a></li>
           <li class="nav-item"><a class="nav-link" data-nav="about" href="about.html">About</a></li>
           <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+          <li class="nav-item">
+            <button type="button" class="se-theme-toggle" data-theme-toggle
+                    aria-pressed="false" aria-label="Switch to dark theme" title="Switch to dark theme">
+              <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
+              <span class="d-lg-none ms-2" data-theme-label>Dark theme</span>
+            </button>
+          </li>
         </ul>
         <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
           <!-- Populated by js/account.js: guest sees Go Premium + Log in,
@@ -72,7 +80,7 @@
                     <p class="text-body-secondary mb-0" style="font-size:.9rem;">A fake message that impersonates a trusted organisation to steal your credentials, your money, or your access.</p>
                   </div>
                 </div>
-                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-navy);">What you will learn</p>
+                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-heading);">What you will learn</p>
                 <ul style="font-size:.93rem;">
                     <li>How email phishing, fake login pages, and QR phishing differ</li>
                     <li>The six signals that expose a phishing message</li>
@@ -99,7 +107,7 @@
                     <p class="text-body-secondary mb-0" style="font-size:.9rem;">Phishing written specifically for you, using real details gathered from your public professional footprint.</p>
                   </div>
                 </div>
-                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-navy);">What you will learn</p>
+                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-heading);">What you will learn</p>
                 <ul style="font-size:.93rem;">
                     <li>How attackers research a freelancer before contacting them</li>
                     <li>Why accurate personal details are not proof of legitimacy</li>
@@ -126,7 +134,7 @@
                     <p class="text-body-secondary mb-0" style="font-size:.9rem;">Phishing delivered by SMS, where a short message and a shortened link do the work of a whole fake website.</p>
                   </div>
                 </div>
-                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-navy);">What you will learn</p>
+                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-heading);">What you will learn</p>
                 <ul style="font-size:.93rem;">
                     <li>The three lures behind almost every scam text</li>
                     <li>Why SMS sender IDs and short links cannot be trusted</li>
@@ -153,7 +161,7 @@
                     <p class="text-body-secondary mb-0" style="font-size:.9rem;">A scam phone call that uses live pressure to make you act before you have time to verify anything.</p>
                   </div>
                 </div>
-                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-navy);">What you will learn</p>
+                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-heading);">What you will learn</p>
                 <ul style="font-size:.93rem;">
                     <li>Why a live voice defeats caution that email would not</li>
                     <li>The OTP rule that stops nearly every vishing call</li>
@@ -180,7 +188,7 @@
                     <p class="text-body-secondary mb-0" style="font-size:.9rem;">A believable cover story built patiently over several messages before any request is ever made.</p>
                   </div>
                 </div>
-                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-navy);">What you will learn</p>
+                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-heading);">What you will learn</p>
                 <ul style="font-size:.93rem;">
                     <li>How a pretext is constructed across multiple messages</li>
                     <li>Why changed bank details are always a stop signal</li>
@@ -207,7 +215,7 @@
                     <p class="text-body-secondary mb-0" style="font-size:.9rem;">The everyday habits that make every attack in this platform harder to pull off against you.</p>
                   </div>
                 </div>
-                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-navy);">What you will learn</p>
+                <p class="fw-semibold mt-3 mb-2" style="font-size:.9rem;color:var(--se-heading);">What you will learn</p>
                 <ul style="font-size:.93rem;">
                     <li>Which security habits give the biggest return first</li>
                     <li>How to secure a home network and separate work devices</li>
@@ -270,8 +278,8 @@
           <h2 class="h5">Important</h2>
           <div class="se-footer-disclaimer">
             This platform is for <strong>education and awareness only</strong>. It does not scan emails,
-            links, QR codes, or SMS messages, it does not detect threats in real time, and the AI assistant
-            is not a substitute for professional cybersecurity consultation or incident response.
+            links, QR codes, or SMS messages, it does not detect threats in real time, and CyberWise, the
+            AI assistant, is not a substitute for professional cybersecurity consultation or incident response.
           </div>
         </div>
       </div>
@@ -290,9 +298,9 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/main.js?v=5"></script>
-  <script src="js/store.js?v=5"></script>
-  <script src="js/account.js?v=5"></script>
-  <script src="js/chatbot.js?v=5"></script>
+  <script src="js/main.js?v=6"></script>
+  <script src="js/store.js?v=6"></script>
+  <script src="js/account.js?v=6"></script>
+  <script src="js/chatbot.js?v=6"></script>
 </body>
 </html>

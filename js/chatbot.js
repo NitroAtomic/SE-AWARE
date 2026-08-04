@@ -139,14 +139,37 @@
     "<p>I can only help with social engineering awareness for remote workers: phishing, spear phishing, smishing, vishing, pretexting, and safe remote-work practices.</p>" +
     "<p>Try asking something like <em>“How do I know if an email is phishing?”</em> or <em>“Someone called asking for my OTP, what do I do?”</em></p>";
 
+  /* The opening message doubles as the scope statement. Showing the six
+     topics up front sets the boundary before anyone hits the refusal, which
+     is friendlier than letting them discover it by being turned away. */
+  var TOPICS = [
+    { icon: "bi-envelope-fill", name: "Phishing", note: "email, fake logins, QR" },
+    { icon: "bi-telephone-fill", name: "Vishing", note: "" },
+    { icon: "bi-bullseye", name: "Spear phishing", note: "" },
+    { icon: "bi-incognito", name: "Pretexting", note: "" },
+    { icon: "bi-chat-dots-fill", name: "Smishing", note: "" },
+    { icon: "bi-laptop", name: "Safe practices", note: "for remote workers" }
+  ];
+
   var GREETING =
-    "<p>Hi. I'm the platform's learning assistant. I can explain how social engineering attacks work and what to do when you receive one.</p>" +
-    "<p>What would you like to know?</p>";
+    "<p class=\"se-greet-title\">Hi, I'm CyberWise.</p>" +
+    "<p>I can help you understand and avoid social engineering attacks. Here are the topics I cover:</p>" +
+    "<ul class=\"se-topic-grid\">" +
+    TOPICS.map(function (t) {
+      return "<li><span class=\"se-topic-icon\"><i class=\"bi " + t.icon + "\" aria-hidden=\"true\"></i></span>" +
+        "<span><strong>" + t.name + "</strong>" +
+        (t.note ? "<small>" + t.note + "</small>" : "") + "</span></li>";
+    }).join("") +
+    "</ul>" +
+    "<p class=\"mb-0\">What would you like to learn today?</p>";
 
   var SUGGESTIONS = [
-    "How do I know if an email is phishing?",
-    "Someone called asking for my OTP. What do I do?",
-    "What should I do to stay safe while working remotely?"
+    { icon: "bi-envelope-fill", text: "How do I know if an email is phishing?" },
+    { icon: "bi-telephone-fill", text: "Someone called asking for my OTP. What should I do?" },
+    { icon: "bi-chat-dots-fill", text: "How can I identify SMS scams?" },
+    { icon: "bi-bullseye", text: "What is spear phishing?" },
+    { icon: "bi-incognito", text: "What is pretexting?" },
+    { icon: "bi-laptop", text: "How do I stay safe while working remotely?" }
   ];
 
 
@@ -352,20 +375,20 @@
     wrap.className = "se-chat-widget";
     wrap.innerHTML = [
       '<button type="button" class="se-chat-fab" id="seChatFab"',
-      '        aria-label="Open the cybersecurity learning assistant"',
+      '        aria-label="Open CyberWise, the social engineering awareness assistant"',
       '        aria-expanded="false" aria-controls="seChatPanel">',
       '  <img class="se-chat-fab-logo" src="' + LOGO_SRC + '" alt="" width="38" height="38">',
       '  <i class="bi bi-x-lg" aria-hidden="true"></i>',
       "</button>",
       '<section class="se-chat-panel" id="seChatPanel" role="dialog"',
-      '         aria-label="Cybersecurity learning assistant" aria-modal="false">',
+      '         aria-label="CyberWise, social engineering awareness assistant" aria-modal="false">',
       '  <header class="se-chat-head">',
       '    <span class="se-chat-avatar"><img src="' + LOGO_SRC + '" alt="" width="28" height="28"></span>',
       "    <div>",
-      '      <div class="se-chat-title">Learning Assistant</div>',
-      '      <div class="se-chat-sub">Social engineering awareness</div>',
+      '      <div class="se-chat-title">Cyber<span>Wise</span></div>',
+      '      <div class="se-chat-sub">Your social engineering awareness assistant</div>',
       "    </div>",
-      '    <button type="button" class="se-chat-close" id="seChatClose" aria-label="Close the assistant">',
+      '    <button type="button" class="se-chat-close" id="seChatClose" aria-label="Close CyberWise">',
       '      <i class="bi bi-x-lg" aria-hidden="true"></i>',
       "    </button>",
       "  </header>",
@@ -373,12 +396,12 @@
       '  <form class="se-chat-form" id="seChatForm" autocomplete="off">',
       '    <label class="visually-hidden" for="seChatInput">Type your question</label>',
       '    <input type="text" class="se-chat-input" id="seChatInput"',
-      '           placeholder="Ask about phishing, vishing, OTPs..." maxlength="500">',
+      '           placeholder="Ask about phishing, smishing, vishing, or remote work safety..." maxlength="500">',
       '    <button type="submit" class="se-chat-send" id="seChatSend" aria-label="Send message">',
       '      <i class="bi bi-send-fill" aria-hidden="true"></i>',
       "    </button>",
       "  </form>",
-      '  <p class="se-chat-disclaimer">Educational guidance only. Not a substitute for professional incident response.</p>',
+      '  <p class="se-chat-disclaimer"><i class="bi bi-shield-check" aria-hidden="true"></i> Educational guidance only. CyberWise provides awareness training and does not replace professional incident response.</p>',
       "</section>"
     ].join("\n");
 
@@ -426,17 +449,29 @@
     return row;
   }
 
+  /* One timestamp under the opening message, matching the agreed design.
+     Later replies are not stamped: in a session this short it would be the
+     same minute repeated down the whole transcript. */
+  function addTimestamp() {
+    var p = document.createElement("p");
+    p.className = "se-chat-time";
+    p.textContent = new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    els.log.appendChild(p);
+  }
+
   function addSuggestions() {
     var box = document.createElement("div");
     box.className = "se-suggestions";
-    SUGGESTIONS.forEach(function (text) {
+    SUGGESTIONS.forEach(function (item) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "se-suggestion";
-      b.textContent = text;
+      b.innerHTML =
+        '<span class="se-topic-icon"><i class="bi ' + item.icon + '" aria-hidden="true"></i></span>' +
+        "<span>" + window.SEUtil.escapeHtml(item.text) + "</span>";
       b.addEventListener("click", function () {
         box.remove();
-        submitMessage(text);
+        submitMessage(item.text);
       });
       box.appendChild(b);
     });
@@ -447,7 +482,7 @@
   function showTyping() {
     var div = document.createElement("div");
     div.className = "se-msg bot";
-    div.setAttribute("aria-label", "Assistant is typing");
+    div.setAttribute("aria-label", "CyberWise is typing");
     div.innerHTML = '<div class="se-typing"><span></span><span></span><span></span></div>';
     var row = withAvatar(div);
     row.id = "seTyping";
@@ -591,11 +626,16 @@
     els.panel.classList.add("is-open");
     els.fab.classList.add("is-open");
     els.fab.setAttribute("aria-expanded", "true");
-    els.fab.setAttribute("aria-label", "Close the cybersecurity learning assistant");
+    els.fab.setAttribute("aria-label", "Close CyberWise, the social engineering awareness assistant");
 
     if (!els.log.children.length) {
       addMessage(GREETING, "bot");
+      addTimestamp();
       addSuggestions();
+      /* The opening block is taller than the panel. Every later message wants
+         the newest text in view, but on first open the visitor has read
+         nothing yet, so start them at the top of the greeting. */
+      els.log.scrollTop = 0;
     }
     setTimeout(function () { els.input.focus(); }, 120);
   }
@@ -605,7 +645,7 @@
     els.panel.classList.remove("is-open");
     els.fab.classList.remove("is-open");
     els.fab.setAttribute("aria-expanded", "false");
-    els.fab.setAttribute("aria-label", "Open the cybersecurity learning assistant");
+    els.fab.setAttribute("aria-label", "Open CyberWise, the social engineering awareness assistant");
     els.fab.focus();
   }
 
