@@ -1,10 +1,10 @@
-# Testing Matrix — SE Aware
+# Testing Matrix for SE Aware
 
 Group 4 · Section S3102 · MO-IT200D1 Capstone 1
 
 Fill in the **Result**, **Tester**, and **Date** columns as you work through each case. The **Auto** column marks cases already verified by the headless Chromium script during development; those still deserve a manual confirmation, but they are not where your time is best spent.
 
-**Automated baseline: 56 of 56 checks passed on the final build** — 32 free-tier, 24 premium-tier.
+**Automated baseline: 56 of 56 checks passed on the final build**, 32 free-tier, 24 premium-tier.
 
 ---
 
@@ -29,7 +29,7 @@ Fill in the **Result**, **Tester**, and **Date** columns as you work through eac
 
 ---
 
-## 2. Compatibility testing (CT) — manual, on real devices
+## 2. Compatibility testing (CT), manual, on real devices
 
 | ID | Environment | What is tested | Expected result | Result | Tester | Date |
 |---|---|---|---|---|---|---|
@@ -41,11 +41,11 @@ Fill in the **Result**, **Tester**, and **Date** columns as you work through eac
 | CT-06 | iOS Safari | Repeat CT-05 on an iPhone | Mobile layout correct; touch targets usable | | | |
 | CT-07 | Tablet | Medium screen between breakpoints | Layout adapts; content readable; features work | | | |
 
-Automated viewport checks passed at **360, 768, 1024, and 1440px** with no horizontal overflow on any page. That establishes the layout is sound, but it does not substitute for a real Safari or a real touchscreen — assign CT-01 through CT-07 to team members with different devices.
+Automated viewport checks passed at **360, 768, 1024, and 1440px** with no horizontal overflow on any page. That establishes the layout is sound, but it does not substitute for a real Safari or a real touchscreen, assign CT-01 through CT-07 to team members with different devices.
 
 ---
 
-## 2b. Additional feature testing — premium tier (Table 4b)
+## 2b. Additional feature testing, premium tier (Table 4b)
 
 Run these against the premium prototype. Register first, then work down the list; everything lives in one browser tab.
 
@@ -134,4 +134,4 @@ Run these against the **live n8n + Gemini workflow** once `N8N_WEBHOOK_URL` is c
 | 4 | | | | | | |
 | 5 | | | | | | |
 
-Severity guide — **Critical**: blocks a core function or loses data. **Major**: a feature works incorrectly. **Minor**: cosmetic or inconvenient. **Trivial**: typo or spacing.
+Severity guide, **Critical**: blocks a core function or loses data. **Major**: a feature works incorrectly. **Minor**: cosmetic or inconvenient. **Trivial**: typo or spacing.

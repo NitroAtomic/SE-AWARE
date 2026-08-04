@@ -1,5 +1,5 @@
 /* ==========================================================================
-   main.js — shared UI behaviour across every page
+   main.js: shared UI behaviour across every page
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------

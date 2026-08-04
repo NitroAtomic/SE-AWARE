@@ -1,5 +1,5 @@
 /* ==========================================================================
-   admin.js — administrator panel prototype
+   admin.js: administrator panel prototype
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
@@ -79,7 +79,7 @@
       '  <div class="text-center mb-4">' +
       '    <div class="se-lock-icon"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></div>' +
       '    <h2 class="h5 mt-3 mb-1">Administrator sign-in</h2>' +
-      '    <p class="text-body-secondary mb-0" style="font-size:.9rem;">Restricted portal &mdash; content and ' +
+      '    <p class="text-body-secondary mb-0" style="font-size:.9rem;">Restricted portal for content and ' +
       "      subscription management.</p>" +
       "  </div>" +
       '  <div class="se-form-alert"></div>' +
@@ -304,8 +304,8 @@
         module: window.QUIZ_DATA[slug].title,
         slug: slug,
         type: "knowledge",
-        text: "New question — edit this text",
-        answer: "—"
+        text: "New question. Edit this text",
+        answer: "Not set"
       });
       renderQuestions();
     });

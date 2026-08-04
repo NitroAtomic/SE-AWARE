@@ -1,5 +1,5 @@
 /* ==========================================================================
-   account.js — account state in the navigation bar, premium gating, and
+   account.js: account state in the navigation bar, premium gating, and
    the "mark module complete" control
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
@@ -83,7 +83,7 @@
     host.innerHTML =
       '<div class="se-proto-badge">' +
       '  <i class="bi bi-cone-striped" aria-hidden="true"></i>' +
-      "  <div><strong>Prototype &mdash; session data only.</strong> " +
+      "  <div><strong>Prototype, session data only.</strong> " +
       "  This part of the platform demonstrates the premium user journey. Nothing is sent to a server, no password is " +
       "  stored, and everything here disappears when you close this browser tab.</div>" +
       "</div>";

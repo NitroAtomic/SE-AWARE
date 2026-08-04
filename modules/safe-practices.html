@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Safe Practices for Remote Workers — SE Aware</title>
+  <title>Safe Practices for Remote Workers | SE Aware</title>
   <meta name="description" content="Practical cybersecurity habits for remote workers: MFA, password managers, second-channel verification, home network security, device separation, and incident reporting.">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0B2545">
+  <meta property="og:title" content="Safe Practices for Remote Workers | SE Aware">
+  <meta property="og:description" content="Practical cybersecurity habits for remote workers: MFA, password managers, second-channel verification, home network security, device separation, and incident reporting.">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/style.css">
@@ -15,7 +21,7 @@
   <nav class="navbar navbar-expand-lg se-navbar sticky-top">
     <div class="container">
       <a class="navbar-brand" href="../index.html">
-        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <img class="se-brand-mark" src="../assets/img/logo-mark.png" alt="" width="38" height="38">
         <span>SE Aware<small>Stay Sharp Online</small></span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
@@ -50,10 +56,10 @@
         </nav>
         <h1><i class="bi bi-shield-check me-2" aria-hidden="true"></i>Safe Practices for Remote Workers</h1>
         <p>The everyday habits that make every attack on this platform harder to pull off against you. Work down the
-          list in order &mdash; it is arranged by how much protection each habit buys for the effort it costs.</p>
+          list in order. It is arranged by how much protection each habit buys for the effort it costs.</p>
         <div class="se-meta">
           <span><i class="bi bi-clock" aria-hidden="true"></i> 8 min read</span>
-          <span><i class="bi bi-journal-text" aria-hidden="true"></i> Reference guide &mdash; no quiz</span>
+          <span><i class="bi bi-journal-text" aria-hidden="true"></i> Reference guide, no quiz</span>
           <span><i class="bi bi-unlock-fill" aria-hidden="true"></i> No account needed</span>
         </div>
       </div>
@@ -64,7 +70,7 @@
         <div class="row g-4 g-lg-5">
           <div class="col-lg-8">
             <div class="se-callout" style="max-width:none;margin-top:0;">
-              <strong>If you only do two things,</strong> turn on multi-factor authentication for your email account and
+              <strong>If you only do two things</strong> turn on multi-factor authentication for your email account and
               start using a password manager. Between them those two habits neutralise the majority of what a stolen
               password can be used for.
             </div>
@@ -74,7 +80,7 @@
               <h3 class="accordion-header" id="head-mfa">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                         data-bs-target="#body-mfa" aria-expanded="true" aria-controls="body-mfa">
-                  <i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>1. Turn on multi-factor authentication — email first
+                  <i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>1. Turn on multi-factor authentication: email first
                 </button>
               </h3>
               <div id="body-mfa" class="accordion-collapse collapse show" aria-labelledby="head-mfa">
@@ -84,16 +90,16 @@
 own is not enough to get into your account. After the password, the service asks for a second thing: a code from an app,
 a tap on your phone, or a physical key.</p>
 <p><strong>Start with your email account, not your bank.</strong> This surprises people, but your email is the master key
-to everything else you own &mdash; every &ldquo;forgot password&rdquo; link on every other service lands there. An
+to everything else you own, every &ldquo;forgot password&rdquo; link on every other service lands there. An
 attacker who controls your email can reset your bank, your marketplace accounts, and your client portals at leisure.
 Secure it first, then work outward.</p>
 <p>Not all second factors are equal. From weakest to strongest:</p>
 <ul>
-  <li><strong>SMS codes</strong> &mdash; far better than nothing, but vulnerable to SIM-swap fraud and to the vishing
+  <li><strong>SMS codes</strong>, far better than nothing, but vulnerable to SIM-swap fraud and to the vishing
     calls covered in this platform's Vishing module.</li>
-  <li><strong>Authenticator apps</strong> (Google Authenticator, Microsoft Authenticator, Authy) &mdash; codes are
+  <li><strong>Authenticator apps</strong> (Google Authenticator, Microsoft Authenticator, Authy). Codes are
     generated on your device and never travel over the network. This is the right default for most people.</li>
-  <li><strong>Hardware security keys</strong> (YubiKey and similar) &mdash; the strongest option, and effectively immune
+  <li><strong>Hardware security keys</strong> (YubiKey and similar), the strongest option, and effectively immune
     to phishing because the key checks the website's real address before it responds.</li>
 </ul>
 <div class="se-callout"><strong>Before you finish setup, save your backup codes offline.</strong> Print them, or write
@@ -113,7 +119,7 @@ permanently.</div>
               <div id="body-passwords" class="accordion-collapse collapse" aria-labelledby="head-passwords">
                 <div class="accordion-body se-prose">
 
-<p>The single most damaging password habit is not weakness &mdash; it is <strong>reuse</strong>. When any site you have
+<p>The single most damaging password habit is not weakness. It is <strong>reuse</strong>. When any site you have
 an account with is breached, attackers take the leaked email-and-password pairs and try them automatically across
 hundreds of other services. This is called credential stuffing, and it is why one forgotten forum account from 2016 can
 cost you your email today.</p>
@@ -149,10 +155,10 @@ arrived on.</strong></p>
 credentials gets confirmed by email in the thread you already had. A call asking you to approve something gets confirmed
 by hanging up and calling back on a number you already had.</p>
 <p>The word <em>already</em> is doing the real work. Use contact details you had <strong>before</strong> the request
-arrived &mdash; from your contacts list, an old invoice, or the company's official website. Never the number in the new
+arrived, from your contacts list, an old invoice, or the company's official website. Never the number in the new
 email's signature, and never the number the caller reads out to you.</p>
 <ul class="se-flags">
-  <li>Any change to bank details, payee names, or remittance addresses &mdash; without exception, no matter how well you
+  <li>Any change to bank details, payee names, or remittance addresses, without exception, no matter how well you
     know the sender</li>
   <li>Any request for a password, PIN, one-time code, or account access</li>
   <li>Any urgent payment, especially one framed as confidential or as a favour</li>
@@ -177,7 +183,7 @@ one. If someone becomes irritated that you are checking, that reaction is itself
 <p>Working from home means your router is now part of your professional security, and most home routers ship in a state
 nobody ever revisits.</p>
 <ul>
-  <li><strong>Change the router's admin password.</strong> Not the Wi-Fi password &mdash; the separate one that protects
+  <li><strong>Change the router's admin password.</strong> Not the Wi-Fi password, the separate one that protects
     the router's settings page. Factory defaults like <code>admin/admin</code> are published online for every model.</li>
   <li><strong>Use WPA3 if your router supports it, WPA2 otherwise.</strong> If your network is still on WEP or has no
     password, fix that today.</li>
@@ -188,7 +194,7 @@ nobody ever revisits.</p>
   <li><strong>Put smart devices on a guest network.</strong> Smart TVs, cameras, and plugs are rarely well maintained.
     Keeping them off the network your work laptop uses limits the damage if one is compromised.</li>
 </ul>
-<p>On public Wi-Fi &mdash; cafés, airports, coworking spaces &mdash; assume the network is hostile. Use a reputable VPN
+<p>On public Wi-Fi (cafés, airports, coworking spaces), assume the network is hostile. Use a reputable VPN
 or your phone's mobile hotspot for anything involving client data, and never dismiss a browser certificate warning to get
 online faster.</p>
 
@@ -214,7 +220,7 @@ ladder, from best to still-worthwhile:</p>
     profiles, and saved logins genuinely separated.</li>
   <li><strong>At minimum, a separate browser profile</strong> for work, with its own extensions and saved sessions.</li>
 </ol>
-<p>Whichever level you reach, keep two rules. First, <strong>nobody else uses your work profile</strong> &mdash; a family
+<p>Whichever level you reach, keep two rules. First, <strong>nobody else uses your work profile</strong>, a family
 member installing a game or clicking a link is a real and common route to compromise. Second, <strong>keep client data
 off shared computers entirely</strong>, including the family desktop.</p>
 <p>Also: enable full-disk encryption (BitLocker on Windows, FileVault on macOS), set a short auto-lock timeout, and turn
@@ -233,7 +239,7 @@ on remote-wipe if your device supports it. A stolen unencrypted laptop hands ove
               <div id="body-clientdata" class="accordion-collapse collapse" aria-labelledby="head-clientdata">
                 <div class="accordion-body se-prose">
 
-<p>As a freelancer or virtual assistant you are often trusted with more than your job title suggests &mdash; inboxes,
+<p>As a freelancer or virtual assistant you are often trusted with more than your job title suggests, inboxes,
 customer lists, financial records, and admin credentials. That trust makes you a target, and it also makes you
 accountable.</p>
 <ul>
@@ -244,7 +250,7 @@ accountable.</p>
     own permission system, or use a password manager's secure sharing feature.</li>
   <li><strong>Ask for delegated access rather than shared logins.</strong> Being added as a user on their account is
     safer for both of you than being handed the owner's password.</li>
-  <li><strong>Use the client's own tools where possible</strong> &mdash; their Drive, their project system &mdash; rather
+  <li><strong>Use the client's own tools where possible</strong> (their Drive, their project system) rather
     than copying data into your personal accounts.</li>
   <li><strong>Report incidents immediately.</strong> Clients forgive fast disclosure far more readily than they forgive
     discovering it themselves weeks later.</li>
@@ -264,10 +270,10 @@ accountable.</p>
                 <div class="accordion-body se-prose">
 
 <p>Updates are unglamorous and they matter. A large share of successful intrusions exploit vulnerabilities that were
-patched months or years earlier &mdash; the fix existed and simply was not installed.</p>
+patched months or years earlier: the fix existed and simply was not installed.</p>
 <ul>
   <li>Turn on automatic updates for your operating system and restart when asked, rather than postponing for weeks.</li>
-  <li>Keep your browser current &mdash; it is the single most exposed piece of software you run.</li>
+  <li>Keep your browser current. It is the single most exposed piece of software you run.</li>
   <li>Audit browser extensions periodically and remove anything you no longer use. Extensions can read everything on the
     pages you visit, and popular ones are sometimes sold to new owners with different intentions.</li>
   <li>Update your phone too. It holds your authenticator app and your one-time codes.</li>
@@ -295,19 +301,19 @@ hour that matters most.</p>
   <li><strong>Disconnect the device from the internet</strong> if you installed anything or granted remote access.</li>
   <li><strong>Change the affected password from a different device</strong>, then revoke all active sessions in that
     account's security settings.</li>
-  <li><strong>Call your bank immediately if money is involved</strong> &mdash; recall is sometimes possible within the
+  <li><strong>Call your bank immediately if money is involved</strong>. Recall is sometimes possible within the
     first hour and rarely after. Ask for a fraud reference number.</li>
   <li><strong>Tell your client or employer the same day.</strong> Early beats tidy, every time.</li>
-  <li><strong>Preserve evidence</strong> &mdash; screenshots, full email headers, phone numbers, transaction references.
+  <li><strong>Preserve evidence</strong>: screenshots, full email headers, phone numbers, transaction references.
     Do not delete the message until it has been reported.</li>
 </ol>
 <p><strong>Where to report in the Philippines:</strong></p>
 <ul>
-  <li><strong>PNP Anti-Cybercrime Group</strong> &mdash; for cybercrime complaints, including online fraud</li>
-  <li><strong>NBI Cybercrime Division</strong> &mdash; for investigation of cyber-related offences</li>
-  <li><strong>Your bank's official fraud hotline</strong> &mdash; the number printed on your card or statement</li>
-  <li><strong>The National Privacy Commission</strong> &mdash; if personal data belonging to others was exposed</li>
-  <li><strong>The impersonated platform</strong> &mdash; Google, Meta, and most marketplaces have dedicated phishing
+  <li><strong>PNP Anti-Cybercrime Group</strong>, for cybercrime complaints, including online fraud</li>
+  <li><strong>NBI Cybercrime Division</strong>, for investigation of cyber-related offences</li>
+  <li><strong>Your bank's official fraud hotline</strong>, the number printed on your card or statement</li>
+  <li><strong>The National Privacy Commission</strong>, if personal data belonging to others was exposed</li>
+  <li><strong>The impersonated platform</strong>, Google, Meta, and most marketplaces have dedicated phishing
     report channels</li>
 </ul>
 <p>Finally, tell the people around you. Scam campaigns run in waves through the same networks, and a short warning to
@@ -442,7 +448,7 @@ your family, your colleagues, and your client's other contractors is one of the 
       <div class="se-footer-note">
         <div class="row gy-2 align-items-center">
           <div class="col-md-8">
-            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            &copy; <span data-year>2026</span> Group 4, Section S3102. A Capstone Project of
             Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
           </div>
           <div class="col-md-4 text-md-end">
@@ -459,12 +465,12 @@ your family, your colleagues, and your client's other contractors is one of the 
   <script src="../js/account.js"></script>
   <script>
     /* ====================================================================
-       EDIT ME — instructional video for this module
+       EDIT ME: instructional video for this module
        Paste the YouTube video ID between the quotes and the embed renders
        automatically. Leave it empty to keep the placeholder card.
        ==================================================================== */
     var MODULE_VIDEO_ID = "";
-    var MODULE_VIDEO_TITLE = "Safe Practices for Remote Workers — instructional video";
+    var MODULE_VIDEO_TITLE = "Safe Practices for Remote Workers instructional video";
 
     (function () {
       var slot = document.getElementById("seVideoSlot");

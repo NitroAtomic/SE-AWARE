@@ -1,8 +1,10 @@
-# SE Aware — Web-Based Social Engineering Awareness Platform for Remote Workers
+# SE Aware
+
+### Web-Based Social Engineering Awareness Platform for Remote Workers
 
 A free, publicly accessible, login-free educational website that teaches remote workers, freelancers, and virtual assistants how to recognise and respond to social engineering attacks.
 
-**Capstone 1 project (MO-IT200D1) — Group 4, Section S3102**
+**Capstone 1 project (MO-IT200D1) · Group 4, Section S3102**
 Mapúa Malayan Digital College · BS Information Technology, major in Network and Cybersecurity
 
 | | |
@@ -16,29 +18,29 @@ Mapúa Malayan Digital College · BS Information Technology, major in Network an
 
 ## What this build covers
 
-This repository implements the **free tier** of the documented system in full — every requirement from FR-01 through FR-08, and every non-functional requirement in Chapter III.
+This repository implements the **free tier** of the documented system in full, every requirement from FR-01 through FR-08, and every non-functional requirement in Chapter III.
 
 | Req | Requirement | Status |
 |---|---|---|
 | FR-01 | Six learning modules (phishing, spear phishing, vishing, smishing, pretexting, safe practices) | Complete |
-| FR-02 | Plain-language reading materials in every module | Complete — 1,200–1,900 words per module |
+| FR-02 | Plain-language reading materials in every module | Complete, 1,200–1,900 words per module |
 | FR-03 | Embedded educational videos where available | Slot implemented; paste a video ID to activate |
-| FR-04 | Ten-question randomised quiz after every attack module | Complete — 15-question bank per module, 10 drawn |
-| FR-05 | Safe Practices section for remote workers | Complete — 8-topic accordion |
-| FR-06 | AI chatbot as a floating widget on every page | Complete — n8n + Gemini, with offline fallback |
-| FR-07 | Fully accessible without registration or login | Complete — no accounts, no database, no cookies |
-| FR-08 | Responsive across desktop, tablet, and mobile | Complete — verified at 360 / 768 / 1024 / 1440px |
+| FR-04 | Ten-question randomised quiz after every attack module | Complete, 15-question bank per module, 10 drawn |
+| FR-05 | Safe Practices section for remote workers | Complete, 8-topic accordion |
+| FR-06 | AI chatbot as a floating widget on every page | Complete, n8n + Gemini, with offline fallback |
+| FR-07 | Fully accessible without registration or login | Complete, no accounts, no database, no cookies |
+| FR-08 | Responsive across desktop, tablet, and mobile | Complete, verified at 360 / 768 / 1024 / 1440px |
 
 The **premium tier** is also implemented, as a **prototype**: every page in the sitemap and every actor in the use case diagram is demonstrable end to end, backed by session-only browser storage rather than a database.
 
 | Test ID | Feature | Status |
 |---|---|---|
-| AU-01/02/03 | Registration, login, logout | Prototype — client-side validation, no password stored |
-| AS-01/02 | Assessment score and awareness level | Complete — 15 questions, Beginner/Intermediate/Advanced |
+| AU-01/02/03 | Registration, login, logout | Prototype, client-side validation, no password stored |
+| AS-01/02 | Assessment score and awareness level | Complete, 15 questions, Beginner/Intermediate/Advanced |
 | DB-01/02 | Dashboard progress and quiz history | Complete |
-| RC-01, AIX-02 | Weak-area recommendations | Complete — topics below 60% drive module suggestions |
-| PA-01/02 | Free-tier restriction and premium access | Complete — role-based modules gated |
-| AD-01..04 | Admin login and CRUD | Prototype — mock sign-in, in-memory CRUD |
+| RC-01, AIX-02 | Weak-area recommendations | Complete, topics below 60% drive module suggestions |
+| PA-01/02 | Free-tier restriction and premium access | Complete, role-based modules gated |
+| AD-01..04 | Admin login and CRUD | Prototype, mock sign-in, in-memory CRUD |
 
 What the prototype deliberately does **not** do: no server, no database, no real authentication, no payment gateway. See *Known scope boundary* below for how to present this to the panel.
 
@@ -48,13 +50,13 @@ What the prototype deliberately does **not** do: no server, no database, no real
 
 Exactly as documented in Chapter III. No framework, no bundler, no build step, no npm dependencies.
 
-- **HTML5** — semantic markup, one file per page
-- **CSS3** — a single custom stylesheet (`css/style.css`) layered over Bootstrap
-- **Bootstrap 5.3.3** — via CDN, for the responsive grid, navbar, accordion, and utilities
-- **Bootstrap Icons 1.11.3** — via CDN
-- **Vanilla JavaScript (ES6)** — plain `<script>` tags, no modules, no transpilation
-- **n8n + Google Gemini API** — the chatbot's server-side workflow
-- **GitHub Pages** — static hosting target
+- **HTML5**, semantic markup, one file per page
+- **CSS3**, a single custom stylesheet (`css/style.css`) layered over Bootstrap
+- **Bootstrap 5.3.3**, via CDN, for the responsive grid, navbar, accordion, and utilities
+- **Bootstrap Icons 1.11.3**, via CDN
+- **Vanilla JavaScript (ES6)**, plain `<script>` tags, no modules, no transpilation
+- **n8n + Google Gemini API**, the chatbot's server-side workflow
+- **GitHub Pages**, static hosting target
 
 ---
 
@@ -111,7 +113,7 @@ Four things to set up in n8n:
 1. A **Webhook** node, method POST, mode "Using Respond to Webhook node".
 2. A **Gemini / HTTP Request** node carrying a system prompt that constrains the assistant to social engineering awareness for remote workers, plain language at roughly a Grade 8 reading level, no requests for personal information, and a polite redirect for anything out of scope.
 3. A **Respond to Webhook** node returning the JSON above.
-4. **CORS headers** allowing your GitHub Pages origin — without this the browser will block the response.
+4. **CORS headers** allowing your GitHub Pages origin, without this the browser will block the response.
 
 > **Security note.** The Gemini API key belongs in n8n, never in this repository. Client-side JavaScript is readable by anyone who opens DevTools, so a key placed here would be public the moment the site is deployed. This is why the browser talks to n8n rather than to Google directly.
 
@@ -127,7 +129,7 @@ var MODULE_VIDEO_ID = "";   // ← paste the YouTube video ID here
 
 Paste the ID (the part after `watch?v=`) and the responsive 16:9 embed renders automatically. Leave it empty and a placeholder card is shown instead, so a missing video never breaks the page layout.
 
-Videos are embedded via `youtube-nocookie.com` rather than self-hosted, keeping the site static and avoiding server load — as documented in the non-functional requirements.
+Videos are embedded via `youtube-nocookie.com` rather than self-hosted, keeping the site static and avoiding server load, as documented in the non-functional requirements.
 
 ---
 
@@ -145,10 +147,10 @@ Deploy early. Appendix A of the paper needs a live link, and having a stable URL
 ## File map
 
 ```
-├── index.html                  Home — hero, survey statistics, module grid
+├── index.html                  Home, hero, survey statistics, module grid
 ├── about.html                  What the platform is, and what it deliberately does not do
 ├── modules.html                Module index with "what you will learn" per module
-├── quiz.html                   Quiz engine — reads ?module= from the URL
+├── quiz.html                   Quiz engine, reads ?module= from the URL
 ├── results.html                Score, band, and per-question review
 │
 │   ── premium tier prototype ──
@@ -163,7 +165,7 @@ Deploy early. Appendix A of the paper needs a live link, and having a stable URL
 ├── modules/
 │   ├── phishing.html           Email phishing, fake login pages, QR phishing
 │   ├── spear-phishing.html     Targeted attacks built from public professional data
-│   ├── smishing.html           SMS phishing — package, prize, and bank lures
+│   ├── smishing.html           SMS phishing, package, prize, and bank lures
 │   ├── vishing.html            Voice phishing, OTP harvesting, AI voice cloning
 │   ├── pretexting.html         Invoice fraud, vendor onboarding, impersonation
 │   └── safe-practices.html     Eight-habit reference guide (no quiz, by design)
@@ -171,10 +173,10 @@ Deploy early. Appendix A of the paper needs a live link, and having a stable URL
 │   └── style.css               Design tokens, components, responsive rules
 ├── js/
 │   ├── main.js                 Nav state, footer year, shared helpers
-│   ├── quiz-data.js            75 authored questions — 15 per module
+│   ├── quiz-data.js            75 authored questions, 15 per module
 │   ├── quiz.js                 Randomisation, scoring, results rendering
 │   ├── chatbot.js              Floating assistant, n8n client, offline fallback
-│   ├── store.js                Prototype state layer — the API swap point
+│   ├── store.js                Prototype state layer, the API swap point
 │   ├── account.js              Nav account state, premium gating, progress control
 │   ├── auth.js                 Register, login, simulated upgrade
 │   ├── assessment-data.js      15 assessment questions across 6 topics
@@ -195,13 +197,13 @@ Each attack module has a bank of **15** questions, of which at least **6 are sce
 1. Shuffles the whole bank with a Fisher-Yates shuffle and takes the first 10.
 2. Shuffles the four answer options for each question independently, remapping the correct-answer index so the answer follows its option.
 
-Taking the same quiz twice therefore produces a different question set **and** a different option order — the behaviour test case FT-05 checks for. Automated runs during development showed 6–7 of 10 questions overlapping between consecutive attempts, with the order never identical.
+Taking the same quiz twice therefore produces a different question set **and** a different option order, the behaviour test case FT-05 checks for. Automated runs during development showed 6–7 of 10 questions overlapping between consecutive attempts, with the order never identical.
 
 ---
 
 ## Privacy by design
 
-There is no account system, no login, no database, and no analytics. Nothing you type into the chatbot is stored after the page closes. Quiz results are handed from `quiz.html` to `results.html` through `sessionStorage`, which belongs to a single browser tab and is discarded when that tab closes — the results never leave the device.
+There is no account system, no login, no database, and no analytics. Nothing you type into the chatbot is stored after the page closes. Quiz results are handed from `quiz.html` to `results.html` through `sessionStorage`, which belongs to a single browser tab and is discarded when that tab closes, the results never leave the device.
 
 This directly satisfies the paper's Security non-functional requirement and removes the data-privacy exposure that a user database would create.
 
@@ -216,13 +218,13 @@ The capstone paper contains a documented tension worth stating plainly:
 
 Both cannot describe the same build. The recommended wording fix for the paper: *"No personal data is collected from guest users; premium account data is limited to email, hashed password, and learning progress."*
 
-**How this repository resolves it.** The free tier is a real, complete implementation. The premium tier is a working prototype with session-only storage — enough to walk a panel through registration, assessment, dashboard, gating, and administration, without claiming a database that does not exist. Every premium page carries a visible "Prototype — session data only" badge, and `js/store.js` documents the exact API endpoint each function would call in a real build.
+**How this repository resolves it.** The free tier is a real, complete implementation. The premium tier is a working prototype with session-only storage, enough to walk a panel through registration, assessment, dashboard, gating, and administration, without claiming a database that does not exist. Every premium page carries a visible "Prototype, session data only" badge, and `js/store.js` documents the exact API endpoint each function would call in a real build.
 
-**What to say at the defence.** *"The free tier is fully implemented and deployed. The premium tier is implemented as a functional prototype with session-based persistence — the complete user journey works, and the storage layer is abstracted so that swapping in the Node.js and MySQL backend requires no changes to the interface. That backend implementation is Capstone 2 scope."*
+**What to say at the defence.** *"The free tier is fully implemented and deployed. The premium tier is implemented as a functional prototype with session-based persistence, the complete user journey works, and the storage layer is abstracted so that swapping in the Node.js and MySQL backend requires no changes to the interface. That backend implementation is Capstone 2 scope."*
 
 That is both accurate and stronger than either overclaiming a database or having nothing to show for the ERD.
 
-**One design decision worth defending explicitly.** No password is stored anywhere in this prototype — not in plain text, not hashed, not in memory. Registration validates format and discards the value. This is deliberate: a platform that spends six modules telling people to protect their credentials should not model client-side password storage, and a hashed password in `sessionStorage` would be security theatre rather than security. If a panelist asks why login accepts any password for a registered email, that is the answer.
+**One design decision worth defending explicitly.** No password is stored anywhere in this prototype, not in plain text, not hashed, not in memory. Registration validates format and discards the value. This is deliberate: a platform that spends six modules telling people to protect their credentials should not model client-side password storage, and a hashed password in `sessionStorage` would be security theatre rather than security. If a panelist asks why login accepts any password for a registered email, that is the answer.
 
 ---
 
@@ -230,8 +232,8 @@ That is both accurate and stronger than either overclaiming a database or having
 
 `TESTING.md` holds the test matrix. During development the build was verified automatically with headless Chromium across two suites:
 
-- **Free tier — 32 checks.** Page loads, dead links, content completeness, quiz randomisation and scoring, chatbot behaviour including out-of-scope refusal, login-free access, responsive layout at four widths, clean JavaScript console.
-- **Premium tier — 24 checks.** Registration validation and success, no password leakage into storage, login and logout, assessment scoring and level derivation, weak-area detection and recommendations, dashboard progress and quiz history accuracy, free-tier gating and premium access, admin login and CRUD across modules, questions and users, and confirmation that the guest experience is completely unchanged.
+- **Free tier, 32 checks.** Page loads, dead links, content completeness, quiz randomisation and scoring, chatbot behaviour including out-of-scope refusal, login-free access, responsive layout at four widths, clean JavaScript console.
+- **Premium tier, 24 checks.** Registration validation and success, no password leakage into storage, login and logout, assessment scoring and level derivation, weak-area detection and recommendations, dashboard progress and quiz history accuracy, free-tier gating and premium access, admin login and CRUD across modules, questions and users, and confirmation that the guest experience is completely unchanged.
 
 **All 56 passed on the final build.**
 
@@ -245,5 +247,5 @@ Per the paper's maintenance plan:
 
 - Audit reading modules and replace outdated or broken video links each term
 - Revise advisory text as social engineering tactics shift
-- Expand the chatbot's knowledge base — both the n8n system prompt and the `KB` array in `js/chatbot.js`
+- Expand the chatbot's knowledge base, both the n8n system prompt and the `KB` array in `js/chatbot.js`
 - Re-run the link check before each submission

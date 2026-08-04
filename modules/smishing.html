@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smishing — SE Aware</title>
+  <title>Smishing | SE Aware</title>
   <meta name="description" content="Phishing delivered by SMS, where a short message and a shortened link do the work of a whole fake website.">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0B2545">
+  <meta property="og:title" content="Smishing | SE Aware">
+  <meta property="og:description" content="Phishing delivered by SMS, where a short message and a shortened link do the work of a whole fake website.">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/style.css">
@@ -15,7 +21,7 @@
   <nav class="navbar navbar-expand-lg se-navbar sticky-top">
     <div class="container">
       <a class="navbar-brand" href="../index.html">
-        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <img class="se-brand-mark" src="../assets/img/logo-mark.png" alt="" width="38" height="38">
         <span>SE Aware<small>Stay Sharp Online</small></span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
@@ -76,7 +82,7 @@ spoof, under 160 characters, with a shortened link that reveals nothing about wh
 same decision with a fraction of the evidence, usually while doing something else.</p>
 
 <p>Among the 54 remote workers surveyed for this project, <strong>92.6% had already received a prize or raffle scam
-text</strong> &mdash; the highest figure for any attack type in the study. Smishing is not an emerging threat for
+text</strong>, the highest figure for any attack type in the study. Smishing is not an emerging threat for
 Filipino remote workers. It is a daily one.</p>
 
 
@@ -85,17 +91,17 @@ Filipino remote workers. It is a daily one.</p>
               matters more than memorising any single example.</p>
             <ol class="se-steps mt-4">
             <li><strong>Acquire the numbers.</strong> From breached databases, from public listings, or simply by dialling ranges. Numbers are cheap and no targeting is required.</li>
-            <li><strong>Spoof the sender.</strong> Alphanumeric sender IDs like &ldquo;BDO&rdquo; or &ldquo;LBC&rdquo; can be forged, and on many phones a spoofed message will thread itself into the same conversation as genuine ones from that brand &mdash; which is why sitting under real messages proves nothing.</li>
+            <li><strong>Spoof the sender.</strong> Alphanumeric sender IDs like &ldquo;BDO&rdquo; or &ldquo;LBC&rdquo; can be forged, and on many phones a spoofed message will thread itself into the same conversation as genuine ones from that brand, which is why sitting under real messages proves nothing.</li>
             <li><strong>Use one of three lures.</strong> A package needing a small fee, a prize you never entered for, or an urgent bank alert about a transaction you do not recognise. Between them these cover the overwhelming majority of scam texts.</li>
             <li><strong>Shorten the link.</strong> A shortener hides the destination completely, and on a small screen even an unshortened address is easy to misread.</li>
             <li><strong>Harvest on a mobile-optimised fake page.</strong> The landing page is built for phones and looks more convincing there than the same page would on a desktop.</li>
-            <li><strong>Take the small payment, or the credentials, or both.</strong> A ₱50 &ldquo;redelivery fee&rdquo; is low enough that many people pay without much thought &mdash; and now the attacker has full card details.</li>
+            <li><strong>Take the small payment, or the credentials, or both.</strong> A ₱50 &ldquo;redelivery fee&rdquo; is low enough that many people pay without much thought, and now the attacker has full card details.</li>
             </ol>
 
             <h2>A real-world example</h2>
-            <p>A package delivery smishing message. This is a reconstruction built for teaching &mdash; no real person or company is
+            <p>A package delivery smishing message. This is a reconstruction built for teaching. No real person or company is
               involved.</p>
-            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack &mdash; example only</span>
+            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack, example only</span>
 
         <div class="se-example">
           <div class="se-sms">
@@ -110,7 +116,7 @@ Filipino remote workers. It is a daily one.</p>
           </div>
         </div>
         <div class="se-callout">
-          <strong>What gives it away.</strong> The fee is deliberately small &mdash; ₱48 is below the threshold where
+          <strong>What gives it away.</strong> The fee is deliberately small: ₱48 is below the threshold where
           most people stop to think, and the real prize is the card details you enter to pay it. The tracking number
           looks authentic but is invented; you have no way to check it except through the link, which is the whole
           design. The domain <code>lbc-redelivery.info</code> is not <code>lbcexpress.com</code>. And there is the
@@ -123,12 +129,12 @@ Filipino remote workers. It is a daily one.</p>
             <p>Each of these is something you can actually observe in the message or the call, not a vague feeling.
               One flag is reason to slow down. Two is reason to stop.</p>
             <ul class="se-flags mt-4">
-            <li>A link is present in a message you did not expect. This alone is enough reason to stop &mdash; almost no legitimate service needs you to open a link from an unsolicited text.</li>
+            <li>A link is present in a message you did not expect. This alone is enough reason to stop. Almost no legitimate service needs you to open a link from an unsolicited text.</li>
             <li>A small fee is requested to release, redeliver, or clear something. The amount is kept low on purpose.</li>
             <li>You have won a prize, a raffle, or a cash reward in something you never entered.</li>
             <li>The message uses a link shortener, or a domain that resembles a real brand with extra words or hyphens attached.</li>
             <li>A deadline is measured in hours, and something will supposedly be lost if you miss it.</li>
-            <li>The sender is a mobile number rather than the brand's usual sender ID &mdash; or is a brand ID for a company you have no account with.</li>
+            <li>The sender is a mobile number rather than the brand's usual sender ID, or is a brand ID for a company you have no account with.</li>
             <li>A bank alert arrives about a transaction you do not recognise, and the message conveniently supplies a number to call. That number belongs to the attacker.</li>
             <li>A job offer arrives by text with high pay, no interview, and a request to message a Telegram or WhatsApp account.</li>
             <li>Anyone at all asks you to forward a verification code you just received. This is always an attack, with no exceptions.</li>
@@ -137,12 +143,12 @@ Filipino remote workers. It is a daily one.</p>
             <h2>What to do if it happens to you</h2>
             <p>Work through these in order. The first hour matters far more than getting every step perfect.</p>
             <ol class="se-todo mt-4">
-            <li><strong>Do not tap the link.</strong> If you have already tapped but entered nothing, close the page &mdash; you are almost certainly fine.</li>
+            <li><strong>Do not tap the link.</strong> If you have already tapped but entered nothing, close the page. You are almost certainly fine.</li>
             <li><strong>Verify through the app you already have.</strong> Open the courier's or bank's official app, or type their website address yourself. Every real notification will also be visible there.</li>
             <li><strong>Never call a number supplied inside the message.</strong> Use the number printed on the back of your card, on your statement, or on the company's official site.</li>
-            <li><strong>If you entered card details, call your bank immediately</strong> using their official hotline. Ask them to block the card and check for pending transactions. Speed matters &mdash; a fresh card number gets sold and used within hours.</li>
+            <li><strong>If you entered card details, call your bank immediately</strong> using their official hotline. Ask them to block the card and check for pending transactions. Speed matters: a fresh card number gets sold and used within hours.</li>
             <li><strong>If you entered a password or OTP, change that password now</strong> from a different device, revoke active sessions, and enable multi-factor authentication if it was not already on.</li>
-            <li><strong>Report and block.</strong> Forward the message to your network provider's spam reporting number, block the sender, then delete it. Do not reply &mdash; even to say no. A reply confirms your number is active and worth reselling.</li>
+            <li><strong>Report and block.</strong> Forward the message to your network provider's spam reporting number, block the sender, then delete it. Do not reply, even to say no. A reply confirms your number is active and worth reselling.</li>
             <li><strong>Tell the people around you.</strong> Smishing campaigns run in waves across a whole contact network. A five-second warning to family and colleagues is genuinely effective.</li>
             </ol>
 
@@ -184,7 +190,7 @@ receive is also waiting for you on the other side of that check.</p>
                 <div class="card-body">
                   <div class="se-card-icon"><i class="bi bi-telephone-fill" aria-hidden="true"></i></div>
                   <h3 class="h6 mb-1">Vishing</h3>
-                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Fake IT support, fake bank fraud teams, and OTP harvesting calls — plus AI voice cloning.</p>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Fake IT support, fake bank fraud teams, and OTP harvesting calls, plus AI voice cloning.</p>
                 </div>
               </a>
             </div>
@@ -193,7 +199,7 @@ receive is also waiting for you on the other side of that check.</p>
                 <div class="card-body">
                   <div class="se-card-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></div>
                   <h3 class="h6 mb-1">Pretexting</h3>
-                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Invoice fraud, fake vendor onboarding, and impersonated supervisors — the slow attacks that cost the most.</p>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Invoice fraud, fake vendor onboarding, and impersonated supervisors: the slow attacks that cost the most.</p>
                 </div>
               </a>
             </div>
@@ -285,7 +291,7 @@ receive is also waiting for you on the other side of that check.</p>
       <div class="se-footer-note">
         <div class="row gy-2 align-items-center">
           <div class="col-md-8">
-            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            &copy; <span data-year>2026</span> Group 4, Section S3102. A Capstone Project of
             Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
           </div>
           <div class="col-md-4 text-md-end">
@@ -302,13 +308,13 @@ receive is also waiting for you on the other side of that check.</p>
   <script src="../js/account.js"></script>
   <script>
     /* ====================================================================
-       EDIT ME — instructional video for this module
+       EDIT ME: instructional video for this module
        Paste the YouTube video ID between the quotes (the part after
        "watch?v=") and the embed will render automatically. Leave it empty
        and a placeholder card is shown instead, so the page never breaks.
        ==================================================================== */
     var MODULE_VIDEO_ID = "";
-    var MODULE_VIDEO_TITLE = "Smishing — instructional video";
+    var MODULE_VIDEO_TITLE = "Smishing instructional video";
 
     (function () {
       var slot = document.getElementById("seVideoSlot");

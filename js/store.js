@@ -1,9 +1,9 @@
 /* ==========================================================================
-   store.js — prototype state layer for the premium tier
+   store.js: prototype state layer for the premium tier
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
-   IMPORTANT — READ BEFORE THE DEFENCE
+   IMPORTANT: READ BEFORE THE DEFENCE
 
    This is a PROTOTYPE persistence layer, not a database. Everything lives in
    sessionStorage, which belongs to a single browser tab and is discarded the
@@ -17,8 +17,7 @@
    Capstone 2 work.
 
    Every function below is a deliberate SWAP POINT. Replacing the body of
-   each one with a fetch() call to a real API changes nothing in the UI —
-   no page or view script touches sessionStorage directly.
+   each one with a fetch() call to a real API changes nothing in the UI. No page or view script touches sessionStorage directly.
 
      getUser()              ->  GET  /api/me
      register()/login()     ->  POST /api/auth/register | /api/auth/login
@@ -71,7 +70,7 @@
   }
 
   /* ----------------------------------------------------------------------
-     Module catalogue — the single source of truth for module titles and
+     Module catalogue: the single source of truth for module titles and
      which of them are premium. The admin panel edits this copy.
      ---------------------------------------------------------------------- */
   var CATALOGUE = [
@@ -105,8 +104,7 @@
     },
 
     /**
-     * Prototype registration. No password is stored, hashed or otherwise —
-     * a real build would POST to the server and never hold one client-side.
+     * Prototype registration. No password is stored, hashed or otherwise, * a real build would POST to the server and never hold one client-side.
      */
     register: function (firstName, lastName, email) {
       var s = read();
@@ -268,7 +266,7 @@
 
     /* ==================== utility ==================== */
 
-    /** Wipe the whole prototype session — handy when rehearsing a demo. */
+    /** Wipe the whole prototype session, handy when rehearsing a demo. */
     reset: function () {
       try { sessionStorage.removeItem(KEY); } catch (err) { /* no-op */ }
     },
@@ -276,7 +274,7 @@
     /** Human-readable date for tables. */
     formatDate: function (iso) {
       var d = new Date(iso);
-      if (isNaN(d)) return "—";
+      if (isNaN(d)) return "Unknown";
       var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       var hh = d.getHours();
       var ampm = hh >= 12 ? "PM" : "AM";

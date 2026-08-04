@@ -1,5 +1,5 @@
 /* ==========================================================================
-   quiz.js — quiz engine and results renderer
+   quiz.js: quiz engine and results renderer
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
@@ -229,7 +229,7 @@
 
     // If someone is signed in, record the attempt so it appears in their
     // quiz history and marks the module complete on the dashboard (DB-01,
-    // DB-02). Guests are unaffected — nothing is recorded for them.
+    // DB-02). Guests are unaffected, and nothing is recorded for them.
     if (window.SEStore && window.SEStore.isSignedIn()) {
       window.SEStore.addQuizAttempt({
         slug: payload.slug,
@@ -288,7 +288,7 @@
     var html = [];
 
     html.push('<div class="se-quiz-shell text-center">');
-    html.push('  <p class="se-eyebrow mb-3">' + esc(data.title) + " Quiz &mdash; results</p>");
+    html.push('  <p class="se-eyebrow mb-3">' + esc(data.title) + " Quiz results</p>");
     html.push('  <div class="se-score-ring" style="--pct:' + pct + '%">');
     html.push('    <div class="se-score-inner">');
     html.push('      <div class="se-score-num">' + data.score + "</div>");

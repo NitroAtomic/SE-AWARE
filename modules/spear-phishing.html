@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spear Phishing — SE Aware</title>
+  <title>Spear Phishing | SE Aware</title>
   <meta name="description" content="Phishing written specifically for you, using real details gathered from your public professional footprint.">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0B2545">
+  <meta property="og:title" content="Spear Phishing | SE Aware">
+  <meta property="og:description" content="Phishing written specifically for you, using real details gathered from your public professional footprint.">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/style.css">
@@ -15,7 +21,7 @@
   <nav class="navbar navbar-expand-lg se-navbar sticky-top">
     <div class="container">
       <a class="navbar-brand" href="../index.html">
-        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <img class="se-brand-mark" src="../assets/img/logo-mark.png" alt="" width="38" height="38">
         <span>SE Aware<small>Stay Sharp Online</small></span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
@@ -86,18 +92,18 @@ had before this message arrived</em>.</p>
             <p>The sequence below is the pattern behind almost every version of this attack. Recognising the shape
               matters more than memorising any single example.</p>
             <ol class="se-steps mt-4">
-            <li><strong>Pick the target.</strong> Often someone with access but without a security team behind them &mdash; a freelancer, a virtual assistant, a contractor, or a junior employee who handles invoices or scheduling.</li>
+            <li><strong>Pick the target.</strong> Often someone with access but without a security team behind them: a freelancer, a virtual assistant, a contractor, or a junior employee who handles invoices or scheduling.</li>
             <li><strong>Research from public sources.</strong> LinkedIn gives the job history, the connections, and the current employer. A portfolio site gives client names. Social media gives the tone of voice, the timezone, and often the current project.</li>
             <li><strong>Map the relationships.</strong> Who does this person report to? Who pays them? Which platform do they invoice through? Impersonating the right person matters more than writing the perfect email.</li>
             <li><strong>Craft one message.</strong> Correct names, correct project, correct timing. Frequently sent on a Friday afternoon or just before a holiday, when verification is hardest and the pressure to finish is highest.</li>
-            <li><strong>Make a request that fits the story.</strong> Review the attached brief. Sign in to the client portal. Update the payment details for this month's invoice. Nothing dramatic &mdash; the request has to sound like a normal Tuesday.</li>
+            <li><strong>Make a request that fits the story.</strong> Review the attached brief. Sign in to the client portal. Update the payment details for this month's invoice. Nothing dramatic. The request has to sound like a normal Tuesday.</li>
             <li><strong>Sustain the conversation if needed.</strong> Unlike bulk phishing, a spear phisher will happily exchange several friendly messages first, because the payoff justifies the patience.</li>
             </ol>
 
             <h2>A real-world example</h2>
-            <p>A fake recruiter approach on a professional network. This is a reconstruction built for teaching &mdash; no real person or company is
+            <p>A fake recruiter approach on a professional network. This is a reconstruction built for teaching. No real person or company is
               involved.</p>
-            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack &mdash; example only</span>
+            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack, example only</span>
 
         <div class="se-example">
           <div class="se-dm">
@@ -108,7 +114,7 @@ had before this message arrived</em>.</p>
                 <div style="font-size:.82rem;color:#5A6473;">Senior Talent Partner &middot; Northbridge Digital</div>
               </div>
             </div>
-            <div class="se-dm-msg se-dm-them">Hi Juan! I came across your portfolio &mdash; the analytics dashboard you
+            <div class="se-dm-msg se-dm-them">Hi Juan! I came across your portfolio. The analytics dashboard you
               built for Cortez Logistics is exactly the kind of work our client is after.</div>
             <div class="se-dm-msg se-dm-them">We're hiring a remote data visualisation contractor, ₱95k/month, fully
               async, starting in two weeks. Given your background I'd like to fast-track you past the first screen.</div>
@@ -119,11 +125,10 @@ had before this message arrived</em>.</p>
           </div>
         </div>
         <div class="se-callout">
-          <strong>What gives it away.</strong> Everything factual in this message is true and publicly available &mdash;
-          the portfolio, the client name, the skill. That is the point. The single manipulated element is the last one:
+          <strong>What gives it away.</strong> Everything factual in this message is true and publicly available: the portfolio, the client name, the skill. That is the point. The single manipulated element is the last one:
           a &ldquo;skills assessment&rdquo; that requires signing in with Google on a domain owned by
           <code>talentportal-hr.com</code>, not by Northbridge. A real assessment never needs your email credentials.
-          Note also the flattery, the above-market rate, and the offer to skip a screening step &mdash; three ways of
+          Note also the flattery, the above-market rate, and the offer to skip a screening step: three ways of
           making you feel you have something to lose by being cautious.
         </div>
 
@@ -133,10 +138,10 @@ had before this message arrived</em>.</p>
               One flag is reason to slow down. Two is reason to stop.</p>
             <ul class="se-flags mt-4">
             <li>The message is unusually well-informed about your work but arrives from someone you have never interacted with before.</li>
-            <li>You are asked to sign in with Google, Microsoft, or Apple on a domain that is not the company's own &mdash; a recruitment portal has no reason to want your email credentials.</li>
+            <li>You are asked to sign in with Google, Microsoft, or Apple on a domain that is not the company's own. A recruitment portal has no reason to want your email credentials.</li>
             <li>The offer is noticeably better than market rate, or a normal step in the process is being skipped &ldquo;because of your background&rdquo;.</li>
             <li>The sender's domain is close to a real company's but not identical: an extra hyphen, a swapped letter, <code>.co</code> instead of <code>.com</code>, or a plausible-sounding subdomain.</li>
-            <li>A supervisor, client, or accounts contact emails about payment from a slightly different address than the one in your existing thread &mdash; check the full address, not the display name.</li>
+            <li>A supervisor, client, or accounts contact emails about payment from a slightly different address than the one in your existing thread. Check the full address, not the display name.</li>
             <li>The request arrives late on a Friday, just before a holiday, or while the person it claims to be from is known to be travelling.</li>
             <li>You are asked to keep the matter confidential, or discouraged from raising it with anyone else.</li>
             <li>An attachment or link is framed as a brief, contract, NDA, or assessment and requires credentials to open.</li>
@@ -146,12 +151,12 @@ had before this message arrived</em>.</p>
             <h2>What to do if it happens to you</h2>
             <p>Work through these in order. The first hour matters far more than getting every step perfect.</p>
             <ol class="se-todo mt-4">
-            <li><strong>Verify the person, not the message.</strong> Look the company up independently, find its real website, and contact the person through a number or address you found yourself &mdash; never one supplied in the message.</li>
+            <li><strong>Verify the person, not the message.</strong> Look the company up independently, find its real website, and contact the person through a number or address you found yourself, never one supplied in the message.</li>
             <li><strong>Use a channel that predates the message.</strong> If it claims to be your client, reply in the thread you already have with them, or call the number in your existing contacts. Do not reply to the new email.</li>
             <li><strong>Check whether the person exists at all.</strong> A real recruiter has a history: a profile with connections, activity, and a company page that matches. A profile created three weeks ago with forty connections is a strong signal.</li>
             <li><strong>Never enter email credentials for a job assessment.</strong> There is no legitimate version of that request.</li>
             <li><strong>Treat any change in payment details as a stop signal.</strong> Confirm it by voice with someone you already know, using a number you already had.</li>
-            <li><strong>If you already signed in on the fake page,</strong> change that password immediately from another device, revoke all active sessions, turn on multi-factor authentication, and check for forwarding rules added to your mailbox.</li>
+            <li><strong>If you already signed in on the fake page</strong> change that password immediately from another device, revoke all active sessions, turn on multi-factor authentication, and check for forwarding rules added to your mailbox.</li>
             <li><strong>Warn the impersonated party.</strong> If someone is using your client's name to reach you, that client needs to know, and so do their other contractors.</li>
             </ol>
 
@@ -194,7 +199,7 @@ message arrived.</p>
                 <div class="card-body">
                   <div class="se-card-icon"><i class="bi bi-chat-left-text-fill" aria-hidden="true"></i></div>
                   <h3 class="h6 mb-1">Smishing</h3>
-                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Package fees, prize draws, and bank alerts sent by text — the scam 92.6% of surveyed remote workers had already received.</p>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Package fees, prize draws, and bank alerts sent by text. The scam 92.6% of surveyed remote workers had already received.</p>
                 </div>
               </a>
             </div>
@@ -203,7 +208,7 @@ message arrived.</p>
                 <div class="card-body">
                   <div class="se-card-icon"><i class="bi bi-telephone-fill" aria-hidden="true"></i></div>
                   <h3 class="h6 mb-1">Vishing</h3>
-                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Fake IT support, fake bank fraud teams, and OTP harvesting calls — plus AI voice cloning.</p>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Fake IT support, fake bank fraud teams, and OTP harvesting calls, plus AI voice cloning.</p>
                 </div>
               </a>
             </div>
@@ -295,7 +300,7 @@ message arrived.</p>
       <div class="se-footer-note">
         <div class="row gy-2 align-items-center">
           <div class="col-md-8">
-            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            &copy; <span data-year>2026</span> Group 4, Section S3102. A Capstone Project of
             Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
           </div>
           <div class="col-md-4 text-md-end">
@@ -312,13 +317,13 @@ message arrived.</p>
   <script src="../js/account.js"></script>
   <script>
     /* ====================================================================
-       EDIT ME — instructional video for this module
+       EDIT ME: instructional video for this module
        Paste the YouTube video ID between the quotes (the part after
        "watch?v=") and the embed will render automatically. Leave it empty
        and a placeholder card is shown instead, so the page never breaks.
        ==================================================================== */
     var MODULE_VIDEO_ID = "";
-    var MODULE_VIDEO_TITLE = "Spear Phishing — instructional video";
+    var MODULE_VIDEO_TITLE = "Spear Phishing instructional video";
 
     (function () {
       var slot = document.getElementById("seVideoSlot");

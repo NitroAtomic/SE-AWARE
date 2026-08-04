@@ -1,5 +1,5 @@
 /* ==========================================================================
-   quiz-data.js — question banks for every module quiz
+   quiz-data.js: question banks for every module quiz
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
@@ -35,7 +35,7 @@ window.QUIZ_DATA = {
           "It was sent to your work address rather than your personal one"
         ],
         answer: 0,
-        why: "Read domains from the right. Everything before the final dot is controlled by whoever registered <strong>paypal-secure-verify.com</strong> — a real brand name in the middle of a domain proves nothing at all."
+        why: "Read domains from the right. Everything before the final dot is controlled by whoever registered <strong>paypal-secure-verify.com</strong>, a real brand name in the middle of a domain proves nothing at all."
       },
       {
         type: "scenario",
@@ -61,7 +61,7 @@ window.QUIZ_DATA = {
           "Delete the email so nobody else in your household clicks it"
         ],
         answer: 0,
-        why: "Speed is everything. Change the password from a device you trust, then use the account's security settings to sign out all sessions — otherwise an attacker who is already signed in simply stays signed in."
+        why: "Speed is everything. Change the password from a device you trust, then use the account's security settings to sign out all sessions. Otherwise an attacker who is already signed in simply stays signed in."
       },
       {
         type: "scenario",
@@ -87,7 +87,7 @@ window.QUIZ_DATA = {
           "Reply to the email and ask the courier to confirm it is genuine"
         ],
         answer: 0,
-        why: "Expecting a delivery is exactly what makes the lure work — attackers send these in volume knowing some recipients will be waiting for something. Any genuine notice will also be in the courier's own app."
+        why: "Expecting a delivery is exactly what makes the lure work. Attackers send these in volume knowing some recipients will be waiting for something. Any genuine notice will also be in the courier's own app."
       },
       {
         type: "scenario",
@@ -112,7 +112,7 @@ window.QUIZ_DATA = {
           "It floods a website with traffic until it goes offline"
         ],
         answer: 0,
-        why: "Phishing targets the person, not the software. No vulnerability is exploited — the message simply persuades you to act. That is what makes technical defences alone insufficient against it."
+        why: "Phishing targets the person, not the software. No vulnerability is exploited. The message simply persuades you to act. That is what makes technical defences alone insufficient against it."
       },
       {
         type: "knowledge",
@@ -136,7 +136,7 @@ window.QUIZ_DATA = {
           "Encrypting a phishing email so mail filters cannot read it"
         ],
         answer: 0,
-        why: "The QR code adds nothing technically — it just removes your ability to read the destination first. It also gets past filters that scan for suspicious text links."
+        why: "The QR code adds nothing technically. It just removes your ability to read the destination first. It also gets past filters that scan for suspicious text links."
       },
       {
         type: "knowledge",
@@ -178,7 +178,7 @@ window.QUIZ_DATA = {
         type: "knowledge",
         q: "Which attachment types most often carry a phishing payload?",
         options: [
-          ".html, .htm, .zip, .iso, and documents demanding that macros be enabled",
+          ".html .htm .zip .iso, and documents demanding that macros be enabled",
           ".jpg and .png images",
           ".txt plain-text notes",
           ".mp3 audio files"
@@ -190,7 +190,7 @@ window.QUIZ_DATA = {
         type: "knowledge",
         q: "A phishing email uses your bank's exact logo, fonts, and footer layout. What does that prove?",
         options: [
-          "Nothing — those assets are copied from the bank's own public website",
+          "Nothing: those assets are copied from the bank's own public website",
           "That the message passed the bank's security checks",
           "That the sender has access to the bank's internal systems",
           "That the message is at least partly genuine"
@@ -230,7 +230,7 @@ window.QUIZ_DATA = {
           "The message was sent through a professional network rather than email"
         ],
         answer: 0,
-        why: "Everything factual was harvested from your public profile. The single manipulated element is the credential request — no legitimate assessment ever needs your email password."
+        why: "Everything factual was harvested from your public profile. The single manipulated element is the credential request. No legitimate assessment ever needs your email password."
       },
       {
         type: "scenario",
@@ -243,14 +243,14 @@ window.QUIZ_DATA = {
           "Wait until Monday and see whether they follow up"
         ],
         answer: 0,
-        why: "Replying to the new address only reaches the attacker. Friday-afternoon timing is deliberate — it targets the window when verification is hardest. Use a channel that existed before the message."
+        why: "Replying to the new address only reaches the attacker. Friday-afternoon timing is deliberate. It targets the window when verification is hardest. Use a channel that existed before the message."
       },
       {
         type: "scenario",
-        scenario: "A message references your current project, your rate, and your recent client — all accurate — and asks you to review an attached brief that requires a login to open.",
+        scenario: "A message references your current project, your rate, and your recent client (all accurate) and asks you to review an attached brief that requires a login to open.",
         q: "What do those accurate details actually prove?",
         options: [
-          "Nothing about identity — they are all available from public profiles",
+          "Nothing about identity. They are all available from public profiles",
           "That the sender has worked with you before",
           "That the sender has legitimate access to your client's systems",
           "That the message came from inside your client's network"
@@ -263,7 +263,7 @@ window.QUIZ_DATA = {
         scenario: "You check the recruiter's profile. It was created three weeks ago, has 41 connections, no posts, and the company page it links to has no other employees.",
         q: "How should you read this?",
         options: [
-          "A strong signal of a fabricated identity — verify the company independently",
+          "A strong signal of a fabricated identity: verify the company independently",
           "Normal for a recruiter who has just switched employers",
           "Irrelevant, since profile age is not related to legitimacy",
           "Proof of fraud on its own, so no further checking is needed"
@@ -295,7 +295,7 @@ window.QUIZ_DATA = {
           "Ask them to prove identity by sending a photo of their company ID"
         ],
         answer: 0,
-        why: "The friendly build-up is the attack, not evidence against it. An ID photo proves nothing — those are trivially forged. Verify through your established contact using details you already had."
+        why: "The friendly build-up is the attack, not evidence against it. An ID photo proves nothing. Those are trivially forged. Verify through your established contact using details you already had."
       },
       {
         type: "knowledge",
@@ -432,7 +432,7 @@ window.QUIZ_DATA = {
         scenario: "A text appears in the same conversation thread as genuine messages from your bank, using the same sender ID.",
         q: "What does that prove about its origin?",
         options: [
-          "Nothing — alphanumeric sender IDs can be spoofed and phones thread by ID",
+          "Nothing: alphanumeric sender IDs can be spoofed and phones thread by ID",
           "That it genuinely came from your bank's messaging system",
           "That your phone has verified the sender cryptographically",
           "That your bank's systems have been breached"
@@ -477,17 +477,17 @@ window.QUIZ_DATA = {
           "A test message from the mobile provider"
         ],
         answer: 0,
-        why: "Codes are sent to the number on the account — they do not arrive at yours by accident. Whoever is asking triggered that code by attempting to sign in. Never forward a verification code to anyone, ever."
+        why: "Codes are sent to the number on the account. They do not arrive at yours by accident. Whoever is asking triggered that code by attempting to sign in. Never forward a verification code to anyone, ever."
       },
       {
         type: "scenario",
         scenario: "You tapped a link in a scam text, the page loaded, and you closed it immediately without typing anything.",
         q: "What is the appropriate level of concern?",
         options: [
-          "Low — you almost certainly are not compromised, but do not revisit the link",
-          "Severe — simply loading the page installs malware on modern phones",
-          "None at all — no follow-up is ever needed after visiting a page",
-          "High — you must factory reset your phone immediately"
+          "Low: you almost certainly are not compromised, but do not revisit the link",
+          "Severe: simply loading the page installs malware on modern phones",
+          "None at all: no follow-up is ever needed after visiting a page",
+          "High. You must factory reset your phone immediately"
         ],
         answer: 0,
         why: "Smishing pages harvest what you type. Loading one and entering nothing usually leaves you fine. Delete the message, block the sender, and stay alert for follow-up calls referencing it."
@@ -538,7 +538,7 @@ window.QUIZ_DATA = {
           "Replying is a criminal offence in most jurisdictions"
         ],
         answer: 0,
-        why: "Confirmed-active numbers are sold at a premium. Block and report instead — and never reply, even out of irritation."
+        why: "Confirmed-active numbers are sold at a premium. Block and report instead, and never reply, even out of irritation."
       },
       {
         type: "knowledge",
@@ -562,13 +562,13 @@ window.QUIZ_DATA = {
           "They prevent the message from being reported"
         ],
         answer: 0,
-        why: "A shortener removes your only chance to inspect where the link goes — and on a small screen even a full address is easy to misread."
+        why: "A shortener removes your only chance to inspect where the link goes, and on a small screen even a full address is easy to misread."
       },
       {
         type: "knowledge",
         q: "What is the single most reliable habit against smishing?",
         options: [
-          "Never act inside the message — verify through the app or site you already use",
+          "Never act inside the message: verify through the app or site you already use",
           "Only open links from senders in your contacts list",
           "Read texts on a computer rather than a phone",
           "Disable SMS previews on your lock screen"
@@ -612,7 +612,7 @@ window.QUIZ_DATA = {
     questions: [
       {
         type: "scenario",
-        scenario: "A caller says: <em>'This is the fraud team. We have held a ₱48,750 transfer, but the hold expires in fifteen minutes. I am sending a six-digit code to your phone — please read it back so I can confirm your identity.'</em>",
+        scenario: "A caller says: <em>'This is the fraud team. We have held a ₱48,750 transfer, but the hold expires in fifteen minutes. I am sending a six-digit code to your phone. Please read it back so I can confirm your identity.'</em>",
         q: "What is actually happening?",
         options: [
           "The attacker is signing in as you and needs the code to complete it",
@@ -621,14 +621,14 @@ window.QUIZ_DATA = {
           "The call is genuine but the agent is following the wrong procedure"
         ],
         answer: 0,
-        why: "The bank sent that code because someone requested it — that someone is the caller. A bank never needs you to read back a code they generated. This single request ends the call."
+        why: "The bank sent that code because someone requested it. That someone is the caller. A bank never needs you to read back a code they generated. This single request ends the call."
       },
       {
         type: "scenario",
         scenario: "Your phone shows your bank's real hotline number as the incoming caller ID.",
         q: "What does that tell you about the call's origin?",
         options: [
-          "Nothing — caller ID is display text and is trivially spoofed",
+          "Nothing: caller ID is display text and is trivially spoofed",
           "That the call definitely came from the bank's system",
           "That the call was routed through a verified carrier",
           "That the number has been checked against a fraud database"
@@ -647,7 +647,7 @@ window.QUIZ_DATA = {
           "Ask them to email the request first, then install it"
         ],
         answer: 0,
-        why: "Remote-access software hands over full control of your device. Naming your manager proves nothing — that is public information. Never install remote-access tools at the request of an unsolicited caller."
+        why: "Remote-access software hands over full control of your device. Naming your manager proves nothing. That is public information. Never install remote-access tools at the request of an unsolicited caller."
       },
       {
         type: "scenario",
@@ -680,7 +680,7 @@ window.QUIZ_DATA = {
         scenario: "You realise mid-call that it is a scam. The caller becomes insistent that you must not hang up or the hold will fail.",
         q: "What should you do?",
         options: [
-          "Hang up immediately — ending a call is always safe",
+          "Hang up immediately: ending a call is always safe",
           "Stay on the line and try to gather information about the caller",
           "Put the phone down without hanging up so they think you are still there",
           "Tell them you know it is a scam and warn them off"
@@ -740,7 +740,7 @@ window.QUIZ_DATA = {
         type: "knowledge",
         q: "A caller asks you to move funds to a 'safe holding account' during an investigation. What is this?",
         options: [
-          "Always fraud — no such account exists in legitimate banking",
+          "Always fraud: no such account exists in legitimate banking",
           "A standard fraud-prevention procedure at most banks",
           "Legitimate only if the account is in your own name",
           "Legitimate only when arranged by the fraud department"
@@ -758,7 +758,7 @@ window.QUIZ_DATA = {
           "Restart the device and continue using it normally"
         ],
         answer: 0,
-        why: "Disconnecting cuts the attacker's access first. Change passwords only from a <em>different</em> device — anything typed on the compromised machine should be assumed to have been seen."
+        why: "Disconnecting cuts the attacker's access first. Change passwords only from a <em>different</em> device. Anything typed on the compromised machine should be assumed to have been seen."
       },
       {
         type: "knowledge",
@@ -810,13 +810,13 @@ window.QUIZ_DATA = {
         scenario: "An email from your client's finance contact says they have moved to a new banking partner and asks you to update the account on your March invoice. The old account 'closes on the 28th'. The domain is <strong>cortez-Iogistics.com</strong>.",
         q: "What is the decisive red flag?",
         options: [
-          "A capital I replaces the lowercase l in the domain — it is a lookalike",
+          "A capital I replaces the lowercase l in the domain. It is a lookalike",
           "The message mentions a specific date",
           "Finance contacted you rather than your project manager",
           "The email included an account number in plain text"
         ],
         answer: 0,
-        why: "In most fonts, capital I and lowercase l are identical. Everything else in the message is genuine, harvested from real earlier exchanges — the domain and the bank change are the only manipulated parts."
+        why: "In most fonts, capital I and lowercase l are identical. Everything else in the message is genuine, harvested from real earlier exchanges. The domain and the bank change are the only manipulated parts."
       },
       {
         type: "scenario",
@@ -836,7 +836,7 @@ window.QUIZ_DATA = {
         scenario: "A new contact introduces themselves as a project manager at your client, asks a harmless question about a deliverable, chats for several days, and only then asks for access to a shared account.",
         q: "What does the friendly build-up represent?",
         options: [
-          "The pretext itself — the harmless contact exists to make the later request unremarkable",
+          "The pretext itself: the harmless contact exists to make the later request unremarkable",
           "Evidence of a genuine working relationship",
           "A normal onboarding process for new staff",
           "An unrelated coincidence before the real attack"
@@ -849,7 +849,7 @@ window.QUIZ_DATA = {
         scenario: "The sender declines a phone call, explaining they are 'in workshops all day, email reaches me fine', and asks you to keep the payment change between the two of you.",
         q: "How should those two details be read together?",
         options: [
-          "As deliberate blocking of verification — a core pretexting technique",
+          "As deliberate blocking of verification, a core pretexting technique",
           "As a reasonable explanation from a busy colleague",
           "As evidence the request is confidential but genuine",
           "As irrelevant to the legitimacy of the request"
@@ -868,14 +868,14 @@ window.QUIZ_DATA = {
           "File a police report before contacting anyone else"
         ],
         answer: 0,
-        why: "Recall chances fall away fast. Call the bank first, then tell the client whose identity was used — their other contractors are almost certainly being targeted in the same campaign."
+        why: "Recall chances fall away fast. Call the bank first, then tell the client whose identity was used. Their other contractors are almost certainly being targeted in the same campaign."
       },
       {
         type: "scenario",
         scenario: "Someone claiming to be from a client's IT department asks you to confirm which project management tools you use and who approves your invoices. They ask for nothing sensitive.",
         q: "How should you treat this?",
         options: [
-          "As reconnaissance for a later attack — verify before answering",
+          "As reconnaissance for a later attack: verify before answering",
           "As harmless, since no credentials were requested",
           "As a routine audit that requires cooperation",
           "As a survey that can be safely ignored without any follow-up"
@@ -917,7 +917,7 @@ window.QUIZ_DATA = {
           "Pay invoices only on fixed days of the month"
         ],
         answer: 0,
-        why: "Pretexting is defeated by procedure rather than by suspicion — and procedure keeps working on a bad day, when judgement alone might not."
+        why: "Pretexting is defeated by procedure rather than by suspicion, and procedure keeps working on a bad day, when judgement alone might not."
       },
       {
         type: "knowledge",
@@ -959,7 +959,7 @@ window.QUIZ_DATA = {
         type: "knowledge",
         q: "A request is unusually small and harmless, and the next one is not. What does that pattern indicate?",
         options: [
-          "Escalation — a hallmark of a pretext being established",
+          "Escalation, a hallmark of a pretext being established",
           "A genuine relationship developing naturally",
           "An automated system sending messages out of order",
           "A sign the sender is inexperienced"

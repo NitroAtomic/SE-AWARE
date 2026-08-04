@@ -1,5 +1,5 @@
 /* ==========================================================================
-   assessment-data.js — cybersecurity awareness assessment question bank
+   assessment-data.js: cybersecurity awareness assessment question bank
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
@@ -15,11 +15,11 @@
 window.ASSESSMENT_DATA = {
   levels: [
     { min: 12, key: "advanced",     label: "Advanced",
-      blurb: "You recognise the patterns behind most social engineering, including the subtler ones. Focus on staying current — tactics shift faster than fundamentals do." },
+      blurb: "You recognise the patterns behind most social engineering, including the subtler ones. Focus on staying current: tactics shift faster than fundamentals do." },
     { min: 8,  key: "intermediate", label: "Intermediate",
       blurb: "You have solid instincts and a real gap or two. The modules below target exactly where you lost marks." },
     { min: 0,  key: "beginner",     label: "Beginner",
-      blurb: "There is real ground to cover, and that is worth knowing rather than guessing at. Work through the recommended modules in order — most people move a full level after one pass." }
+      blurb: "There is real ground to cover, and that is worth knowing rather than guessing at. Work through the recommended modules in order. Most people move a full level after one pass." }
   ],
 
   topics: {
@@ -42,13 +42,13 @@ window.ASSESSMENT_DATA = {
         "It belongs equally to both domains"
       ],
       answer: 0,
-      why: "The real domain sits immediately left of the first single slash — account-verify.net. Everything before it is a subdomain the attacker can name anything at all."
+      why: "The real domain sits immediately left of the first single slash: account-verify.net. Everything before it is a subdomain the attacker can name anything at all."
     },
     {
       topic: "phishing",
       q: "An email uses your bank's exact logo, fonts, and footer. What does that prove about its origin?",
       options: [
-        "Nothing — those assets are downloadable from the bank's public site",
+        "Nothing: those assets are downloadable from the bank's public site",
         "That it passed the bank's outgoing security checks",
         "That the sender has access to the bank's systems",
         "That it is at least partly genuine"
@@ -84,7 +84,7 @@ window.ASSESSMENT_DATA = {
       topic: "spear-phishing",
       q: "A message contains genuinely accurate details about your work and your clients. What does that establish?",
       options: [
-        "Nothing about identity — those details are usually public",
+        "Nothing about identity: those details are usually public",
         "That the sender has worked with you before",
         "That the sender is inside your client's organisation",
         "That the message originated from a trusted network"
@@ -108,7 +108,7 @@ window.ASSESSMENT_DATA = {
       topic: "smishing",
       q: "A scam text appears in the same thread as genuine messages from your bank. What does that tell you?",
       options: [
-        "Nothing — sender IDs are spoofable and phones thread by ID",
+        "Nothing: sender IDs are spoofable and phones thread by ID",
         "That it came from the bank's real messaging system",
         "That your phone verified the sender",
         "That the bank has been breached"
@@ -126,13 +126,13 @@ window.ASSESSMENT_DATA = {
         "A genuine agent following the wrong procedure"
       ],
       answer: 0,
-      why: "The code exists because someone requested it. A bank never needs you to read back a code they generated — they already know it."
+      why: "The code exists because someone requested it. A bank never needs you to read back a code they generated. They already know it."
     },
     {
       topic: "vishing",
       q: "Your phone displays your bank's real hotline number as the caller ID. What does that prove?",
       options: [
-        "Nothing — caller ID is display text and is easily spoofed",
+        "Nothing: caller ID is display text and is easily spoofed",
         "That the call came from the bank's phone system",
         "That the carrier verified the origin",
         "That the number was checked against a fraud list"
@@ -168,7 +168,7 @@ window.ASSESSMENT_DATA = {
       topic: "pretexting",
       q: "Someone new at a client company chats harmlessly for three days, then asks for shared account access. What was the friendly build-up?",
       options: [
-        "The pretext — early contact exists to make the later request unremarkable",
+        "The pretext: early contact exists to make the later request unremarkable",
         "Evidence of a genuine working relationship",
         "A normal onboarding process",
         "An unrelated coincidence"
@@ -186,7 +186,7 @@ window.ASSESSMENT_DATA = {
         "Your client project tools"
       ],
       answer: 0,
-      why: "Email is the master key — every password reset link for every other service lands there. Secure it first, then work outward."
+      why: "Email is the master key: every password reset link for every other service lands there. Secure it first, then work outward."
     },
     {
       topic: "safe-practices",
@@ -210,7 +210,7 @@ window.ASSESSMENT_DATA = {
         "Restart and carry on working"
       ],
       answer: 0,
-      why: "Disconnecting cuts their access immediately. Change passwords afterwards from a different device — assume anything typed on the compromised machine was seen."
+      why: "Disconnecting cuts their access immediately. Change passwords afterwards from a different device. Assume anything typed on the compromised machine was seen."
     }
   ]
 };

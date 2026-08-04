@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pretexting — SE Aware</title>
+  <title>Pretexting | SE Aware</title>
   <meta name="description" content="A believable cover story built patiently over several messages before any request is ever made.">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0B2545">
+  <meta property="og:title" content="Pretexting | SE Aware">
+  <meta property="og:description" content="A believable cover story built patiently over several messages before any request is ever made.">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/style.css">
@@ -15,7 +21,7 @@
   <nav class="navbar navbar-expand-lg se-navbar sticky-top">
     <div class="container">
       <a class="navbar-brand" href="../index.html">
-        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <img class="se-brand-mark" src="../assets/img/logo-mark.png" alt="" width="38" height="38">
         <span>SE Aware<small>Stay Sharp Online</small></span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
@@ -65,14 +71,14 @@
 
             <h2>What it is</h2>
 
-<p>Pretexting is the construction of a believable story &mdash; a pretext &mdash; that makes a later request seem
+<p>Pretexting is the construction of a believable story, or pretext, that makes a later request seem
 entirely ordinary. Where phishing fires a single message and hopes, pretexting invests. The attacker builds an identity,
 establishes a reason to be in contact, exchanges a few unremarkable messages, and only then asks for the thing they came
 for. By that point the request does not feel like an attack. It feels like Thursday.</p>
 
 <p>This is the slow, expensive end of social engineering, and it is where the largest losses happen. Business email
-compromise &mdash; the family of attacks in which someone impersonates a supplier, an executive, or a contractor to
-redirect a payment &mdash; is consistently among the costliest categories of cybercrime worldwide, and pretexting is the
+compromise, the family of attacks in which someone impersonates a supplier, an executive, or a contractor to
+redirect a payment, is consistently among the costliest categories of cybercrime worldwide, and pretexting is the
 technique underneath it.</p>
 
 <p>For remote workers the exposure is specific and predictable. You already conduct entire professional relationships
@@ -90,24 +96,24 @@ Tuesday.</p>
             <li><strong>Establish contact without asking for anything.</strong> A friendly introduction. A question about a deliverable. A document to review. The first contact is deliberately harmless, and its only job is to make the second contact unremarkable.</li>
             <li><strong>Let time pass.</strong> A gap of days between introduction and request makes the exchange feel like an established relationship rather than an approach.</li>
             <li><strong>Make the request inside the story.</strong> The bank details on this month's invoice have changed. Please onboard this new vendor. The client needs the shared credentials before tomorrow's call.</li>
-            <li><strong>Apply just enough pressure.</strong> Not panic &mdash; that breaks the illusion. A soft deadline: the finance cut-off is Friday, the director is travelling and cannot be reached, it would be good to get this closed today.</li>
+            <li><strong>Apply just enough pressure.</strong> Not panic. That breaks the illusion. A soft deadline: the finance cut-off is Friday, the director is travelling and cannot be reached, it would be good to get this closed today.</li>
             <li><strong>Discourage verification without seeming to.</strong> &ldquo;I'm in meetings all day, email is best.&rdquo; &ldquo;Please keep this between us until the announcement.&rdquo; Both make a phone call feel awkward rather than forbidden.</li>
             </ol>
 
             <h2>A real-world example</h2>
-            <p>Invoice fraud through a pretexted vendor change. This is a reconstruction built for teaching &mdash; no real person or company is
+            <p>Invoice fraud through a pretexted vendor change. This is a reconstruction built for teaching. No real person or company is
               involved.</p>
-            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack &mdash; example only</span>
+            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack, example only</span>
 
         <div class="se-example">
           <div class="se-email-head">
             <div><span class="se-lbl">From:</span> Anna Villaruel &lt;a.villaruel@cortez-Iogistics.com&gt;</div>
             <div><span class="se-lbl">To:</span> you@example.com</div>
-            <div><span class="se-lbl">Subject:</span> Re: March retainer &mdash; updated remittance details</div>
+            <div><span class="se-lbl">Subject:</span> Re: March retainer (updated remittance details)</div>
           </div>
           <div class="se-email-body">
-            <p class="mb-2">Hi Juan,</p>
-            <p class="mb-2">Thanks for turning the dashboard revisions around so quickly last week &mdash; Marco was
+            <p class="mb-2">Hi Juan</p>
+            <p class="mb-2">Thanks for turning the dashboard revisions around so quickly last week. Marco was
               really happy with it.</p>
             <p class="mb-2">Quick admin note before Friday's finance cut-off: we've moved our disbursements to a new
               banking partner this quarter, so please update the account on your March invoice to the details below.
@@ -125,8 +131,7 @@ Tuesday.</p>
         <div class="se-callout">
           <strong>What gives it away.</strong> Look closely at the domain: <code>cortez-Iogistics.com</code> uses a
           capital <strong>I</strong> where a lowercase <strong>l</strong> belongs. In most fonts those are visually
-          identical, and this is one of the most reliable tricks in the entire field. Everything else is real &mdash;
-          the project, the colleague's name, the friendly opener &mdash; because it was harvested from a genuine
+          identical, and this is one of the most reliable tricks in the entire field. Everything else is real: the project, the colleague's name, the friendly opener, all harvested from a genuine
           earlier exchange. Notice the three pressure points working together: a deadline, a penalty for missing it,
           and a polite explanation of why a phone call is inconvenient. The bank change is the whole attack; everything
           else is scaffolding.
@@ -137,14 +142,14 @@ Tuesday.</p>
             <p>Each of these is something you can actually observe in the message or the call, not a vague feeling.
               One flag is reason to slow down. Two is reason to stop.</p>
             <ul class="se-flags mt-4">
-            <li>Bank details, a payee name, or a remittance address changes &mdash; especially with an explanation for why calling is inconvenient right now.</li>
+            <li>Bank details, a payee name, or a remittance address changes, especially with an explanation for why calling is inconvenient right now.</li>
             <li>The domain is one character different from the real one: <code>rn</code> for <code>m</code>, capital <code>I</code> for lowercase <code>l</code>, a zero for the letter O, an added or dropped hyphen.</li>
             <li>The email address is different from your existing thread with that person, even though the display name and signature are identical.</li>
             <li>The request arrives just before a finance deadline, a holiday, or a period when the real person is known to be unavailable.</li>
             <li>You are asked to keep the matter quiet, handle it directly, or skip a normal approval step.</li>
-            <li>The sender declines calls or video for a reason that sounds reasonable &mdash; travelling, in workshops, poor signal, phone being replaced.</li>
+            <li>The sender declines calls or video for a reason that sounds reasonable: travelling, in workshops, poor signal, phone being replaced.</li>
             <li>A new contact at a familiar client introduces themselves and, within a few messages, needs access, credentials, or a payment change.</li>
-            <li>Someone requests a copy of an invoice, a client list, or an organisation chart &mdash; useful reconnaissance dressed up as admin.</li>
+            <li>Someone requests a copy of an invoice, a client list, or an organisation chart, useful reconnaissance dressed up as admin.</li>
             <li>A first request is small and harmless, and the second one is not. Escalation across messages is the signature of a pretext.</li>
             </ul>
 
@@ -152,15 +157,15 @@ Tuesday.</p>
             <p>Work through these in order. The first hour matters far more than getting every step perfect.</p>
             <ol class="se-todo mt-4">
             <li><strong>Treat every change of payment details as a hard stop.</strong> No exceptions, no matter how well you know the sender. This one rule prevents most invoice fraud on its own.</li>
-            <li><strong>Verify by voice, on a number you already had.</strong> Not the number in the signature of the new email &mdash; the one in your contacts, from before this conversation started. Say the account number out loud and have them confirm it.</li>
+            <li><strong>Verify by voice, on a number you already had.</strong> Not the number in the signature of the new email, the one in your contacts, from before this conversation started. Say the account number out loud and have them confirm it.</li>
             <li><strong>Compare the full email address against your existing thread</strong>, character by character. Do not trust the display name, which is free text.</li>
             <li><strong>Reply inside the original thread rather than starting a new message.</strong> If the address was spoofed, your reply goes to the real person and the attack surfaces immediately.</li>
             <li><strong>Slow the request down deliberately.</strong> A genuine colleague will accept a twenty-minute delay for verification. Only an attacker cannot afford one.</li>
-            <li><strong>If you already paid, call your bank within minutes</strong> and ask for a recall, then report it to the client whose identity was used &mdash; other contractors are being targeted in the same campaign.</li>
+            <li><strong>If you already paid, call your bank within minutes</strong> and ask for a recall, then report it to the client whose identity was used. Other contractors are being targeted in the same campaign.</li>
             <li><strong>If you shared credentials or documents, change what can be changed</strong> and tell the affected party the same day so they can watch for follow-on attacks.</li>
             </ol>
 
-<p>Pretexting is defeated by procedure rather than by suspicion, and that is good news &mdash; procedure works even on a
+<p>Pretexting is defeated by procedure rather than by suspicion, and that is good news. Procedure works even on a
 bad day. Adopt one rule and hold it without exception: <strong>any change to where money goes gets confirmed by voice,
 on a number you already had, before anything is paid.</strong> It costs a two-minute call. Not having it has cost people
 their entire quarter.</p>
@@ -208,7 +213,7 @@ their entire quarter.</p>
                 <div class="card-body">
                   <div class="se-card-icon"><i class="bi bi-crosshair" aria-hidden="true"></i></div>
                   <h3 class="h6 mb-1">Spear Phishing</h3>
-                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Targeted messages built from your LinkedIn, portfolio, and public posts — fake recruiters, fake clients, fake bosses.</p>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Targeted messages built from your LinkedIn, portfolio, and public posts: fake recruiters, fake clients, fake bosses.</p>
                 </div>
               </a>
             </div>
@@ -300,7 +305,7 @@ their entire quarter.</p>
       <div class="se-footer-note">
         <div class="row gy-2 align-items-center">
           <div class="col-md-8">
-            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            &copy; <span data-year>2026</span> Group 4, Section S3102. A Capstone Project of
             Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
           </div>
           <div class="col-md-4 text-md-end">
@@ -317,13 +322,13 @@ their entire quarter.</p>
   <script src="../js/account.js"></script>
   <script>
     /* ====================================================================
-       EDIT ME — instructional video for this module
+       EDIT ME: instructional video for this module
        Paste the YouTube video ID between the quotes (the part after
        "watch?v=") and the embed will render automatically. Leave it empty
        and a placeholder card is shown instead, so the page never breaks.
        ==================================================================== */
     var MODULE_VIDEO_ID = "";
-    var MODULE_VIDEO_TITLE = "Pretexting — instructional video";
+    var MODULE_VIDEO_TITLE = "Pretexting instructional video";
 
     (function () {
       var slot = document.getElementById("seVideoSlot");

@@ -1,12 +1,12 @@
 /* ==========================================================================
-   dashboard.js — personalised learning dashboard
+   dashboard.js: personalised learning dashboard
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
    Mirrors the View Dashboard use case exactly:
-     · Learning Progress  — always present   (include)
-     · Quiz History       — always present   (include)
-     · Recommendations    — only after the awareness assessment  (extend)
+     · Learning Progress, always present   (include)
+     · Quiz History, always present   (include)
+     · Recommendations, only after the awareness assessment  (extend)
 
    Test cases: DB-01 progress updates, DB-02 quiz history, RC-01 and AIX-02
    recommendations and weak areas.
@@ -48,7 +48,7 @@
       greet.innerHTML =
         "Welcome back, " + esc(user.firstName || user.email) + ". " +
         (done === 0
-          ? "Nothing completed yet — open a module and your progress will appear here."
+          ? "Nothing completed yet. Open a module and your progress will appear here."
           : done === TRACKED.length
             ? "All six modules complete. Retake a quiz any time; the questions change every attempt."
             : done + " of " + TRACKED.length + " modules complete.");
@@ -58,7 +58,7 @@
     document.getElementById("seDashStats").innerHTML = [
       tile(done + " / " + TRACKED.length, "Modules completed"),
       tile(history.length, "Quiz attempts"),
-      tile(avg === null ? "—" : avg + "%", "Average quiz score"),
+      tile(avg === null ? "Not yet" : avg + "%", "Average quiz score"),
       tile(assessment ? assessment.level : "Not taken", "Awareness level")
     ].join("");
 

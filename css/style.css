@@ -1,6 +1,6 @@
 /* ==========================================================================
    Web-Based Social Engineering Awareness Platform for Remote Workers
-   Custom stylesheet — layered on top of Bootstrap 5.3
+   Custom stylesheet: layered on top of Bootstrap 5.3
    Group 4 · S3102 · MO-IT200D1 Capstone 1 · Mapua Malayan Digital College
    ========================================================================== */
 
@@ -14,6 +14,11 @@
   --se-teal-dark:   #14615C;
   --se-amber:       #F2A44A;
   --se-amber-soft:  #FDF3E4;
+
+  /* Primary action colour, taken from the SE Aware shield. Orange carries the
+     calls to action; teal is kept for success states and section eyebrows. */
+  --se-orange:      #F5A623;
+  --se-orange-dark: #DE8F0E;
   --se-danger:      #B3261E;
   --se-danger-soft: #FBEAE9;
   --se-bg:          #F7F9FC;
@@ -62,7 +67,7 @@ a:hover { color: var(--se-navy); }
 .se-prose p,
 .se-prose li { max-width: var(--se-measure); }
 
-/* Long unbroken strings — domains, URLs, account numbers — must never force
+/* Long unbroken strings: domains, URLs, account numbers: must never force
    the page wider than the viewport on small screens. */
 p, li, h1, h2, h3, td, .se-msg, .se-option, .se-review-line { overflow-wrap: break-word; }
 
@@ -77,7 +82,7 @@ code {
 }
 
 /* --------------------------------------------------------------------------
-   3. Accessibility — focus states and touch targets
+   3. Accessibility: focus states and touch targets
    -------------------------------------------------------------------------- */
 a:focus-visible,
 button:focus-visible,
@@ -117,7 +122,20 @@ button:focus-visible,
 /* --------------------------------------------------------------------------
    4. Buttons
    -------------------------------------------------------------------------- */
+/* Orange with navy text: roughly 7:1 contrast, where orange with white text
+   would fail WCAG AA. */
 .btn-se-primary {
+  background-color: var(--se-orange);
+  border-color: var(--se-orange);
+  color: var(--se-navy);
+  font-weight: 700;
+  border-radius: var(--se-radius-sm);
+  padding: .7rem 1.4rem;
+}
+.btn-se-primary:hover,
+.btn-se-primary:focus { background-color: var(--se-orange-dark); border-color: var(--se-orange-dark); color: var(--se-navy); }
+
+.btn-se-teal {
   background-color: var(--se-teal);
   border-color: var(--se-teal);
   color: #fff;
@@ -125,8 +143,7 @@ button:focus-visible,
   border-radius: var(--se-radius-sm);
   padding: .7rem 1.4rem;
 }
-.btn-se-primary:hover,
-.btn-se-primary:focus { background-color: var(--se-teal-dark); border-color: var(--se-teal-dark); color: #fff; }
+.btn-se-teal:hover, .btn-se-teal:focus { background-color: var(--se-teal-dark); border-color: var(--se-teal-dark); color: #fff; }
 
 .btn-se-outline {
   background-color: transparent;
@@ -175,18 +192,29 @@ button:focus-visible,
 .se-navbar .nav-link { color: rgba(255,255,255,.85); font-weight: 500; padding-inline: .9rem; }
 .se-navbar .nav-link:hover,
 .se-navbar .nav-link:focus { color: #fff; }
-.se-navbar .nav-link.active { color: var(--se-amber); font-weight: 600; }
+.se-navbar .nav-link.active {
+  color: var(--se-orange);
+  font-weight: 600;
+  position: relative;
+}
+.se-navbar .nav-link.active::after {
+  content: "";
+  position: absolute;
+  left: .9rem; right: .9rem; bottom: .15rem;
+  height: 2px;
+  background: var(--se-orange);
+  border-radius: 2px;
+}
 .se-navbar .navbar-toggler { border-color: rgba(255,255,255,.4); }
 .se-navbar .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255,255,255,0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 .se-brand-mark {
-  width: 34px; height: 34px;
-  background: var(--se-teal);
-  border-radius: 9px;
-  display: grid; place-items: center;
-  color: #fff; font-size: 1.05rem;
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
   flex-shrink: 0;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.35));
 }
 
 /* --------------------------------------------------------------------------
@@ -210,13 +238,39 @@ button:focus-visible,
   background: radial-gradient(circle, rgba(27,127,121,.35) 0%, transparent 68%);
   pointer-events: none;
 }
+/* Hero shield artwork, sitting behind and to the right of the copy. */
+.se-hero-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 300px;
+}
+.se-hero-art img {
+  width: min(360px, 78%);
+  height: auto;
+  opacity: .96;
+  filter: drop-shadow(0 18px 45px rgba(0, 0, 0, .45));
+}
+.se-hero-art::before {
+  content: "";
+  position: absolute;
+  width: 78%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,166,35,.22) 0%, transparent 68%);
+}
+@media (max-width: 991.98px) {
+  .se-hero-art { min-height: 0; margin-top: 2.25rem; }
+  .se-hero-art img { width: min(220px, 55%); }
+}
+
 .se-hero-badge {
   display: inline-flex;
   align-items: center;
   gap: .5rem;
-  background: rgba(242,164,74,.16);
-  border: 1px solid rgba(242,164,74,.5);
-  color: var(--se-amber);
+  background: rgba(245,166,35,.16);
+  border: 1px solid rgba(245,166,35,.5);
+  color: var(--se-orange);
   font-weight: 600;
   font-size: .85rem;
   padding: .4rem .9rem;
@@ -244,12 +298,15 @@ button:focus-visible,
 /* --------------------------------------------------------------------------
    7. Cards
    -------------------------------------------------------------------------- */
+/* NOTE: do NOT put height:100% on the base class. Sidebar cards stack
+   vertically inside a single column, and a 100% height on each one makes the
+   column grow without bound, pushing thousands of pixels of blank space below
+   the footer. Use Bootstrap's .h-100 on grid cards that need equal heights. */
 .se-card {
   background: var(--se-surface);
   border: 1px solid var(--se-border);
   border-radius: var(--se-radius);
   box-shadow: var(--se-shadow);
-  height: 100%;
   transition: transform .18s ease, box-shadow .18s ease;
 }
 .se-card:hover { transform: translateY(-3px); box-shadow: var(--se-shadow-lift); }
@@ -377,7 +434,7 @@ button:focus-visible,
 .se-callout strong { color: var(--se-navy); }
 
 /* --------------------------------------------------------------------------
-   9. Attack example "message cards" — mimic the real medium
+   9. Attack example "message cards": mimic the real medium
    Red is reserved for attack examples so the colour carries meaning.
    -------------------------------------------------------------------------- */
 .se-example {
@@ -533,7 +590,7 @@ button:focus-visible,
   transition: border-color .15s ease, background-color .15s ease;
 }
 .se-option:hover:not(:disabled) { border-color: var(--se-teal); background: #F4FAF9; }
-/* Keep answered options fully legible — browsers grey out disabled buttons. */
+/* Keep answered options fully legible: browsers grey out disabled buttons. */
 .se-option:disabled {
   cursor: default;
   opacity: 1;
@@ -795,6 +852,60 @@ button:focus-visible,
   border-radius: var(--se-radius-sm) !important;
   margin-bottom: .7rem;
   overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   14b. Icon-led content rows (About page)
+   -------------------------------------------------------------------------- */
+.se-iconrow {
+  display: flex;
+  gap: 1.15rem;
+  padding: 1.35rem 0;
+  border-bottom: 1px solid var(--se-border);
+}
+.se-iconrow:last-child { border-bottom: none; }
+.se-iconrow-icon {
+  flex-shrink: 0;
+  width: 46px; height: 46px;
+  border-radius: 11px;
+  background: var(--se-navy);
+  color: var(--se-orange);
+  display: grid; place-items: center;
+  font-size: 1.25rem;
+}
+.se-iconrow h2,
+.se-iconrow h3 {
+  font-size: 1.12rem;
+  margin-bottom: .4rem;
+}
+.se-iconrow p:last-child { margin-bottom: 0; }
+
+/* Checklist card */
+.se-checklist { list-style: none; padding: 0; margin: 0; }
+.se-checklist li {
+  position: relative;
+  padding: .45rem 0 .45rem 1.85rem;
+  font-size: .94rem;
+}
+.se-checklist li::before {
+  content: "\F26E";
+  font-family: "bootstrap-icons";
+  position: absolute; left: 0; top: .4rem;
+  color: #1FA463;
+  font-weight: 700;
+}
+
+.se-tagline {
+  background: var(--se-amber-soft);
+  border: 1px solid rgba(245,166,35,.45);
+  border-radius: 100px;
+  padding: .7rem 1.35rem;
+  text-align: center;
+  font-weight: 600;
+  color: #8A5A12;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
 }
 
 /* --------------------------------------------------------------------------

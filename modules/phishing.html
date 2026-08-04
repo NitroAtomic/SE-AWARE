@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phishing — SE Aware</title>
+  <title>Phishing | SE Aware</title>
   <meta name="description" content="A fake message that impersonates a trusted organisation to steal your credentials, your money, or your access.">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0B2545">
+  <meta property="og:title" content="Phishing | SE Aware">
+  <meta property="og:description" content="A fake message that impersonates a trusted organisation to steal your credentials, your money, or your access.">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="../css/style.css">
@@ -15,7 +21,7 @@
   <nav class="navbar navbar-expand-lg se-navbar sticky-top">
     <div class="container">
       <a class="navbar-brand" href="../index.html">
-        <span class="se-brand-mark"><i class="bi bi-shield-lock-fill" aria-hidden="true"></i></span>
+        <img class="se-brand-mark" src="../assets/img/logo-mark.png" alt="" width="38" height="38">
         <span>SE Aware<small>Stay Sharp Online</small></span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
@@ -72,7 +78,7 @@ entirely on you.</p>
 
 <p>The word covers a family of related attacks that share the same shape but arrive by different routes. <strong>Email
 phishing</strong> is the classic version: a message that appears to come from your bank, a courier, a marketplace, or a
-platform you use for work. <strong>Fake login pages</strong> are the second half of that attack &mdash; the link in the
+platform you use for work. <strong>Fake login pages</strong> are the second half of that attack, the link in the
 email leads to a page that is a pixel-accurate copy of the real sign-in screen, and anything you type into it goes
 straight to the attacker. <strong>QR phishing</strong>, sometimes called quishing, replaces the visible link with a
 square of pixels, which is a particularly effective trick because a QR code gives you nothing to inspect before you
@@ -87,19 +93,19 @@ email properly and you have most of what you need for everything else on this si
             <p>The sequence below is the pattern behind almost every version of this attack. Recognising the shape
               matters more than memorising any single example.</p>
             <ol class="se-steps mt-4">
-            <li><strong>Choose a brand worth impersonating.</strong> The attacker picks an organisation you are likely to deal with and likely to obey &mdash; a bank, a courier, a government agency, a payment platform, or a workplace tool like Microsoft 365 or Google Workspace.</li>
+            <li><strong>Choose a brand worth impersonating.</strong> The attacker picks an organisation you are likely to deal with and likely to obey: a bank, a courier, a government agency, a payment platform, or a workplace tool like Microsoft 365 or Google Workspace.</li>
             <li><strong>Build the message.</strong> Real logos are copied from the company's own website. The layout is lifted from a genuine notification. Machine translation and large language models have removed the clumsy grammar that used to give these away, so bad English is no longer a reliable signal.</li>
             <li><strong>Manufacture a reason to hurry.</strong> Your account will be suspended. A payment failed. A package is held at customs. Someone signed in from another country. The emotion varies but the function is identical: compress the time between reading and clicking.</li>
             <li><strong>Send at scale.</strong> Ordinary phishing is a numbers game. Millions of messages go out, and a response rate of a fraction of a percent is a profitable campaign.</li>
             <li><strong>Capture the credentials.</strong> The link opens a copy of the real login page, often on a domain that reads correctly at a glance. You type your username and password. The page captures both.</li>
-            <li><strong>Defeat the second factor in real time.</strong> Modern phishing kits do not stop at the password. The fake page immediately asks for your one-time PIN and relays it to the real site while the code is still valid &mdash; so the attacker signs in as you within seconds.</li>
+            <li><strong>Defeat the second factor in real time.</strong> Modern phishing kits do not stop at the password. The fake page immediately asks for your one-time PIN and relays it to the real site while the code is still valid, so the attacker signs in as you within seconds.</li>
             <li><strong>Use the access.</strong> Sometimes immediately: transfer funds, redirect a payout. Sometimes patiently: read your mail for weeks to learn who pays you and when, then send an invoice with new bank details.</li>
             </ol>
 
             <h2>A real-world example</h2>
-            <p>A phishing email aimed at a freelancer. This is a reconstruction built for teaching &mdash; no real person or company is
+            <p>A phishing email aimed at a freelancer. This is a reconstruction built for teaching. No real person or company is
               involved.</p>
-            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack &mdash; example only</span>
+            <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack, example only</span>
 
         <div class="se-example">
           <div class="se-email-head">
@@ -119,7 +125,7 @@ email properly and you have most of what you need for everything else on this si
         </div>
         <div class="se-callout">
           <strong>What gives it away.</strong> The sender domain is <code>paypal-secure-verify.com</code>, not
-          <code>paypal.com</code> &mdash; everything before the final dot is attacker-controlled, so a real brand name
+          <code>paypal.com</code>. Everything before the final dot is attacker-controlled, so a real brand name
           in the middle of a domain means nothing. The greeting is generic where a real service would use your name.
           The deadline is artificial. And note the last line: quoting the company's real security policy is a common
           trick to borrow credibility. The fastest response is not to examine the email harder, but to ignore it
@@ -131,22 +137,22 @@ email properly and you have most of what you need for everything else on this si
             <p>Each of these is something you can actually observe in the message or the call, not a vague feeling.
               One flag is reason to slow down. Two is reason to stop.</p>
             <ul class="se-flags mt-4">
-            <li>The domain after the final dot is not the company's real one. <code>paypal.com.secure-login.net</code> belongs to <code>secure-login.net</code>, not to PayPal &mdash; read domains from the right.</li>
+            <li>The domain after the final dot is not the company's real one. <code>paypal.com.secure-login.net</code> belongs to <code>secure-login.net</code>, not to PayPal. Read domains from the right.</li>
             <li>The reply-to address does not match the sender's display name. The display name is free text; anyone can set it to anything.</li>
             <li>You are addressed as &ldquo;Dear Customer&rdquo; or &ldquo;Dear User&rdquo; by a company that has always used your actual name.</li>
-            <li>There is a deadline measured in hours, paired with a consequence you would not want &mdash; suspension, reversal, a lost payment.</li>
+            <li>There is a deadline measured in hours, paired with a consequence you would not want: suspension, reversal, a lost payment.</li>
             <li>A link's visible text does not match where it actually goes. Hover on desktop, long-press on mobile, and read the real address before you tap.</li>
             <li>You are asked to log in from a link rather than from the app or bookmark you normally use.</li>
-            <li>An attachment arrives unexpectedly, especially .html, .htm, .zip, .iso, or a document that demands you enable macros.</li>
+            <li>An attachment arrives unexpectedly, especially .html .htm .zip .iso, or a document that demands you enable macros.</li>
             <li>The message asks for a one-time PIN, a password, or a full card number. No legitimate organisation ever asks for these by email.</li>
-            <li>Something is slightly off in the branding &mdash; an old logo, a stretched image, inconsistent fonts, a footer address that no longer exists.</li>
+            <li>Something is slightly off in the branding: an old logo, a stretched image, inconsistent fonts, a footer address that no longer exists.</li>
             </ul>
 
             <h2>What to do if it happens to you</h2>
             <p>Work through these in order. The first hour matters far more than getting every step perfect.</p>
             <ol class="se-todo mt-4">
             <li><strong>Stop before you type anything.</strong> If you have only opened the message, you are fine. Reading a phishing email does not compromise you; responding to it does.</li>
-            <li><strong>Do not use any link, number, or address in the message</strong> &mdash; including the one in the footer that looks official. Open the app you already have installed, or type the address you already know.</li>
+            <li><strong>Do not use any link, number, or address in the message</strong>, including the one in the footer that looks official. Open the app you already have installed, or type the address you already know.</li>
             <li><strong>If you entered a password, change it now, from a different device.</strong> Change it anywhere else you reused it too. Then look for &ldquo;sign out of all sessions&rdquo; or &ldquo;active devices&rdquo; in the account's security settings and revoke everything.</li>
             <li><strong>If you entered a one-time PIN, treat the account as already compromised.</strong> The attacker most likely used it within seconds. Change the password, revoke sessions, and check for forwarding rules or new recovery addresses that were added without your knowledge.</li>
             <li><strong>Check your email rules specifically.</strong> A common follow-up move is to add a silent forwarding rule so the attacker keeps reading your mail long after you have changed the password.</li>
@@ -192,7 +198,7 @@ the same notice is waiting for you there. If it is real, it will be. If it is no
                 <div class="card-body">
                   <div class="se-card-icon"><i class="bi bi-crosshair" aria-hidden="true"></i></div>
                   <h3 class="h6 mb-1">Spear Phishing</h3>
-                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Targeted messages built from your LinkedIn, portfolio, and public posts — fake recruiters, fake clients, fake bosses.</p>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Targeted messages built from your LinkedIn, portfolio, and public posts: fake recruiters, fake clients, fake bosses.</p>
                 </div>
               </a>
             </div>
@@ -201,7 +207,7 @@ the same notice is waiting for you there. If it is real, it will be. If it is no
                 <div class="card-body">
                   <div class="se-card-icon"><i class="bi bi-chat-left-text-fill" aria-hidden="true"></i></div>
                   <h3 class="h6 mb-1">Smishing</h3>
-                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Package fees, prize draws, and bank alerts sent by text — the scam 92.6% of surveyed remote workers had already received.</p>
+                  <p class="text-body-secondary mb-0" style="font-size:.9rem;">Package fees, prize draws, and bank alerts sent by text. The scam 92.6% of surveyed remote workers had already received.</p>
                 </div>
               </a>
             </div>
@@ -293,7 +299,7 @@ the same notice is waiting for you there. If it is real, it will be. If it is no
       <div class="se-footer-note">
         <div class="row gy-2 align-items-center">
           <div class="col-md-8">
-            &copy; <span data-year>2026</span> Group 4, Section S3102 &mdash; A Capstone Project,
+            &copy; <span data-year>2026</span> Group 4, Section S3102. A Capstone Project of
             Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
           </div>
           <div class="col-md-4 text-md-end">
@@ -310,13 +316,13 @@ the same notice is waiting for you there. If it is real, it will be. If it is no
   <script src="../js/account.js"></script>
   <script>
     /* ====================================================================
-       EDIT ME — instructional video for this module
+       EDIT ME: instructional video for this module
        Paste the YouTube video ID between the quotes (the part after
        "watch?v=") and the embed will render automatically. Leave it empty
        and a placeholder card is shown instead, so the page never breaks.
        ==================================================================== */
     var MODULE_VIDEO_ID = "";
-    var MODULE_VIDEO_TITLE = "Phishing — instructional video";
+    var MODULE_VIDEO_TITLE = "Phishing instructional video";
 
     (function () {
       var slot = document.getElementById("seVideoSlot");

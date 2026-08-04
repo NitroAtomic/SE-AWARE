@@ -1,5 +1,5 @@
 /* ==========================================================================
-   assessment.js — cybersecurity awareness assessment
+   assessment.js: cybersecurity awareness assessment
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
@@ -34,7 +34,7 @@
       '  <div class="se-lock-icon"><i class="bi bi-clipboard-check" aria-hidden="true"></i></div>' +
       '  <h2 class="h4 mt-3">Cybersecurity Awareness Assessment</h2>' +
       '  <p class="mx-auto" style="max-width:52ch;">Fifteen questions across all six topics. It takes about five ' +
-      "     minutes and there is no pass mark &mdash; the point is to find out which topics to work on first.</p>" +
+      "     minutes and there is no pass mark. The point is to find out which topics to work on first.</p>" +
       '  <div class="row g-3 my-4 text-start" style="max-width:520px;margin-inline:auto;">' +
       '    <div class="col-4"><div class="se-dash-stat text-center"><div class="val">15</div><div class="lbl">Questions</div></div></div>' +
       '    <div class="col-4"><div class="se-dash-stat text-center"><div class="val">6</div><div class="lbl">Topics</div></div></div>' +
@@ -42,7 +42,7 @@
       "  </div>" +
       (prior
         ? '  <p class="mb-3"><span class="se-pill amber"><i class="bi bi-clock-history" aria-hidden="true"></i> ' +
-          "Last taken " + window.SEStore.formatDate(prior.at) + " &mdash; scored " + prior.score + "/" + prior.total +
+          "Last taken " + window.SEStore.formatDate(prior.at) + ", scored " + prior.score + "/" + prior.total +
           "</span></p>"
         : "") +
       '  <button class="btn btn-se-primary btn-lg" id="seAssessStart" type="button">' +
@@ -216,7 +216,7 @@
     if (!r.weakAreas.length) {
       html.push('<div class="se-callout" style="max-width:none;"><strong>No weak areas found.</strong> You answered ' +
         "at least 60% correctly in every topic. Revisit any module you want to keep sharp, and retake this " +
-        "assessment in a few months &mdash; tactics move.</div>");
+        "assessment in a few months. Tactics move.</div>");
     } else {
       html.push('<p>Based on where you lost marks, work through these in order:</p><div class="row g-3">');
       r.weakAreas.forEach(function (t) {
@@ -247,7 +247,7 @@
   }
 
   /* ======================================================================
-     INIT — only after account.js has confirmed the gate is open
+     INIT: only after account.js has confirmed the gate is open
      ====================================================================== */
   document.addEventListener("se:ready", function (e) {
     if (!e.detail.allowed) return;

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   chatbot.js — floating AI educational assistant (FR-06)
+   chatbot.js: floating AI educational assistant (FR-06)
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
@@ -23,7 +23,7 @@
   "use strict";
 
   /* ======================================================================
-     CONFIGURATION — the only line the team needs to change to go live
+     CONFIGURATION: the only line the team needs to change to go live
      ====================================================================== */
   var N8N_WEBHOOK_URL = "REPLACE_WITH_YOUR_N8N_PRODUCTION_WEBHOOK_URL";
 
@@ -42,10 +42,10 @@
         "<p><strong>Phishing</strong> is a fake message that pretends to come from a company you trust so you hand over a password, an OTP, or money.</p>" +
         "<p>Check these before you act:</p>" +
         "<ul><li>The real sender address behind the display name</li>" +
-        "<li>Where a link actually points — hover on desktop, long-press on mobile</li>" +
+        "<li>Where a link actually points (hover on desktop, long-press on mobile)</li>" +
         "<li>Manufactured urgency: “your account closes in 24 hours”</li>" +
         "<li>A login page asking for your password after you clicked a link in a message</li></ul>" +
-        "<p>QR phishing works the same way — the code just hides the address. Read the URL preview before you continue.</p>"
+        "<p>QR phishing works the same way. The code just hides the address. Read the URL preview before you continue.</p>"
     },
     {
       keys: ["spear phishing", "spear-phishing", "targeted", "linkedin", "recruiter", "fake job", "job offer"],
@@ -64,7 +64,7 @@
     {
       keys: ["vishing", "phone call", "voice call", "caller", "called me", "it support", "deepfake voice"],
       reply:
-        "<p><strong>Vishing</strong> is a scam phone call. The caller creates pressure so you act before you think — usually to read out an OTP or install remote-access software.</p>" +
+        "<p><strong>Vishing</strong> is a scam phone call. The caller creates pressure so you act before you think, usually to read out an OTP or install remote-access software.</p>" +
         "<p>The rule that defeats almost all of it: <strong>no legitimate bank, courier, employer, or IT desk will ever ask you to read an OTP aloud.</strong></p>" +
         "<p>Hang up and call the number printed on your card or on the company's official site. Never use a number the caller gives you.</p>"
     },
@@ -73,7 +73,7 @@
       reply:
         "<p><strong>Pretexting</strong> is a believable cover story built over several messages before any request is made.</p>" +
         "<p>For remote workers the costly version is invoice fraud: a supplier or contractor you already work with emails to say their bank details changed.</p>" +
-        "<p>Treat any change of payment details as a stop signal. Call the contact on the number you already had — never the one in the new email — and confirm out loud.</p>"
+        "<p>Treat any change of payment details as a stop signal. Call the contact on the number you already had, never the one in the new email, and confirm out loud.</p>"
     },
     {
       keys: ["otp", "one time", "one-time", "code", "verification code", "authentication code"],
@@ -85,7 +85,7 @@
     {
       keys: ["mfa", "2fa", "multi-factor", "two factor", "two-factor", "authenticator"],
       reply:
-        "<p><strong>Multi-factor authentication</strong> means a stolen password alone is not enough to get in. Turn it on for your email first — whoever controls your email can reset everything else.</p>" +
+        "<p><strong>Multi-factor authentication</strong> means a stolen password alone is not enough to get in. Turn it on for your email first. Whoever controls your email can reset everything else.</p>" +
         "<p>Strength order, weakest to strongest: SMS codes, then an authenticator app such as Google Authenticator or Authy, then a hardware security key.</p>" +
         "<p>Save your backup codes somewhere offline before you finish setup.</p>"
     },
@@ -94,7 +94,7 @@
       reply:
         "<p>Length beats complexity. A passphrase of four unrelated words is stronger and easier to remember than <em>P@ssw0rd1</em>.</p>" +
         "<p>The habit that matters most is <strong>never reusing a password</strong>, because one breached site otherwise unlocks all the others. A password manager such as Bitwarden or 1Password makes that practical.</p>" +
-        "<p>Protect your email account first — it is the master key to every reset link you own.</p>"
+        "<p>Protect your email account first. It is the master key to every reset link you own.</p>"
     },
     {
       keys: ["report", "reporting", "who do i tell", "victim", "clicked", "i clicked", "fell for", "hacked", "compromised"],
@@ -103,7 +103,7 @@
         "<ul><li>Disconnect the device from the internet if you installed anything</li>" +
         "<li>Change the password on the affected account from a <em>different</em> device, and revoke active sessions</li>" +
         "<li>Turn on multi-factor authentication if it was not already on</li>" +
-        "<li>Tell your client or employer immediately — early beats tidy</li>" +
+        "<li>Tell your client or employer immediately, early beats tidy</li>" +
         "<li>If money moved, call your bank right away and ask about recall</li></ul>" +
         "<p>In the Philippines you can report to the PNP Anti-Cybercrime Group or the NBI Cybercrime Division. Keep screenshots and the full message headers.</p>"
     },
@@ -122,14 +122,14 @@
     {
       keys: ["what is social engineering", "social engineering", "what can you do", "help", "start", "hello", "hi "],
       reply:
-        "<p><strong>Social engineering</strong> is an attack on people rather than on software. Instead of breaking encryption, the attacker persuades you to open the door — using urgency, authority, fear, or curiosity.</p>" +
+        "<p><strong>Social engineering</strong> is an attack on people rather than on software. Instead of breaking encryption, the attacker persuades you to open the door, using urgency, authority, fear, or curiosity.</p>" +
         "<p>This platform covers five kinds: phishing, spear phishing, smishing, vishing, and pretexting, plus a Safe Practices module.</p>" +
         "<p>Ask me about any of them, or describe a message you received and I will tell you what to look for.</p>"
     }
   ];
 
   var OUT_OF_SCOPE =
-    "<p>I can only help with social engineering awareness for remote workers — phishing, spear phishing, smishing, vishing, pretexting, and safe remote-work practices.</p>" +
+    "<p>I can only help with social engineering awareness for remote workers: phishing, spear phishing, smishing, vishing, pretexting, and safe remote-work practices.</p>" +
     "<p>Try asking something like <em>“How do I know if an email is phishing?”</em> or <em>“Someone called asking for my OTP, what do I do?”</em></p>";
 
   var GREETING =
@@ -143,7 +143,7 @@
   ];
 
   /* ======================================================================
-     STATE — held in memory for this page view only.
+     STATE: held in memory for this page view only.
      Nothing is written to localStorage, cookies, or any analytics service.
      ====================================================================== */
   var isOpen = false;
@@ -322,7 +322,7 @@
     showTyping();
 
     if (!isConfigured()) {
-      // Offline demonstration mode — short delay so the typing state is visible.
+      // Offline demonstration mode: short delay so the typing state is visible.
       setTimeout(function () {
         hideTyping();
         addMessage(localAnswer(question), "bot");

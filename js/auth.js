@@ -1,10 +1,10 @@
 /* ==========================================================================
-   auth.js — registration, sign-in, and the simulated upgrade
+   auth.js: registration, sign-in, and the simulated upgrade
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
    PROTOTYPE ONLY. Validation here is client-side formatting only. No
-   credential is transmitted, and no password is stored anywhere — not in
+   credential is transmitted, and no password is stored anywhere, not in
    memory, not in sessionStorage, not hashed. Real authentication belongs on
    the server and is Capstone 2 work.
 
@@ -117,7 +117,7 @@
   }
 
   /* ======================================================================
-     GO PREMIUM  (simulated upgrade — scope excludes payment gateways)
+     GO PREMIUM  (simulated upgrade; scope excludes payment gateways)
      ====================================================================== */
   function initUpgrade() {
     var btn = document.getElementById("seUpgradeBtn");
