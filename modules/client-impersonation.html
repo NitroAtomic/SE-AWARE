@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Impersonation | SE Aware</title>
+  <meta name="description" content="Someone wearing your client's identity, either a fabricated new contact or a real mailbox that has been taken over.">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0B2545">
+  <meta property="og:title" content="Client Impersonation | SE Aware">
+  <meta property="og:description" content="Someone wearing your client's identity, either a fabricated new contact or a real mailbox that has been taken over.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/style.css?v=4">
+</head>
+<body data-page="" data-root="../" data-module="client-impersonation">
+  <a class="se-skip-link" href="#main">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg se-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img class="se-brand-mark" src="../assets/img/logo-mark.png" alt="" width="38" height="38">
+        <span>SE Aware<small>Stay Sharp Online</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
+              aria-controls="seNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="seNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" data-nav="home" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="modules" href="../modules.html">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="safe" href="../modules/safe-practices.html">Safe Practices</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="about" href="../about.html">About</a></li>
+          <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
+          <!-- Populated by js/account.js: guest sees Go Premium + Log in,
+               a signed-in user sees Dashboard + an account menu. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="se-pagehead">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb mb-2" style="font-size:.9rem;">
+            <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="../premium-modules.html">Role-Based Modules</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Client Impersonation</li>
+          </ol>
+        </nav>
+        <h1><i class="bi bi-person-bounding-box me-2" aria-hidden="true"></i>Client Impersonation</h1>
+        <p>Someone wearing your client's identity, either a fabricated new contact or a real mailbox that has been taken over.</p>
+        <div class="se-meta">
+          <span><i class="bi bi-stars" aria-hidden="true"></i> Premium</span>
+          <span><i class="bi bi-clock" aria-hidden="true"></i> 7 min read</span>
+          <span><i class="bi bi-patch-question-fill" aria-hidden="true"></i> 10-question quiz at the end</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="se-section">
+      <div class="container">
+        <div data-prototype-badge></div>
+        <div data-requires="premium">
+          <div class="row g-4 g-lg-5">
+            <div class="col-lg-8 se-prose se-module-body">
+
+              <h2>What it is</h2>
+
+<p>For a freelancer or a virtual assistant, the client relationship is the attack surface. You take instructions from
+people you have never met, over channels you did not choose, often across time zones that make a quick check feel
+awkward. An attacker who can convincingly wear your client's identity does not need to break anything technical. They
+just need to sound like the person who normally tells you what to do.</p>
+
+<p>This is what separates the risk from an office employee's. Inside a company, a stranger claiming to be the new
+finance lead is unusual, and there is a corridor to walk down and a colleague to ask. In client work, a new contact you
+have never seen or heard is completely normal. Agencies restructure, staff rotate, and half your working relationships
+exist entirely inside a project tool. The attacker is not fighting your instincts, because your instincts already say
+that unfamiliar people are part of the job.</p>
+
+<p>What they want, in order, is access first and money second. Access is quieter, it is rarely questioned, and it opens
+the door to everything else. A shared login to your client's ad account or CRM is worth more to an attacker than a
+single invoice, because it can be used repeatedly and it implicates you rather than them. The payment request, when it
+finally comes, arrives after the relationship feels established.</p>
+
+
+              <h2>How the attack works</h2>
+              <p>The sequence below is the pattern behind almost every version of this attack. Recognising the shape
+                matters more than memorising any single example.</p>
+              <ol class="se-steps mt-4">
+              <li><strong>Map the relationship from public sources.</strong> Your portfolio names the client. The client's site names their staff. Your public posts reveal roughly what you do for them and when. None of this is secret, and none of it needs to be stolen.</li>
+              <li><strong>Choose an identity that fits a gap.</strong> Not the CEO, whom you would recognise, but a plausible middle layer: a new project manager, someone in finance operations, an account coordinator. Senior enough to give instructions, junior enough that you would not expect to know them.</li>
+              <li><strong>Build the channel.</strong> A domain one character off the real one, a professional profile with a stock photo, and a signature block copied from a genuine email that was forwarded somewhere public.</li>
+              <li><strong>Make first contact about nothing.</strong> An introduction. A question about a deliverable you have already sent. A request for your availability next month. The first message exists only so the second one is not the first.</li>
+              <li><strong>Let a few days pass.</strong> Time converts a stranger into a contact. By the third exchange your brain files them under people I work with, which is exactly the category the attack needs.</li>
+              <li><strong>Ask for access, framed as onboarding.</strong> Add me to the shared drive. Send me the social login so I can schedule. Export the customer list for the migration. Each of these is a normal Tuesday request from a real project manager.</li>
+              <li><strong>Escalate to money once trust holds.</strong> Now the invoice details change, or a supplier needs paying urgently, or a gift card run is needed for a client giveaway. The request lands inside a relationship that already feels real.</li>
+              </ol>
+
+              <h2>A real-world example</h2>
+              <p>A new project manager who does not exist. This is a reconstruction built for teaching. No real person or company is
+                involved.</p>
+              <span class="se-example-tag"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> Simulated attack, example only</span>
+
+        <div class="se-example">
+          <div class="se-dm">
+            <div class="se-dm-head">
+              <div class="se-dm-avatar">RS</div>
+              <div>
+                <div style="font-weight:600;">Ramon Salcedo</div>
+                <div style="font-size:.82rem;color:#5A6473;">Project Manager &middot; Cortez Logistics</div>
+              </div>
+            </div>
+            <div class="se-dm-msg se-dm-them"><strong>Monday.</strong> Hi Juan, Ramon here, I have just taken over the
+              analytics workstream from Marco. Still getting my bearings. Loved the dashboard revisions, by the way.</div>
+            <div class="se-dm-msg se-dm-them"><strong>Wednesday.</strong> Quick one, do you have the raw export from the
+              March pull? Just want to sanity-check a figure before the board deck.</div>
+            <div class="se-dm-msg se-dm-them"><strong>Friday.</strong> Thanks for that. Last thing and then I will stop
+              bothering you: could you add me to the shared Drive folder, and send over the login for the analytics
+              portal? IT are slow with provisioning and I would rather not hold up your invoice approval while we wait.</div>
+          </div>
+        </div>
+        <div class="se-callout">
+          <strong>What gives it away.</strong> Look at the shape rather than any single message. Monday establishes an
+          identity and offers a compliment that costs nothing. Wednesday asks for something small and harmless, which
+          you grant, and which now makes Friday feel like a continuation. Friday is the actual attack, and it arrives
+          wrapped in two pressure points: IT are slow, so the normal process is framed as the obstacle, and your invoice
+          approval is dangled as the thing at risk. Notice also that Marco is named correctly. That detail was public.
+          The one question that ends this is not addressed to Ramon at all: it is a message to Marco asking whether
+          Ramon is real.
+        </div>
+
+
+              <h2>Red flags to look for</h2>
+              <p>Each of these is something you can actually observe in the message or the request, not a vague
+                feeling. One flag is reason to slow down. Two is reason to stop.</p>
+              <ul class="se-flags mt-4">
+              <li>A new contact appears at a client and, within a few exchanges, needs access, credentials, or a payment change.</li>
+              <li>The introduction arrives from the new person rather than from someone you already work with. Real handovers are almost always introduced by the person leaving.</li>
+              <li>You are told the normal process is the problem: IT are slow, procurement is backed up, the portal is down, so could you just send it directly.</li>
+              <li>Something you want is quietly linked to compliance. Your invoice, your renewal, your next brief.</li>
+              <li>The email domain differs from your existing thread by one character, or the display name matches while the address does not.</li>
+              <li>A request for credentials is framed as temporary, with a promise that proper access is coming later.</li>
+              <li>The person avoids voice or video for reasons that sound reasonable: travelling, back-to-back calls, poor signal, phone being replaced.</li>
+              <li>The first request is trivially small and the second one is not. Escalation across messages is the signature.</li>
+              <li>You are asked to keep the arrangement between the two of you until an announcement, a reorganisation, or a launch.</li>
+              </ul>
+
+              <h2>What to do if it happens to you</h2>
+              <p>Work through these in order. The first hour matters far more than getting every step perfect.</p>
+              <ol class="se-todo mt-4">
+              <li><strong>Verify through the person who introduced you to the account</strong>, not through the new contact. One message to your known contact settles it: <em>Is Ramon in finance yours? He has asked me for portal access.</em></li>
+              <li><strong>Do not reply to the new address to ask if it is genuine.</strong> If it is an impersonation, you are asking the attacker to confirm themselves, and they will.</li>
+              <li><strong>Check the full email address character by character</strong> against your existing thread. Display names are free text and prove nothing.</li>
+              <li><strong>If you already granted access, revoke it now</strong> from the platform's user or session settings, then change any password that was shared and check for forwarding rules or new recovery addresses.</li>
+              <li><strong>Tell the real client the same day</strong>, even if nothing was lost. Someone is using their name, and their other contractors are being approached the same way.</li>
+              <li><strong>Write down what was requested and when.</strong> If money moved later, that timeline is what a bank or an investigator will ask for.</li>
+              <li><strong>Ask for delegated access from now on</strong> rather than shared logins. Your own account on their platform can be revoked cleanly and leaves an audit trail that protects you as much as them.</li>
+              </ol>
+
+<p>The defence here is a standing arrangement, not vigilance. At the start of every contract, ask the client two
+questions: who is authorised to request access or payment changes, and will you introduce anyone new to me directly?
+Clients tend to appreciate being asked, because it makes you look like someone who has thought about their exposure as
+well as your own. It also puts the answer in writing before the day you need it, which is the only day it matters.</p>
+
+
+              <div id="seModuleProgress"></div>
+
+              <div class="se-card mt-5">
+                <div class="card-body text-center py-4">
+                  <h3 class="h4 mb-2">Ready to test yourself?</h3>
+                  <p class="mb-4" style="max-width:52ch;margin-inline:auto;">Ten questions, drawn at random from a
+                    fifteen-question bank and reshuffled every attempt. Most of them describe a client-work situation
+                    and ask what you would do.</p>
+                  <a class="btn btn-se-primary btn-lg" href="../quiz.html?module=client-impersonation">
+                    Take the Client Impersonation Quiz <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+
+              <h2>Related modules</h2>
+              <div class="row g-3 mt-1">
+              <div class="col-md-6">
+                <a class="se-card d-block text-decoration-none h-100" href="invoice-scams.html">
+                  <div class="card-body">
+                    <div class="se-card-icon"><i class="bi bi-receipt-cutoff" aria-hidden="true"></i></div>
+                    <h3 class="h6 mb-1">Invoice and Payment Scams</h3>
+                    <p class="text-body-secondary mb-0" style="font-size:.9rem;">Intercepted invoices, changed bank details, and the overpayment refund trick that costs freelancers their own money.</p>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-6">
+                <a class="se-card d-block text-decoration-none h-100" href="fake-recruiters.html">
+                  <div class="card-body">
+                    <div class="se-card-icon"><i class="bi bi-briefcase-fill" aria-hidden="true"></i></div>
+                    <h3 class="h6 mb-1">Fake Job and Recruiter Offers</h3>
+                    <p class="text-body-secondary mb-0" style="font-size:.9rem;">Credential harvesting, advance fees, identity theft, and the money mule role that ends with your account frozen.</p>
+                  </div>
+                </a>
+              </div>
+              </div>
+
+            </div>
+
+            <aside class="col-lg-4">
+              <div class="se-card mb-4">
+                <div class="card-body">
+                  <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">On this page</h3>
+                  <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                    <li><a href="#main">What it is</a></li>
+                    <li><a href="#main">How the attack works</a></li>
+                    <li><a href="#main">A real-world example</a></li>
+                    <li><a href="#main">Red flags to look for</a></li>
+                    <li><a href="#main">What to do if it happens</a></li>
+                    <li><a href="../quiz.html?module=client-impersonation">Take the quiz</a></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="se-card mb-4">
+                <div class="card-body">
+                  <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">The one rule</h3>
+                  <p class="mb-0" style="font-size:.95rem;">Someone wearing your client's identity, either a fabricated new contact or a real mailbox that has been taken over.</p>
+                </div>
+              </div>
+
+              <div class="se-card mb-4">
+                <div class="card-body">
+                  <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">Role-based modules</h3>
+                  <ul style="font-size:.93rem;padding-left:1.1rem;line-height:2;">
+                    <li><a href="client-impersonation.html">Client Impersonation</a></li>
+                    <li><a href="invoice-scams.html">Invoice and Payment Scams</a></li>
+                    <li><a href="fake-recruiters.html">Fake Job and Recruiter Offers</a></li>
+                    <li><a href="client-data.html">Secure Client Data Handling</a></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="se-card">
+                <div class="card-body">
+                  <h3 class="h6 text-uppercase mb-3" style="letter-spacing:.8px;color:var(--se-teal-dark);">Prerequisites</h3>
+                  <p style="font-size:.92rem;">These build on the five attack types. If any of them is unfamiliar,
+                    start there.</p>
+                  <a class="btn btn-se-outline btn-sm" href="../modules.html">Free modules</a>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="se-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h2 class="h5"><i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>SE Aware</h2>
+          <p class="mb-3" style="font-size:.9rem;">A free, public learning platform that helps remote workers,
+            freelancers, and virtual assistants recognise and respond to social engineering attacks.</p>
+          <p class="mb-0"><span class="se-pill amber"><i class="bi bi-unlock-fill" aria-hidden="true"></i> Free &middot; No account &middot; No signup</span></p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h2 class="h5">Learn</h2>
+          <ul>
+            <li><a href="../modules/phishing.html">Phishing</a></li>
+            <li><a href="../modules/spear-phishing.html">Spear Phishing</a></li>
+            <li><a href="../modules/smishing.html">Smishing</a></li>
+            <li><a href="../modules/vishing.html">Vishing</a></li>
+            <li><a href="../modules/pretexting.html">Pretexting</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h2 class="h5">Platform</h2>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../modules.html">All Modules</a></li>
+            <li><a href="../modules/safe-practices.html">Safe Practices</a></li>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../go-premium.html">Go Premium</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h2 class="h5">Important</h2>
+          <div class="se-footer-disclaimer">
+            This platform is for <strong>education and awareness only</strong>. It does not scan emails,
+            links, QR codes, or SMS messages, it does not detect threats in real time, and the AI assistant
+            is not a substitute for professional cybersecurity consultation or incident response.
+          </div>
+        </div>
+      </div>
+      <div class="se-footer-note">
+        <div class="row gy-2 align-items-center">
+          <div class="col-md-8">
+            &copy; <span data-year>2026</span> Group 4, Section S3102. A Capstone Project of
+            Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
+          </div>
+          <div class="col-md-4 text-md-end">
+            <span style="font-size:.82rem;">No personal data is collected on this site.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/main.js?v=4"></script>
+  <script src="../js/store.js?v=4"></script>
+  <script src="../js/account.js?v=4"></script>
+  <script src="../js/chatbot.js?v=4"></script>
+</body>
+</html>

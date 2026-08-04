@@ -42,6 +42,8 @@ The **premium tier** is also implemented, as a **prototype**: every page in the 
 | PA-01/02 | Free-tier restriction and premium access | Complete, role-based modules gated |
 | AD-01..04 | Admin login and CRUD | Prototype, mock sign-in, in-memory CRUD |
 
+**Premium depth.** The four role-based modules are 1,425 to 1,550 words each, matching the free modules, and each carries its own 15-question bank. Premium adds roughly 5,900 words and 60 questions on top of the free tier rather than summarising it.
+
 What the prototype deliberately does **not** do: no server, no database, no real authentication, no payment gateway. See *Known scope boundary* below for how to present this to the panel.
 
 ---
@@ -88,7 +90,9 @@ To connect the live Gemini model, edit **one line** at the top of `js/chatbot.js
 var N8N_WEBHOOK_URL = "REPLACE_WITH_YOUR_N8N_PRODUCTION_WEBHOOK_URL";
 ```
 
-**Full setup guide, including the ready-to-paste system prompt that locks the assistant to the six course topics: [`N8N-CHATBOT-SETUP.md`](N8N-CHATBOT-SETUP.md).**
+**Two guides cover this end to end:**
+- [`FREE-AI-SETUP.md`](FREE-AI-SETUP.md) shows how to run the whole thing at zero cost, with a defence-day checklist.
+- [`N8N-CHATBOT-SETUP.md`](N8N-CHATBOT-SETUP.md) has the node configuration and the ready-to-paste system prompt that locks the assistant to the six course topics.
 
 ### The n8n workflow
 
@@ -161,7 +165,7 @@ Deploy early. Appendix A of the paper needs a live link, and having a stable URL
 ├── go-premium.html             Freemium comparison + Simulate Upgrade
 ├── assessment.html             15-question awareness assessment
 ├── dashboard.html              Progress · quiz history · recommendations
-├── premium-modules.html        Four role-based scenario modules (gated)
+├── premium-modules.html        Index of the four role-based modules (gated)
 ├── admin.html                  Administrator portal (separate, not in nav)
 │
 ├── modules/
@@ -175,7 +179,8 @@ Deploy early. Appendix A of the paper needs a live link, and having a stable URL
 │   └── style.css               Design tokens, components, responsive rules
 ├── js/
 │   ├── main.js                 Nav state, footer year, shared helpers
-│   ├── quiz-data.js            75 authored questions, 15 per module
+│   ├── quiz-data.js            75 authored questions, 15 per free module
+│   ├── quiz-data-premium.js    60 authored questions, 15 per premium module
 │   ├── quiz.js                 Randomisation, scoring, results rendering
 │   ├── chatbot.js              Floating assistant, n8n client, offline fallback
 │   ├── store.js                Prototype state layer, the API swap point
@@ -186,6 +191,7 @@ Deploy early. Appendix A of the paper needs a live link, and having a stable URL
 │   ├── dashboard.js            Progress, quiz history, recommendations
 │   └── admin.js                Admin panel CRUD
 ├── assets/img/                 Image assets
+├── FREE-AI-SETUP.md            Zero-cost setup path and defence-day checklist
 ├── N8N-CHATBOT-SETUP.md        Live Gemini setup and the topic-lock system prompt
 ├── TESTING.md                  Test matrix for the testing phase
 └── README.md

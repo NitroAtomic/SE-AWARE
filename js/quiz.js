@@ -51,6 +51,25 @@
       return;
     }
 
+    // A premium bank needs a premium plan, the same gate the module page uses.
+    if (bank.premium && !(window.SEStore && window.SEStore.isPremium())) {
+      var signedIn = window.SEStore && window.SEStore.isSignedIn();
+      shell.innerHTML =
+        '<div class="text-center py-4">' +
+        '  <div class="se-lock-icon"><i class="bi bi-stars" aria-hidden="true"></i></div>' +
+        '  <h2 class="h4 mt-3">This quiz is part of Premium</h2>' +
+        '  <p class="mx-auto" style="max-width:46ch;">' +
+        (signedIn
+          ? "Role-based quizzes come with the role-based modules. Upgrade to unlock them."
+          : "Sign in and upgrade to reach the role-based modules and their quizzes.") +
+        "</p>" +
+        '  <div class="d-flex flex-wrap gap-2 justify-content-center mt-3">' +
+        '    <a class="btn btn-se-primary" href="go-premium.html">See what Premium includes</a>' +
+        '    <a class="btn btn-se-outline" href="modules.html">Free modules</a>' +
+        "  </div></div>";
+      return;
+    }
+
     state.slug = slug;
     state.title = bank.title;
     state.items = drawQuestions(bank.questions);

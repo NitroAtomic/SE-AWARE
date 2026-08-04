@@ -12,6 +12,8 @@ Fill in the **Result**, **Tester**, and **Date** columns as you work through eac
 | Premium tier | 25 | Registration, login, logout, assessment, dashboard, gating, admin CRUD, guest experience unchanged |
 | Deep QA | 24 | Accessibility, duplicate IDs, heading order, WCAG contrast, all five quizzes, video embeds, subpath deployment, content hygiene |
 
+Question banks: **135 total**, 75 across the five free modules and 60 across the four premium role-based modules, 15 per bank with at least 6 scenario items each.
+
 A separate scope test confirms the AI assistant answers 10 of 10 in-scope questions and refuses 10 of 10 out-of-scope ones.
 
 ---

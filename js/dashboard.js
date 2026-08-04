@@ -18,7 +18,15 @@
   function root() { return document.body.getAttribute("data-root") || ""; }
   function esc(s) { return window.SEUtil.escapeHtml(s); }
 
-  /* Modules that count toward the progress figure. */
+  /* Role-based modules, shown only to premium subscribers. */
+  var PREMIUM_TRACKED = [
+    { slug: "client-impersonation", title: "Client Impersonation" },
+    { slug: "invoice-scams",        title: "Invoice and Payment Scams" },
+    { slug: "fake-recruiters",      title: "Fake Job and Recruiter Offers" },
+    { slug: "client-data",          title: "Secure Client Data Handling" }
+  ];
+
+  /* Modules that count toward the core progress figure. */
   var TRACKED = [
     { slug: "phishing",       title: "Phishing" },
     { slug: "spear-phishing", title: "Spear Phishing" },
@@ -74,6 +82,18 @@
         "</div>";
     }).join("");
 
+    var premiumDone = PREMIUM_TRACKED.filter(function (m) { return !!progress[m.slug]; }).length;
+    var premiumRows = isPremium ? PREMIUM_TRACKED.map(function (m) {
+      var p = progress[m.slug];
+      return '<div class="se-progress-row">' +
+        '<div class="name">' + esc(m.title) + "</div>" +
+        (p ? '<span class="text-body-secondary" style="font-size:.85rem;">' +
+              window.SEStore.formatDate(p.completedAt) + "</span>" : "") +
+        '<span class="se-status ' + (p ? "done" : "todo") + '">' + (p ? "Completed" : "Not started") + "</span>" +
+        '<a class="btn btn-se-outline btn-sm" href="' + root() + "modules/" + m.slug + '.html">Open</a>' +
+        "</div>";
+    }).join("") : "";
+
     document.getElementById("seDashProgress").innerHTML =
       '<div class="d-flex align-items-center gap-3 mb-3">' +
       '  <div class="se-score-ring" style="--pct:' + pct + '%;width:96px;height:96px;">' +
@@ -82,7 +102,12 @@
       '  <div><strong style="color:var(--se-navy);">' + done + " of " + TRACKED.length + " modules</strong>" +
       '    <div class="text-body-secondary" style="font-size:.9rem;">Completing a module quiz marks it automatically. ' +
       "      You can also mark a module by hand from its page.</div></div>" +
-      "</div>" + rows;
+      "</div>" + rows +
+      (isPremium
+        ? '<h3 class="h6 text-uppercase mt-4 mb-2" style="letter-spacing:.8px;color:var(--se-teal-dark);">' +
+          "Role-based modules <span class=\"se-pill\" style=\"margin-left:.4rem;\">" +
+          premiumDone + " / " + PREMIUM_TRACKED.length + "</span></h3>" + premiumRows
+        : "");
 
     /* ---------------- quiz history ---------------- */
     var hist = document.getElementById("seDashHistory");
