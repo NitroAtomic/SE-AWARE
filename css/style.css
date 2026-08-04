@@ -64,6 +64,10 @@
   --se-ok-text:     #14713F;
   --se-warn-text:   #8A5A12;
   --se-warn-icon:   #B9761C;
+
+  /* The blue of a hyperlink inside an attack-example mockup. It imitates a
+     real mail client, so it stays blue in both themes and only lightens. */
+  --se-fake-link:   #2F6FD0;
 }
 
 /* --------------------------------------------------------------------------
@@ -114,6 +118,7 @@ html[data-theme="dark"] {
   --se-ok-text:     #6FDCA0;
   --se-warn-text:   #F0C070;
   --se-warn-icon:   #F0B45F;
+  --se-fake-link:   #7FB3FF;
 
   color-scheme: dark;   /* native scrollbars and form controls follow suit */
 }
@@ -505,7 +510,7 @@ button:focus-visible,
 .se-stat-value {
   font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.3rem);
   font-weight: 800;
-  color: var(--se-navy);
+  color: var(--se-heading);
   line-height: 1.1;
 }
 .se-stat-label { color: var(--se-text); font-size: .95rem; margin: .35rem 0 .5rem; }
@@ -777,7 +782,7 @@ button:focus-visible,
   border: 1px solid var(--se-border);
   display: grid; place-items: center;
   font-weight: 700; font-size: .85rem;
-  color: var(--se-navy);
+  color: var(--se-heading);
 }
 .se-option.is-correct { border-color: var(--se-ok); background: var(--se-ok-soft); }
 .se-option.is-correct .se-option-key { background: #1FA463; color: #fff; border-color: var(--se-ok); }
@@ -812,7 +817,7 @@ button:focus-visible,
   background: var(--se-surface); border-radius: 50%;
 }
 .se-score-inner { position: relative; text-align: center; }
-.se-score-num { font-size: 2.4rem; font-weight: 800; color: var(--se-navy); line-height: 1; }
+.se-score-num { font-size: 2.4rem; font-weight: 800; color: var(--se-heading); line-height: 1; }
 .se-score-den { font-size: .9rem; color: var(--se-muted); }
 
 .se-band { border-radius: 100px; padding: .45rem 1.1rem; font-weight: 700; font-size: .92rem; display: inline-block; }
@@ -830,7 +835,7 @@ button:focus-visible,
 }
 .se-review-item.ok { border-left-color: var(--se-ok); }
 .se-review-item.no { border-left-color: var(--se-danger); }
-.se-review-q { font-weight: 600; color: var(--se-navy); margin-bottom: .6rem; }
+.se-review-q { font-weight: 600; color: var(--se-heading); margin-bottom: .6rem; }
 .se-review-line { font-size: .92rem; margin-bottom: .25rem; }
 .se-review-line .lbl { color: var(--se-muted); display: inline-block; min-width: 118px; }
 
@@ -1325,7 +1330,7 @@ button:focus-visible,
   flex-direction: column;
 }
 .se-plan.is-featured { border-color: var(--se-teal); box-shadow: var(--se-shadow-lift); }
-.se-plan-price { font-size: 2rem; font-weight: 800; color: var(--se-navy); line-height: 1.1; }
+.se-plan-price { font-size: 2rem; font-weight: 800; color: var(--se-heading); line-height: 1.1; }
 .se-plan ul { list-style: none; padding: 0; margin: 1.15rem 0; }
 .se-plan li { padding-left: 1.7rem; position: relative; margin-bottom: .6rem; font-size: .94rem; }
 .se-plan li::before {
@@ -1348,7 +1353,7 @@ button:focus-visible,
   font-size: .78rem; text-transform: uppercase; letter-spacing: .6px;
   color: var(--se-muted); font-weight: 700;
 }
-.se-dash-stat .val { font-size: 1.9rem; font-weight: 800; color: var(--se-navy); line-height: 1.15; }
+.se-dash-stat .val { font-size: 1.9rem; font-weight: 800; color: var(--se-heading); line-height: 1.15; }
 
 .se-progress-row {
   display: flex; align-items: center; gap: 1rem;
@@ -1356,7 +1361,7 @@ button:focus-visible,
   border-bottom: 1px solid var(--se-border);
 }
 .se-progress-row:last-child { border-bottom: none; }
-.se-progress-row .name { flex: 1 1 auto; font-weight: 600; color: var(--se-navy); font-size: .95rem; }
+.se-progress-row .name { flex: 1 1 auto; font-weight: 600; color: var(--se-heading); font-size: .95rem; }
 .se-status {
   font-size: .8rem; font-weight: 700;
   padding: .25rem .7rem; border-radius: 100px;
@@ -1381,7 +1386,7 @@ button:focus-visible,
 }
 .se-table thead th {
   background: var(--se-bg);
-  color: var(--se-navy);
+  color: var(--se-heading);
   font-weight: 700;
   font-size: .8rem;
   text-transform: uppercase;
@@ -1413,7 +1418,7 @@ button:focus-visible,
 /* Topic breakdown bars */
 .se-topic { margin-bottom: 1rem; }
 .se-topic-head { display: flex; justify-content: space-between; font-size: .9rem; margin-bottom: .3rem; }
-.se-topic-head .t { font-weight: 600; color: var(--se-navy); }
+.se-topic-head .t { font-weight: 600; color: var(--se-heading); }
 .se-topic-bar { height: 8px; border-radius: 100px; background: var(--se-border); overflow: hidden; }
 .se-topic-bar span { display: block; height: 100%; border-radius: 100px; background: var(--se-teal); }
 .se-topic-bar span.weak { background: var(--se-amber); }
@@ -1455,7 +1460,7 @@ button:focus-visible,
   color: var(--se-muted);
 }
 .se-admin-tab.active {
-  background: var(--se-surface); color: var(--se-navy);
+  background: var(--se-surface); color: var(--se-heading);
   border-color: var(--se-border);
   margin-bottom: -1px;
 }
