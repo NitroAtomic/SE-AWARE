@@ -37,7 +37,9 @@
      ====================================================================== */
   var KB = [
     {
-      keys: ["phishing email", "phishing", "fake login", "quishing", "qr code", "qr"],
+      keys: ["phishing email", "phishing", "fake login", "quishing", "qr code", "qr",
+        "is this email", "is this a scam", "email a scam", "scam email",
+        "suspicious email", "is this legit", "is this real", "is this genuine"],
       reply:
         "<p><strong>Phishing</strong> is a fake message that pretends to come from a company you trust so you hand over a password, an OTP, or money.</p>" +
         "<p>Check these before you act:</p>" +
@@ -97,7 +99,10 @@
         "<p>Protect your email account first. It is the master key to every reset link you own.</p>"
     },
     {
-      keys: ["report", "reporting", "who do i tell", "victim", "clicked", "i clicked", "fell for", "hacked", "compromised"],
+      keys: ["report", "reporting", "who do i tell", "victim", "clicked", "i clicked",
+        "fell for", "hacked", "compromised", "support", "can help", "get help",
+        "need help", "who can", "hotline", "authorities", "complaint",
+        "cybercrime", "pnp", "nbi", "privacy commission", "file a case", "scammed"],
       reply:
         "<p>If you think you have already been caught, act in this order:</p>" +
         "<ul><li>Disconnect the device from the internet if you installed anything</li>" +
@@ -105,10 +110,12 @@
         "<li>Turn on multi-factor authentication if it was not already on</li>" +
         "<li>Tell your client or employer immediately, early beats tidy</li>" +
         "<li>If money moved, call your bank right away and ask about recall</li></ul>" +
-        "<p>In the Philippines you can report to the PNP Anti-Cybercrime Group or the NBI Cybercrime Division. Keep screenshots and the full message headers.</p>"
+        "<p>In the Philippines you can report to the <strong>PNP Anti-Cybercrime Group</strong> or the <strong>NBI Cybercrime Division</strong>. If personal data was exposed, the <strong>National Privacy Commission</strong> handles that. All three are linked at the bottom of every page on this site. Keep screenshots and the full message headers.</p>"
     },
     {
-      keys: ["safe practice", "stay safe", "tips", "remote work", "work from home", "wifi", "wi-fi", "home network"],
+      keys: ["safe practice", "safe remote", "best practice", "good practice", "practices",
+        "stay safe", "tips", "remote work", "work from home", "wifi", "wi-fi",
+        "home network", "protect myself", "protect my", "security habit"],
       reply:
         "<p>The highest-value habits for remote workers:</p>" +
         "<ul><li>Multi-factor authentication on email first, then everything else</li>" +
@@ -142,6 +149,95 @@
     "What should I do to stay safe while working remotely?"
   ];
 
+
+
+  /* ======================================================================
+     TYPO TOLERANCE
+
+     People misspell these words constantly, and "pishing" for "phishing" is
+     the most common one of all. Matching on exact strings meant a clearly
+     in-scope question was treated as off-topic.
+
+     Each word is compared against a small vocabulary using edit distance.
+     Only words of five characters or more are considered, which keeps short
+     words like "poem" or "otp" from being corrected into something else.
+     ====================================================================== */
+
+  var VOCAB = [
+    "phishing", "smishing", "vishing", "pretexting", "quishing", "spear",
+    "password", "passwords", "credential", "credentials", "authenticator",
+    "email", "emails", "message", "messages", "sender", "domain", "link",
+    "attachment", "recruiter", "invoice", "payment", "account", "accounts",
+    "verify", "verification", "report", "suspicious", "scammer", "attacker",
+    "router", "backup", "device", "security", "awareness", "engineering"
+  ];
+
+  function editDistance(a, b) {
+    var m = a.length, n = b.length;
+    if (Math.abs(m - n) > 2) return 99;
+    var prev = [], cur = [], i, j;
+    for (j = 0; j <= n; j++) prev[j] = j;
+    for (i = 1; i <= m; i++) {
+      cur[0] = i;
+      for (j = 1; j <= n; j++) {
+        cur[j] = Math.min(
+          prev[j] + 1,
+          cur[j - 1] + 1,
+          prev[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1)
+        );
+      }
+      for (j = 0; j <= n; j++) prev[j] = cur[j];
+    }
+    return prev[n];
+  }
+
+  /** Map obvious misspellings onto the canonical term before matching. */
+  function normalise(text) {
+    return String(text).toLowerCase().split(/\s+/).map(function (raw) {
+      var word = raw.replace(/[^a-z0-9-]/g, "");
+      if (word.length < 4) return word;
+      if (VOCAB.indexOf(word) !== -1) return word;
+      for (var i = 0; i < VOCAB.length; i++) {
+        var v = VOCAB[i];
+        if (v.length < 5) continue;
+        var tol = v.length >= 8 ? 2 : 1;
+        if (editDistance(word, v) <= tol) return v;
+      }
+      return word;
+    }).join(" ");
+  }
+
+  /* Return the forms of the question that term matching should be tried
+     against. Two are needed because people hyphenate inconsistently:
+     "remote-work" has to match the term "remote work", while "e-mail" and
+     "two-factor" have to keep their hyphens. Checking both forms covers
+     each case without a list of exceptions. */
+  function haystacks(question) {
+    var q = " " + normalise(question).trim() + " ";
+    var flat = q.replace(/-/g, " ").replace(/\s+/g, " ");
+    return flat === q ? [q] : [q, flat];
+  }
+
+  function containsTerm(forms, term) {
+    for (var i = 0; i < forms.length; i++) {
+      if (forms[i].indexOf(term) !== -1) return true;
+    }
+    return false;
+  }
+
+  /* Shown when the question is clearly on topic but no entry matched.
+     This is NOT the refusal: those are different situations and must not
+     look the same to the visitor. */
+  var NO_MATCH =
+    "<p>That is something I can help with, I am just not certain which part you mean. " +
+    "Which of these is closest?</p>" +
+    "<ul><li>Phishing, including fake login pages and QR codes</li>" +
+    "<li>Spear phishing, meaning targeted messages written for you</li>" +
+    "<li>Smishing, by text message</li>" +
+    "<li>Vishing, by phone call</li>" +
+    "<li>Pretexting, including invoice fraud</li>" +
+    "<li>Safe practices for remote work</li></ul>" +
+    "<p>Or just describe the message you received and I will tell you what it looks like.</p>";
 
   /* ======================================================================
      SCOPE GUARD
@@ -182,6 +278,12 @@
     "antivirus", "encrypt", "privacy", "data", "security", "cyber", "awareness",
     "suspicious", "red flag", "warning sign", "what should i do", "is this safe",
     "is it safe", "was i", "am i", "clicked", "tapped", "scanned", "replied",
+    "practice", "habit", "hygiene", "protect", "prevent", "avoid",
+    // asking for help in plain language, which must never be refused
+    "help", "support", "assist", "guidance", "advice", "advise",
+    "who can", "who do i", "where do i", "what do i do", "contact", "hotline",
+    "authorit", "police", "pnp", "nbi", "cybercrime", "complaint", "legal",
+    "privacy commission", "victim", "scammed", "tricked", "fell for",
     // platform navigation
     "module", "quiz", "assessment", "dashboard", "course", "lesson", "platform"
   ];
@@ -194,7 +296,8 @@
     /\bweather\b|\bforecast\b/i,
     /\bhomework\b|\bassignment\b(?!.*(phish|security|cyber))/i,
     /\b(who|what) (is|was|are|were)\b.*\b(president|capital|actor|singer|movie|team)\b/i,
-    /\bmath\b|\bsolve\b.*\bequation\b|\bcalculate\b(?!.*risk)/i,
+    /\bmath\b|\bsolve\b|\bequation\b|\bcalculate\b(?!.*risk)/i,
+    /\d\s*[+\-*\/^=]\s*\d/,
     /\bwrite\b.*\b(code|program|script|function)\b(?!.*phish)/i,
     /\bmedical\b|\bdiagnos|\bsymptom|\bmedicine\b/i,
     /\bstock\b|\binvest\b|\bcrypto\b(?!.*(scam|fraud|payment))/i
@@ -205,16 +308,20 @@
   var hasInScopeContext = false;
 
   function isInScope(question) {
-    var q = " " + String(question).toLowerCase().trim() + " ";
+    var forms = haystacks(question);
+    var q = forms[0];
 
     for (var i = 0; i < OFF_TOPIC.length; i++) {
       if (OFF_TOPIC[i].test(q)) return false;
     }
     for (var t = 0; t < IN_SCOPE_TERMS.length; t++) {
-      if (q.indexOf(IN_SCOPE_TERMS[t]) !== -1) return true;
+      if (containsTerm(forms, IN_SCOPE_TERMS[t])) return true;
     }
-    // A short follow-up inside an existing on-topic conversation is allowed.
-    if (hasInScopeContext && q.trim().split(/\s+/).length <= 8) return true;
+    // A short follow-up inside an existing on-topic conversation is allowed,
+    // but it has to read like a follow-up. Being brief is not enough, or
+    // anything short would slip through once one real question had been asked.
+    var FOLLOW_UP = /^(and |but |so |then |ok|okay|thanks|what|why|how|who|which|should|can |could |is (that|it|this)|does (that|it|this)|are (they|these)|tell me more|go on|explain|more)/i;
+    if (hasInScopeContext && q.trim().split(/\s+/).length <= 8 && FOLLOW_UP.test(q.trim())) return true;
 
     return false;
   }
@@ -230,20 +337,30 @@
   /* ======================================================================
      MARKUP
      ====================================================================== */
+
+  /* The assistant wears the site's own shield rather than a stock chat icon.
+     Every page carries data-root on <body> ("" at the root, "../" inside
+     /modules/), so one expression gives a correct path from any depth. */
+  function logoSrc() {
+    var root = document.body ? document.body.getAttribute("data-root") : "";
+    return (root || "") + "assets/img/logo-mark.png";
+  }
+
   function buildWidget() {
+    var LOGO_SRC = logoSrc();
     var wrap = document.createElement("div");
     wrap.className = "se-chat-widget";
     wrap.innerHTML = [
       '<button type="button" class="se-chat-fab" id="seChatFab"',
       '        aria-label="Open the cybersecurity learning assistant"',
       '        aria-expanded="false" aria-controls="seChatPanel">',
-      '  <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>',
+      '  <img class="se-chat-fab-logo" src="' + LOGO_SRC + '" alt="" width="38" height="38">',
       '  <i class="bi bi-x-lg" aria-hidden="true"></i>',
       "</button>",
       '<section class="se-chat-panel" id="seChatPanel" role="dialog"',
       '         aria-label="Cybersecurity learning assistant" aria-modal="false">',
       '  <header class="se-chat-head">',
-      '    <i class="bi bi-shield-lock-fill" aria-hidden="true"></i>',
+      '    <span class="se-chat-avatar"><img src="' + LOGO_SRC + '" alt="" width="28" height="28"></span>',
       "    <div>",
       '      <div class="se-chat-title">Learning Assistant</div>',
       '      <div class="se-chat-sub">Social engineering awareness</div>',
@@ -279,13 +396,34 @@
   /* ======================================================================
      RENDERING
      ====================================================================== */
+  /* A bot reply is wrapped in a row so the shield sits beside the bubble.
+     Visitor and error messages keep the plain single-element shape. */
   function addMessage(html, who) {
     var div = document.createElement("div");
     div.className = "se-msg " + who;
     div.innerHTML = html;
-    els.log.appendChild(div);
+
+    if (who === "bot") {
+      els.log.appendChild(withAvatar(div));
+    } else {
+      els.log.appendChild(div);
+    }
     scrollToBottom();
     return div;
+  }
+
+  function withAvatar(bubble) {
+    var row = document.createElement("div");
+    row.className = "se-msg-row";
+    var img = document.createElement("img");
+    img.className = "se-msg-avatar";
+    img.src = logoSrc();
+    img.alt = "";
+    img.width = 26;
+    img.height = 26;
+    row.appendChild(img);
+    row.appendChild(bubble);
+    return row;
   }
 
   function addSuggestions() {
@@ -309,10 +447,11 @@
   function showTyping() {
     var div = document.createElement("div");
     div.className = "se-msg bot";
-    div.id = "seTyping";
     div.setAttribute("aria-label", "Assistant is typing");
     div.innerHTML = '<div class="se-typing"><span></span><span></span><span></span></div>';
-    els.log.appendChild(div);
+    var row = withAvatar(div);
+    row.id = "seTyping";
+    els.log.appendChild(row);
     scrollToBottom();
   }
 
@@ -329,20 +468,20 @@
      LOCAL FALLBACK MATCHING
      ====================================================================== */
   function localAnswer(question) {
-    var q = " " + question.toLowerCase() + " ";
+    var forms = haystacks(question);
     var best = null;
     var bestScore = 0;
 
     for (var i = 0; i < KB.length; i++) {
       for (var k = 0; k < KB[i].keys.length; k++) {
         var key = KB[i].keys[k];
-        if (q.indexOf(key) !== -1 && key.length > bestScore) {
+        if (containsTerm(forms, key) && key.length > bestScore) {
           bestScore = key.length;
           best = KB[i];
         }
       }
     }
-    return best ? best.reply : OUT_OF_SCOPE;
+    return best ? best.reply : NO_MATCH;
   }
 
   /* ======================================================================

@@ -754,24 +754,44 @@ button:focus-visible,
 /* --------------------------------------------------------------------------
    12. Chatbot widget
    -------------------------------------------------------------------------- */
+/* The assistant is branded with the site's shield instead of a stock chat
+   bubble. The mark is mostly white and deep navy, so it needs a light disc
+   behind it: on a teal or navy button the navy half of the shield would
+   disappear. The orange ring is what makes the button read as a control. */
 .se-chat-fab {
   position: fixed;
   right: 20px; bottom: 20px;
   width: 60px; height: 60px;
   border-radius: 50%;
-  background: var(--se-teal);
-  color: #fff;
-  border: none;
+  background: #fff;
+  color: var(--se-navy);
+  border: 2px solid var(--se-orange);
   box-shadow: 0 6px 20px rgba(11,37,69,.28);
   display: grid; place-items: center;
-  font-size: 1.55rem;
+  font-size: 1.35rem;
+  padding: 0;
   z-index: 1050;
-  transition: transform .18s ease, background-color .18s ease;
+  transition: transform .18s ease, box-shadow .18s ease;
 }
-.se-chat-fab:hover { background: var(--se-teal-dark); transform: scale(1.05); }
+.se-chat-fab:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 26px rgba(245,166,35,.45);
+}
+.se-chat-fab-logo { width: 38px; height: 38px; object-fit: contain; }
 .se-chat-fab .bi-x-lg { display: none; }
-.se-chat-fab.is-open .bi-chat-dots-fill { display: none; }
+.se-chat-fab.is-open { background: var(--se-navy); border-color: var(--se-navy); color: #fff; }
+.se-chat-fab.is-open .se-chat-fab-logo { display: none; }
 .se-chat-fab.is-open .bi-x-lg { display: block; }
+
+/* Same reasoning in the panel header, which sits on navy. */
+.se-chat-avatar {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: #fff;
+  display: grid; place-items: center;
+}
+.se-chat-avatar img { width: 26px; height: 26px; object-fit: contain; }
 
 .se-chat-panel {
   position: fixed;
@@ -812,6 +832,27 @@ button:focus-visible,
   background: var(--se-bg);
   display: flex; flex-direction: column; gap: .7rem;
 }
+/* A bot reply is a row: shield, then bubble. The avatar is decorative, so it
+   carries an empty alt and is skipped by screen readers. */
+.se-msg-row {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  align-self: flex-start;
+  max-width: 94%;
+}
+.se-msg-avatar {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  padding: 3px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--se-border);
+  object-fit: contain;
+  margin-top: 2px;
+}
+.se-msg-row .se-msg { max-width: 100%; }
+
 .se-msg { max-width: 86%; padding: .7rem .9rem; border-radius: 14px; font-size: .92rem; line-height: 1.55; }
 .se-msg.bot { background: #fff; border: 1px solid var(--se-border); border-radius: 14px 14px 14px 4px; align-self: flex-start; }
 .se-msg.user { background: var(--se-teal); color: #fff; border-radius: 14px 14px 4px 14px; align-self: flex-end; }
@@ -864,10 +905,12 @@ button:focus-visible,
 .se-chat-send {
   width: 44px; flex-shrink: 0;
   border: none; border-radius: 50%;
-  background: var(--se-teal); color: #fff;
+  /* Navy text on orange, the same pairing as .btn-se-primary. Orange with a
+     white glyph would fall below the AA contrast floor. */
+  background: var(--se-orange); color: var(--se-navy);
   display: grid; place-items: center;
 }
-.se-chat-send:hover { background: var(--se-teal-dark); }
+.se-chat-send:hover { background: var(--se-orange-dark); }
 .se-chat-send:disabled { background: var(--se-border); color: var(--se-muted); }
 
 .se-chat-disclaimer {
