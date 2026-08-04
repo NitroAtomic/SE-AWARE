@@ -119,7 +119,10 @@
         firstName: String(firstName).trim(),
         lastName: String(lastName || "").trim(),
         email: mail,
-        subscription: "Free",
+        // New accounts start on Premium so the whole documented journey
+        // (assessment, dashboard, role-based modules) is reachable straight
+        // away. A production build would set this from the billing system.
+        subscription: "Premium",
         createdAt: new Date().toISOString()
       };
       write(s);
@@ -144,7 +147,7 @@
           firstName: mail.split("@")[0],
           lastName: "",
           email: mail,
-          subscription: "Free",
+          subscription: "Premium",
           createdAt: new Date().toISOString()
         };
       }

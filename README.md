@@ -24,7 +24,7 @@ This repository implements the **free tier** of the documented system in full, e
 |---|---|---|
 | FR-01 | Six learning modules (phishing, spear phishing, vishing, smishing, pretexting, safe practices) | Complete |
 | FR-02 | Plain-language reading materials in every module | Complete, 1,200–1,900 words per module |
-| FR-03 | Embedded educational videos where available | Slot implemented; paste a video ID to activate |
+| FR-03 | Embedded educational videos where available | Complete, all six videos embedded |
 | FR-04 | Ten-question randomised quiz after every attack module | Complete, 15-question bank per module, 10 drawn |
 | FR-05 | Safe Practices section for remote workers | Complete, 8-topic accordion |
 | FR-06 | AI chatbot as a floating widget on every page | Complete, n8n + Gemini, with offline fallback |
@@ -225,6 +225,19 @@ Both cannot describe the same build. The recommended wording fix for the paper: 
 That is both accurate and stronger than either overclaiming a database or having nothing to show for the ERD.
 
 **One design decision worth defending explicitly.** No password is stored anywhere in this prototype, not in plain text, not hashed, not in memory. Registration validates format and discards the value. This is deliberate: a platform that spends six modules telling people to protect their credentials should not model client-side password storage, and a hashed password in `sessionStorage` would be security theatre rather than security. If a panelist asks why login accepts any password for a registered email, that is the answer.
+
+---
+
+## Demo credentials for the defence
+
+| What | Username / email | Password |
+|---|---|---|
+| **Learner account** | any email you register with | any 8+ characters with a letter and a number |
+| **Administrator panel** (`admin.html`) | `admin` | `seaware2026` |
+
+The admin sign-in is a mock and accepts any username of 3 or more characters with any password of 8 or more, because there is no server to authenticate against. The credentials above are simply the ones printed on the sign-in card so the team demonstrates the same thing every time.
+
+**New accounts are created on the Premium plan**, so registering gives immediate access to the awareness assessment, the dashboard, and the role-based modules. To demonstrate the Free-tier gate, open the account menu, go to Go Premium, and use **Revert to Free**, or change the plan on your own row in the admin panel's Users tab.
 
 ---
 

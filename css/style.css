@@ -797,6 +797,14 @@ button:focus-visible,
   padding: 2.75rem 0 1.5rem;
   margin-top: 3rem;
 }
+/* The global `p, li { color: var(--se-text) }` rule wins over the footer's
+   inherited colour, which left this text nearly black on navy and unreadable.
+   Restate it here for every text element inside the footer. */
+.se-footer p,
+.se-footer li,
+.se-footer span,
+.se-footer div,
+.se-footer strong { color: rgba(255,255,255,.82); }
 .se-footer h5 { color: #fff; font-size: 1rem; margin-bottom: .9rem; }
 .se-footer a { color: rgba(255,255,255,.78); text-decoration: none; }
 .se-footer a:hover { color: var(--se-amber); text-decoration: underline; }

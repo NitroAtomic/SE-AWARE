@@ -172,6 +172,20 @@ Commit, push, done. Leave it empty and the page shows a tidy placeholder instead
 
 ---
 
+## Browser caching after an update
+
+If you push a change and the live site still looks old, the browser is serving a cached stylesheet. Every CSS and JS link on this site carries a version marker for exactly that reason:
+
+```html
+<link rel="stylesheet" href="css/style.css?v=3">
+```
+
+**Whenever you change `style.css` or anything in `js/`, bump that number.** It appears in `ASSET_VERSION` if you regenerate the pages, or you can find-and-replace `?v=3` with `?v=4` across the HTML files. Changing it makes every browser treat the file as new.
+
+To check what a visitor is actually seeing, open the site in a private window, or hard-refresh with **Ctrl+Shift+R** (**Cmd+Shift+R** on a Mac). GitHub Pages itself also caches assets for about ten minutes, so allow for that before assuming something is broken.
+
+---
+
 ## Optional: a custom domain
 
 Not required, and not worth spending money on for a capstone. If you want one anyway:

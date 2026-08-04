@@ -90,8 +90,11 @@
       '    <input class="form-control" type="password" id="admPass" autocomplete="current-password">' +
       '    <div class="se-field-error" id="errAdmPass"></div></div>' +
       '  <button class="btn btn-se-primary w-100 mt-4" type="submit">Sign in to admin panel</button>' +
-      '  <p class="text-center mt-3 mb-0" style="font-size:.86rem;color:var(--se-muted);">Mock sign-in: any username ' +
-      "    with a password of 8 or more characters. There is no server to authenticate against.</p>" +
+      '  <div class="se-callout mt-3 mb-0" style="max-width:none;">' +
+      '    <strong>Demo credentials:</strong> username <code>admin</code>, password <code>seaware2026</code>.<br>' +
+      '    <span style="font-size:.86rem;color:var(--se-muted);">This is a mock sign-in and accepts any username of 3 or more ' +
+      "    characters with any password of 8 or more. There is no server to authenticate against, which is why the " +
+      "    credentials can be printed here.</span></div>" +
       "</form>";
 
     el("seAdminForm").addEventListener("submit", function (e) {
