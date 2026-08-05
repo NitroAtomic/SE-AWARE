@@ -277,7 +277,7 @@ The demo account signs in without registering first, arrives on the Premium plan
 
 `TESTING.md` holds the test matrix. During development the build was verified automatically with headless Chromium across two suites:
 
-- **Deep QA, 31 checks.** Duplicate IDs, image alt text, heading order, form labels, link text, unique titles, colour contrast sampled across **both themes**, every quiz end to end, video embeds, the demo account journey, the admin portal, deployment under a GitHub Pages project subpath, content hygiene, and the theme switch itself.
+- **Deep QA, 34 checks.** Duplicate IDs, image alt text, heading order, form labels, link text, unique titles, colour contrast sampled across **both themes**, every quiz end to end, video embeds, the demo account journey, the admin portal, deployment under a GitHub Pages project subpath, content hygiene, and the theme switch itself.
 - **Free tier, 32 checks.** Page loads, dead links, content completeness, quiz randomisation and scoring, chatbot behaviour including out-of-scope refusal, login-free access, responsive layout at four widths, clean JavaScript console.
 - **Premium tier, 25 checks.** Registration validation and success, no password leakage into storage, login and logout, assessment scoring and level derivation, weak-area detection and recommendations, dashboard progress and quiz history accuracy, free-tier gating and premium access, admin login and CRUD across modules, questions and users, and confirmation that the guest experience is completely unchanged.
 

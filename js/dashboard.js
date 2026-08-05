@@ -99,7 +99,7 @@
       '  <div class="se-score-ring" style="--pct:' + pct + '%;width:96px;height:96px;">' +
       '    <div class="se-score-inner"><div class="se-score-num" style="font-size:1.4rem;">' + pct + "%</div></div>" +
       "  </div>" +
-      '  <div><strong style="color:var(--se-navy);">' + done + " of " + TRACKED.length + " modules</strong>" +
+      '  <div><strong style="color:var(--se-heading);">' + done + " of " + TRACKED.length + " modules</strong>" +
       '    <div class="text-body-secondary" style="font-size:.9rem;">Completing a module quiz marks it automatically. ' +
       "      You can also mark a module by hand from its page.</div></div>" +
       "</div>" + rows +
