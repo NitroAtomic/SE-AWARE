@@ -65,8 +65,8 @@
 
     var out = document.getElementById("seSignOut");
     if (out) {
-      out.addEventListener("click", function () {
-        window.SEStore.logout();
+      out.addEventListener("click", async function () {
+        await window.SEStore.logout();
         window.location.href = r + "index.html";
       });
     }
@@ -184,9 +184,9 @@
       "  </button>" +
       "</div>";
 
-    document.getElementById("seToggleComplete").addEventListener("click", function () {
-      if (done) window.SEStore.unmarkModule(slug);
-      else window.SEStore.markModuleComplete(slug);
+    document.getElementById("seToggleComplete").addEventListener("click", async function () {
+      if (done) await window.SEStore.unmarkModule(slug);
+      else await window.SEStore.markModuleComplete(slug);
       renderModuleProgress();
     });
   }
@@ -195,13 +195,15 @@
      Init
      ---------------------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", function () {
-    renderNavAccount();
-    renderPrototypeBadge();
-    var allowed = applyGate();
-    renderModuleProgress();
+    window.SEStore.ready().then(function () {
+      renderNavAccount();
+      renderPrototypeBadge();
+      var allowed = applyGate();
+      renderModuleProgress();
 
-    // Let page scripts know whether the gate let them through.
-    window.SEGateOpen = allowed;
-    document.dispatchEvent(new CustomEvent("se:ready", { detail: { allowed: allowed } }));
+      // Let page scripts know whether the gate let them through.
+      window.SEGateOpen = allowed;
+      document.dispatchEvent(new CustomEvent("se:ready", { detail: { allowed: allowed } }));
+    });
   });
 })();

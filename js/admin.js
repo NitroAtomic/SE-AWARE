@@ -83,21 +83,24 @@
       "      subscription management.</p>" +
       "  </div>" +
       '  <div class="se-form-alert"></div>' +
-      '  <div><label class="form-label" for="admUser">Username</label>' +
+      '  <div><label class="form-label" for="admUser">' + (window.SE_API_BASE ? "Admin email" : "Username") + '</label>' +
       '    <input class="form-control" type="text" id="admUser" autocomplete="username">' +
       '    <div class="se-field-error" id="errAdmUser"></div></div>' +
       '  <div class="mt-3"><label class="form-label" for="admPass">Password</label>' +
       '    <input class="form-control" type="password" id="admPass" autocomplete="current-password">' +
       '    <div class="se-field-error" id="errAdmPass"></div></div>' +
       '  <button class="btn btn-se-primary w-100 mt-4" type="submit">Sign in to admin panel</button>' +
-      '  <div class="se-callout mt-3 mb-0" style="max-width:none;">' +
-      '    <strong>Demo credentials:</strong> username <code>admin</code>, password <code>seaware2026</code>.<br>' +
-      '    <span style="font-size:.86rem;color:var(--se-muted);">This is a mock sign-in and accepts any username of 3 or more ' +
-      "    characters with any password of 8 or more. There is no server to authenticate against, which is why the " +
-      "    credentials can be printed here.</span></div>" +
+      (window.SE_API_BASE
+        ? '  <div class="se-callout mt-3 mb-0" style="max-width:none;">' +
+          '    <span style="font-size:.86rem;color:var(--se-muted);">Connected to the live backend. Sign in with a real account whose role is set to admin in the database.</span></div>'
+        : '  <div class="se-callout mt-3 mb-0" style="max-width:none;">' +
+          '    <strong>Demo credentials:</strong> username <code>admin</code>, password <code>seaware2026</code>.<br>' +
+          '    <span style="font-size:.86rem;color:var(--se-muted);">This is a mock sign-in and accepts any username of 3 or more ' +
+          "    characters with any password of 8 or more. There is no server to authenticate against, which is why the " +
+          "    credentials can be printed here.</span></div>") +
       "</form>";
 
-    el("seAdminForm").addEventListener("submit", function (e) {
+    el("seAdminForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       var u = el("admUser").value.trim();
       var p = el("admPass").value;
@@ -110,15 +113,20 @@
       if (p.length < 8) { el("errAdmPass").textContent = "Use at least 8 characters."; el("errAdmPass").classList.add("show"); ok = false; }
       if (!ok) return;
 
-      window.SEStore.adminLogin(u);
-      renderPanel();
+      var result = await window.SEStore.adminLogin(u, p);
+      if (!result.ok) {
+        el("errAdmPass").textContent = result.error || "Sign-in failed.";
+        el("errAdmPass").classList.add("show");
+        return;
+      }
+      await renderPanel();
     });
   }
 
   /* ======================================================================
      Panel
      ====================================================================== */
-  function renderPanel() {
+  async function renderPanel() {
     if (!questions) questions = seedQuestions();
     if (!users) users = seedUsers();
 
@@ -142,34 +150,34 @@
       '  <div class="se-admin-body" id="seAdminBody"></div>' +
       "</div>";
 
-    el("seAdminOut").addEventListener("click", function () {
-      window.SEStore.adminLogout();
+    el("seAdminOut").addEventListener("click", async function () {
+      await window.SEStore.adminLogout();
       renderLogin();
     });
 
     var tabs = document.querySelectorAll(".se-admin-tab");
     for (var i = 0; i < tabs.length; i++) {
-      tabs[i].addEventListener("click", function () {
+      tabs[i].addEventListener("click", async function () {
         tab = this.getAttribute("data-tab");
-        renderTabs();
+        await renderTabs();
       });
     }
-    renderTabs();
+    await renderTabs();
   }
 
-  function renderTabs() {
+  async function renderTabs() {
     var tabs = document.querySelectorAll(".se-admin-tab");
     for (var i = 0; i < tabs.length; i++) {
       tabs[i].classList.toggle("active", tabs[i].getAttribute("data-tab") === tab);
     }
-    if (tab === "modules") renderModules();
+    if (tab === "modules") await renderModules();
     else if (tab === "questions") renderQuestions();
     else renderUsers();
   }
 
   /* ---------------------- Modules CRUD (AD-02, AD-04) ---------------------- */
-  function renderModules() {
-    var list = window.SEStore.getCatalogue();
+  async function renderModules() {
+    var list = await window.SEStore.getCatalogue();
 
     el("seAdminBody").innerHTML =
       '<div class="d-flex flex-wrap align-items-center gap-2 mb-3">' +
@@ -203,26 +211,26 @@
     // Inline edits
     var inputs = el("seAdminBody").querySelectorAll("[data-edit]");
     for (var i = 0; i < inputs.length; i++) {
-      inputs[i].addEventListener("change", function () {
-        var list2 = window.SEStore.getCatalogue();
+      inputs[i].addEventListener("change", async function () {
+        var list2 = await window.SEStore.getCatalogue();
         list2[parseInt(this.getAttribute("data-i"), 10)][this.getAttribute("data-edit")] = this.value;
-        window.SEStore.saveCatalogue(list2);
-        renderModules();
+        await window.SEStore.saveCatalogue(list2);
+        await renderModules();
       });
     }
 
     var dels = el("seAdminBody").querySelectorAll("[data-del]");
     for (var d = 0; d < dels.length; d++) {
-      dels[d].addEventListener("click", function () {
-        var list2 = window.SEStore.getCatalogue();
+      dels[d].addEventListener("click", async function () {
+        var list2 = await window.SEStore.getCatalogue();
         list2.splice(parseInt(this.getAttribute("data-del"), 10), 1);
-        window.SEStore.saveCatalogue(list2);
-        renderModules();
+        await window.SEStore.saveCatalogue(list2);
+        await renderModules();
       });
     }
 
-    el("admAddModule").addEventListener("click", function () {
-      var list2 = window.SEStore.getCatalogue();
+    el("admAddModule").addEventListener("click", async function () {
+      var list2 = await window.SEStore.getCatalogue();
       var n = list2.length + 1;
       list2.push({
         slug: "new-module-" + n,
@@ -231,13 +239,13 @@
         category: "Attack type",
         quiz: false
       });
-      window.SEStore.saveCatalogue(list2);
-      renderModules();
+      await window.SEStore.saveCatalogue(list2);
+      await renderModules();
     });
 
-    el("admResetModules").addEventListener("click", function () {
-      window.SEStore.resetCatalogue();
-      renderModules();
+    el("admResetModules").addEventListener("click", async function () {
+      await window.SEStore.resetCatalogue();
+      await renderModules();
     });
   }
 
@@ -344,12 +352,12 @@
 
     var plans = el("seAdminBody").querySelectorAll("[data-uplan]");
     for (var i = 0; i < plans.length; i++) {
-      plans[i].addEventListener("change", function () {
+      plans[i].addEventListener("change", async function () {
         var idx = parseInt(this.getAttribute("data-uplan"), 10);
         users[idx].plan = this.value;
         if (users[idx].isLive) {
-          if (this.value === "Premium") window.SEStore.upgrade();
-          else window.SEStore.downgrade();
+          if (this.value === "Premium") await window.SEStore.upgrade();
+          else await window.SEStore.downgrade();
         }
         renderUsers();
       });
@@ -369,7 +377,9 @@
      ====================================================================== */
   document.addEventListener("DOMContentLoaded", function () {
     if (!el("seAdminShell")) return;
-    if (window.SEStore.getAdmin()) renderPanel();
-    else renderLogin();
+    window.SEStore.ready().then(function () {
+      if (window.SEStore.getAdmin()) renderPanel();
+      else renderLogin();
+    });
   });
 })();

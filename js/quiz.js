@@ -228,7 +228,7 @@
     }
   }
 
-  function finish() {
+  async function finish() {
     var score = state.answers.filter(function (a) { return a.correct; }).length;
 
     var payload = {
@@ -250,7 +250,7 @@
     // quiz history and marks the module complete on the dashboard (DB-01,
     // DB-02). Guests are unaffected, and nothing is recorded for them.
     if (window.SEStore && window.SEStore.isSignedIn()) {
-      window.SEStore.addQuizAttempt({
+      await window.SEStore.addQuizAttempt({
         slug: payload.slug,
         title: payload.title,
         score: payload.score,
@@ -355,7 +355,9 @@
      INIT
      ====================================================================== */
   document.addEventListener("DOMContentLoaded", function () {
-    initQuiz();
-    initResults();
+    window.SEStore.ready().then(function () {
+      initQuiz();
+      initResults();
+    });
   });
 })();

@@ -50,7 +50,7 @@
     var form = document.getElementById("seRegisterForm");
     if (!form) return;
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       clearErrors(form);
 
@@ -75,7 +75,7 @@
 
       if (!ok) return;
 
-      var res = window.SEStore.register(first, last, email);
+      var res = await window.SEStore.register(first, last, email, pass);
       if (!res.ok) {
         formAlert(form, "err", res.error);
         return;
@@ -93,7 +93,7 @@
     var form = document.getElementById("seLoginForm");
     if (!form) return;
 
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       clearErrors(form);
 
@@ -105,7 +105,7 @@
       if (pass.length < 8) { showError("errLoginPass", "Passwords are at least 8 characters."); ok = false; }
       if (!ok) return;
 
-      var res = window.SEStore.login(email);
+      var res = await window.SEStore.login(email, pass);
       if (!res.ok) {
         formAlert(form, "err", res.error + ' <a href="' + root() + 'register.html">Create one now</a>.');
         return;
@@ -147,8 +147,8 @@
 
         var down = document.getElementById("seDowngrade");
         if (down) {
-          down.addEventListener("click", function () {
-            window.SEStore.downgrade();
+          down.addEventListener("click", async function () {
+            await window.SEStore.downgrade();
             render();
           });
         }
@@ -157,8 +157,8 @@
 
       btn.innerHTML = '<i class="bi bi-stars" aria-hidden="true"></i> Simulate Upgrade';
       btn.disabled = false;
-      btn.onclick = function () {
-        window.SEStore.upgrade();
+      btn.onclick = async function () {
+        await window.SEStore.upgrade();
         render();
       };
       status.innerHTML =
@@ -169,8 +169,10 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    initRegister();
-    initLogin();
-    initUpgrade();
+    window.SEStore.ready().then(function () {
+      initRegister();
+      initLogin();
+      initUpgrade();
+    });
   });
 })();

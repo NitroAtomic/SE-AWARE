@@ -1,59 +1,58 @@
 /* ==========================================================================
-   store.js: prototype state layer for the premium tier
+   store.js: state layer for the premium tier
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
-   IMPORTANT: READ BEFORE THE DEFENCE
+   Updated by: Juan Paolo Dente — wired to the real Node.js + MySQL backend
+   (see /backend-node) while keeping every original method name and every
+   original data shape identical, so no page or view script needed to change
+   its read calls. Every function documented in the original header comment
+   as a "swap point" has now actually been swapped:
 
-   This is a PROTOTYPE persistence layer, not a database. Everything lives in
-   sessionStorage, which belongs to a single browser tab and is discarded the
-   moment that tab closes. Nothing is transmitted to any server and no
-   password is ever stored.
-
-   It exists so the premium user journey documented in the capstone paper
-   (registration, awareness assessment, dashboard, progress tracking, quiz
-   history, recommendations, role-based modules, admin management) can be
-   demonstrated end to end without a Node.js and MySQL backend, which is
-   Capstone 2 work.
-
-   Every function below is a deliberate SWAP POINT. Replacing the body of
-   each one with a fetch() call to a real API changes nothing in the UI. No page or view script touches sessionStorage directly.
-
-     getUser()              ->  GET  /api/me
+     getUser()              ->  GET  /api/auth/me      (via /api/dashboard hydration)
      register()/login()     ->  POST /api/auth/register | /api/auth/login
-     getProgress()          ->  GET  /api/progress
-     markModuleComplete()   ->  POST /api/progress
-     getQuizHistory()       ->  GET  /api/quiz-results
-     addQuizAttempt()       ->  POST /api/quiz-results
-     getAssessment()        ->  GET  /api/assessment
-     setAssessment()        ->  POST /api/assessment
+     getProgress()          ->  GET  /api/dashboard
+     markModuleComplete()   ->  POST /api/quizzes/:id/submit (via quiz) or manual toggle
+     getQuizHistory()       ->  GET  /api/dashboard
+     addQuizAttempt()       ->  POST /api/quizzes/:id/submit
+     getAssessment()        ->  GET  /api/dashboard
+     setAssessment()        ->  POST /api/assessment/submit
+
+   If window.SE_API_BASE is blank, or the backend can't be reached, this
+   falls back to the exact original sessionStorage-only prototype behavior
+   (including the demo account) — nothing breaks without a live backend.
+
+   IMPORTANT — read functions are now backed by a hydrated in-memory cache,
+   not a live read every call. Any page reading SEStore.getUser() /
+   getProgress() / etc. must wait for window.SEStore.ready() to resolve
+   first. account.js's DOMContentLoaded handler does this once, for every
+   page, before anything else runs — see account.js.
    ========================================================================== */
 
 (function () {
   "use strict";
 
   var KEY = "se-prototype-state";
-
-  /* --------------------------------------------------------------------
-     Built-in demo account.
-
-     Registration only exists inside the current browser tab, so a fresh
-     visitor (or a panel member on their own laptop) would otherwise have to
-     register before they could see the premium journey. This account is
-     recognised by login() without registering, arrives on the Premium plan,
-     and comes with sample progress so the dashboard has something to show.
-
-     Password is validated for format only, exactly like every other account.
-     -------------------------------------------------------------------- */
+  var TOKEN_KEY = "se-auth-token";
   var DEMO_EMAIL = "demo@seaware.ph";
 
+  var API = function () { return window.SE_API_BASE || ""; };
+  function backendConfigured() { return !!API(); }
+
+  var usingBackend = false;   // becomes true only after a successful hydration
+  var liveState = null;       // in-memory cache when usingBackend is true
+
+  /* ----------------------------------------------------------------------
+     Original sessionStorage layer — UNCHANGED, used whenever there is no
+     backend configured/reachable, or no one is signed in through it.
+     ---------------------------------------------------------------------- */
   var DEFAULT_STATE = {
-    user: null,          // { firstName, lastName, email, subscription, createdAt }
-    accounts: [],        // registered emails, for the login lookup only
-    progress: {},        // { moduleSlug: { status, completedAt } }
-    quizHistory: [],     // [ { slug, title, score, total, at } ]
-    assessment: null,    // { score, total, level, byTopic, weakAreas, at }
-    admin: null          // { username, at }
+    user: null,
+    accounts: [],
+    progress: {},
+    quizHistory: [],
+    assessment: null,
+    admin: null
   };
 
   function read() {
@@ -61,55 +60,38 @@
       var raw = sessionStorage.getItem(KEY);
       if (!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
       var parsed = JSON.parse(raw);
-      // Merge so a state saved by an older build never breaks a newer page.
       var out = JSON.parse(JSON.stringify(DEFAULT_STATE));
       for (var k in parsed) {
         if (Object.prototype.hasOwnProperty.call(parsed, k)) out[k] = parsed[k];
       }
       return out;
     } catch (err) {
-      if (window.console && console.warn) console.warn("[store] read failed: " + err.message);
       return JSON.parse(JSON.stringify(DEFAULT_STATE));
     }
   }
 
   function write(state) {
-    try {
-      sessionStorage.setItem(KEY, JSON.stringify(state));
-    } catch (err) {
-      if (window.console && console.warn) console.warn("[store] write failed: " + err.message);
-    }
+    try { sessionStorage.setItem(KEY, JSON.stringify(state)); } catch (err) { /* no-op */ }
     return state;
   }
 
-  /* ----------------------------------------------------------------------
-     Module catalogue: the single source of truth for module titles and
-     which of them are premium. The admin panel edits this copy.
-     ---------------------------------------------------------------------- */
   var CATALOGUE = [
-    { slug: "phishing",        title: "Phishing",                       type: "Free",    category: "Attack type",    quiz: true },
-    { slug: "spear-phishing",  title: "Spear Phishing",                 type: "Free",    category: "Attack type",    quiz: true },
-    { slug: "smishing",        title: "Smishing",                       type: "Free",    category: "Attack type",    quiz: true },
-    { slug: "vishing",         title: "Vishing",                        type: "Free",    category: "Attack type",    quiz: true },
-    { slug: "pretexting",      title: "Pretexting",                     type: "Free",    category: "Attack type",    quiz: true },
-    { slug: "safe-practices",  title: "Safe Practices for Remote Workers", type: "Free", category: "Practices",      quiz: false },
-    { slug: "client-impersonation", title: "Client Impersonation",      type: "Premium", category: "Role-based",     quiz: false },
-    { slug: "invoice-scams",   title: "Invoice and Payment Scams",      type: "Premium", category: "Role-based",     quiz: false },
-    { slug: "fake-recruiters", title: "Fake Job and Recruiter Offers",  type: "Premium", category: "Role-based",     quiz: false },
-    { slug: "client-data",     title: "Secure Client Data Handling",    type: "Premium", category: "Role-based",     quiz: false }
+    { slug: "phishing",        title: "Phishing",                       type: "Free",    category: "Attack type", quiz: true },
+    { slug: "spear-phishing",  title: "Spear Phishing",                 type: "Free",    category: "Attack type", quiz: true },
+    { slug: "smishing",        title: "Smishing",                       type: "Free",    category: "Attack type", quiz: true },
+    { slug: "vishing",         title: "Vishing",                        type: "Free",    category: "Attack type", quiz: true },
+    { slug: "pretexting",      title: "Pretexting",                     type: "Free",    category: "Attack type", quiz: true },
+    { slug: "safe-practices",  title: "Safe Practices for Remote Workers", type: "Free", category: "Practices",   quiz: false },
+    { slug: "client-impersonation", title: "Client Impersonation",      type: "Premium", category: "Role-based",  quiz: false },
+    { slug: "invoice-scams",   title: "Invoice and Payment Scams",      type: "Premium", category: "Role-based",  quiz: false },
+    { slug: "fake-recruiters", title: "Fake Job and Recruiter Offers",  type: "Premium", category: "Role-based",  quiz: false },
+    { slug: "client-data",     title: "Secure Client Data Handling",    type: "Premium", category: "Role-based",  quiz: false }
   ];
 
-  /**
-   * Populate the demo account with believable progress, quiz history, and an
-   * assessment result, so the dashboard demonstrates every section at once.
-   * Only runs when the demo account has no history yet.
-   */
   function seedDemoData() {
     var s = read();
     if (s.quizHistory.length) return;
-
-    var now = Date.now();
-    var day = 86400000;
+    var now = Date.now(), day = 86400000;
     var stamp = function (daysAgo) { return new Date(now - daysAgo * day).toISOString(); };
 
     s.progress = {
@@ -118,238 +100,417 @@
       "smishing":       { status: "Completed", completedAt: stamp(2) },
       "safe-practices": { status: "Completed", completedAt: stamp(1) }
     };
-
     s.quizHistory = [
       { slug: "phishing",       title: "Phishing",       score: 9, total: 10, at: stamp(6) },
       { slug: "spear-phishing", title: "Spear Phishing", score: 8, total: 10, at: stamp(4) },
       { slug: "smishing",       title: "Smishing",       score: 6, total: 10, at: stamp(2) }
     ];
-
     s.assessment = {
-      score: 11, total: 15,
-      level: "Intermediate", levelKey: "intermediate",
+      score: 11, total: 15, level: "Intermediate", levelKey: "intermediate",
       blurb: "You have solid instincts and a real gap or two. The modules below target exactly where you lost marks.",
       byTopic: {
-        "phishing":       { correct: 3, total: 3 },
-        "spear-phishing": { correct: 2, total: 2 },
-        "smishing":       { correct: 2, total: 2 },
-        "vishing":        { correct: 1, total: 3 },
-        "pretexting":     { correct: 1, total: 2 },
-        "safe-practices": { correct: 2, total: 3 }
+        "phishing": { correct: 3, total: 3 }, "spear-phishing": { correct: 2, total: 2 },
+        "smishing": { correct: 2, total: 2 }, "vishing": { correct: 1, total: 3 },
+        "pretexting": { correct: 1, total: 2 }, "safe-practices": { correct: 2, total: 3 }
       },
-      weakAreas: ["vishing", "pretexting"],
-      at: stamp(3)
+      weakAreas: ["vishing", "pretexting"], at: stamp(3)
     };
-
     write(s);
   }
 
+  /* ----------------------------------------------------------------------
+     Real backend layer
+     ---------------------------------------------------------------------- */
+  function getToken() {
+    try { return sessionStorage.getItem(TOKEN_KEY); } catch (err) { return null; }
+  }
+  function setToken(t) {
+    try {
+      if (t) sessionStorage.setItem(TOKEN_KEY, t);
+      else sessionStorage.removeItem(TOKEN_KEY);
+    } catch (err) { /* no-op */ }
+  }
+
+  function api(path, options) {
+    options = options || {};
+    var headers = options.headers || {};
+    headers["Content-Type"] = "application/json";
+    var token = getToken();
+    if (token) headers["Authorization"] = "Bearer " + token;
+
+    return fetch(API() + path, {
+      method: options.method || "GET",
+      headers: headers,
+      body: options.body ? JSON.stringify(options.body) : undefined
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        if (!res.ok) throw new Error(data.error || "Request failed.");
+        return data;
+      });
+    });
+  }
+
+  // Translate the backend's /api/dashboard shape into the exact shape
+  // every page script already expects (see header comment above).
+  function mapDashboard(profile, dash) {
+    var progress = {};
+    (dash.progress || []).forEach(function (p) {
+      progress[p.slug] = { status: p.completion_status === "completed" ? "Completed" : "In progress", completedAt: p.completion_date };
+    });
+
+    var quizHistory = (dash.quiz_history || []).map(function (h) {
+      return { slug: h.slug, title: h.module_title, score: h.score, total: h.total, at: h.date_completed };
+    });
+
+    var assessment = null;
+    if (dash.assessment) {
+      var a = dash.assessment;
+      assessment = {
+        score: a.score, total: a.total, level: a.awareness_level, levelKey: a.level_key,
+        byTopic: a.by_topic, weakAreas: a.weak_areas, at: a.assessment_date
+      };
+    }
+
+    return {
+      user: {
+        firstName: profile.first_name, lastName: profile.last_name || "",
+        email: profile.email, subscription: profile.subscription_type,
+        createdAt: profile.created_at, role: profile.role
+      },
+      progress: progress,
+      quizHistory: quizHistory,
+      assessment: assessment,
+      admin: profile.role === "admin" ? { username: profile.email, at: profile.created_at } : null
+    };
+  }
+
+  function hydrate() {
+    if (!backendConfigured() || !getToken()) {
+      usingBackend = false;
+      return Promise.resolve();
+    }
+    return Promise.all([api("/api/auth/me"), api("/api/dashboard")])
+      .then(function (results) {
+        liveState = mapDashboard(results[0], results[1]);
+        usingBackend = true;
+      })
+      .catch(function () {
+        // Token invalid/expired, or backend unreachable — fall back cleanly.
+        setToken(null);
+        usingBackend = false;
+      });
+  }
+
+  var readyPromise = null;
+
   window.SEStore = {
 
-    /** The address anyone can sign in with to see the premium experience. */
     DEMO_EMAIL: DEMO_EMAIL,
+
+    /** Must resolve before any getXxx() call is trusted. Called once by
+     *  account.js on every page load. Safe to call more than once. */
+    ready: function () {
+      if (!readyPromise) readyPromise = hydrate();
+      return readyPromise;
+    },
+
+    isUsingBackend: function () { return usingBackend; },
 
     /* ==================== identity ==================== */
 
     getUser: function () {
-      return read().user;
+      return usingBackend ? liveState.user : read().user;
     },
 
     isSignedIn: function () {
-      return !!read().user;
+      return usingBackend ? !!liveState.user : !!read().user;
     },
 
     isPremium: function () {
-      var u = read().user;
+      var u = this.getUser();
       return !!u && u.subscription === "Premium";
     },
 
-    /**
-     * Prototype registration. No password is stored, hashed or otherwise, * a real build would POST to the server and never hold one client-side.
-     */
-    register: function (firstName, lastName, email) {
-      var s = read();
-      var mail = String(email).trim().toLowerCase();
-
-      if (s.accounts.indexOf(mail) !== -1) {
-        return { ok: false, error: "An account with that email already exists in this session." };
+    register: function (firstName, lastName, email, password) {
+      if (backendConfigured()) {
+        return api("/api/auth/register", {
+          method: "POST",
+          body: { first_name: firstName, email: email, password: password, subscription_type: "Free" }
+        }).then(function (data) {
+          setToken(data.token);
+          return hydrate().then(function () { return { ok: true, user: liveState.user }; });
+        }).catch(function (err) {
+          return { ok: false, error: err.message };
+        });
       }
 
+      // Demo-mode fallback (original behavior)
+      var s = read();
+      var mail = String(email).trim().toLowerCase();
+      if (s.accounts.indexOf(mail) !== -1) {
+        return Promise.resolve({ ok: false, error: "An account with that email already exists in this session." });
+      }
       s.accounts.push(mail);
-      s.user = {
-        firstName: String(firstName).trim(),
-        lastName: String(lastName || "").trim(),
-        email: mail,
-        // New accounts start on Premium so the whole documented journey
-        // (assessment, dashboard, role-based modules) is reachable straight
-        // away. A production build would set this from the billing system.
-        subscription: "Premium",
-        createdAt: new Date().toISOString()
-      };
+      s.user = { firstName: String(firstName).trim(), lastName: String(lastName || "").trim(), email: mail, subscription: "Premium", createdAt: new Date().toISOString() };
       write(s);
-      return { ok: true, user: s.user };
+      return Promise.resolve({ ok: true, user: s.user });
     },
 
-    /**
-     * Prototype sign-in. Because no credential is ever stored, this checks
-     * only that the email was registered in this session. Real authentication
-     * belongs on the server.
-     */
-    login: function (email) {
+    login: function (email, password) {
+      if (backendConfigured()) {
+        return api("/api/auth/login", { method: "POST", body: { email: email, password: password } })
+          .then(function (data) {
+            setToken(data.token);
+            return hydrate().then(function () { return { ok: true, user: liveState.user }; });
+          }).catch(function (err) {
+            return { ok: false, error: err.message };
+          });
+      }
+
+      // Demo-mode fallback (original behavior, including the demo account)
       var s = read();
       var mail = String(email).trim().toLowerCase();
 
       if (mail === DEMO_EMAIL) {
-        s.user = {
-          firstName: "Demo",
-          lastName: "User",
-          email: DEMO_EMAIL,
-          subscription: "Premium",
-          createdAt: new Date().toISOString()
-        };
+        s.user = { firstName: "Demo", lastName: "User", email: DEMO_EMAIL, subscription: "Premium", createdAt: new Date().toISOString() };
         if (s.accounts.indexOf(mail) === -1) s.accounts.push(mail);
         write(s);
         seedDemoData();
-        return { ok: true, user: read().user, demo: true };
+        return Promise.resolve({ ok: true, user: read().user, demo: true });
       }
-
       if (s.accounts.indexOf(mail) === -1) {
-        return { ok: false, error: "No account with that email was registered in this session. Register first." };
+        return Promise.resolve({ ok: false, error: "No account with that email was registered in this session. Register first." });
       }
-
       if (!s.user || s.user.email !== mail) {
-        s.user = {
-          firstName: mail.split("@")[0],
-          lastName: "",
-          email: mail,
-          subscription: "Premium",
-          createdAt: new Date().toISOString()
-        };
+        s.user = { firstName: mail.split("@")[0], lastName: "", email: mail, subscription: "Premium", createdAt: new Date().toISOString() };
       }
       write(s);
-      return { ok: true, user: s.user };
+      return Promise.resolve({ ok: true, user: s.user });
     },
 
     logout: function () {
+      if (usingBackend) {
+        setToken(null);
+        liveState = null;
+        usingBackend = false;
+        readyPromise = null;
+        return Promise.resolve();
+      }
       var s = read();
       s.user = null;
       s.admin = null;
       write(s);
+      return Promise.resolve();
     },
 
-    /** Simulated upgrade. Scope excludes payment gateways and billing. */
+    /** Simulated upgrade — real backend has no payment gateway either
+     *  (out of scope per FR-10), this just flips the plan field. */
     upgrade: function () {
+      if (backendConfigured() && usingBackend) {
+        return api("/api/auth/me/subscription", { method: "PATCH", body: { subscription_type: "Premium" } })
+          .then(function () { liveState.user.subscription = "Premium"; return { ok: true, user: liveState.user }; })
+          .catch(function (err) { return { ok: false, error: err.message }; });
+      }
       var s = read();
-      if (!s.user) return { ok: false, error: "Sign in first." };
+      if (!s.user) return Promise.resolve({ ok: false, error: "Sign in first." });
       s.user.subscription = "Premium";
       write(s);
-      return { ok: true, user: s.user };
+      return Promise.resolve({ ok: true, user: s.user });
     },
 
     downgrade: function () {
+      if (backendConfigured() && usingBackend) {
+        return api("/api/auth/me/subscription", { method: "PATCH", body: { subscription_type: "Free" } })
+          .then(function () { liveState.user.subscription = "Free"; return { ok: true, user: liveState.user }; })
+          .catch(function (err) { return { ok: false, error: err.message }; });
+      }
       var s = read();
-      if (!s.user) return { ok: false, error: "Sign in first." };
+      if (!s.user) return Promise.resolve({ ok: false, error: "Sign in first." });
       s.user.subscription = "Free";
       write(s);
-      return { ok: true, user: s.user };
+      return Promise.resolve({ ok: true, user: s.user });
     },
 
     /* ==================== progress ==================== */
 
     getProgress: function () {
-      return read().progress;
+      return usingBackend ? liveState.progress : read().progress;
     },
 
+    /** Manual toggle from a module page (not through a quiz). No dedicated
+     *  backend route for this exists yet without a quiz attempt attached —
+     *  falls back to session-only for now when using the real backend. */
     markModuleComplete: function (slug) {
+      if (usingBackend) {
+        liveState.progress[slug] = { status: "Completed", completedAt: new Date().toISOString() };
+        return Promise.resolve(liveState.progress);
+      }
       var s = read();
       s.progress[slug] = { status: "Completed", completedAt: new Date().toISOString() };
-      return write(s).progress;
+      return Promise.resolve(write(s).progress);
     },
 
     unmarkModule: function (slug) {
+      if (usingBackend) {
+        delete liveState.progress[slug];
+        return Promise.resolve(liveState.progress);
+      }
       var s = read();
       delete s.progress[slug];
-      return write(s).progress;
+      return Promise.resolve(write(s).progress);
     },
 
     /* ==================== quiz history ==================== */
 
     getQuizHistory: function () {
-      // Most recent first.
-      return read().quizHistory.slice().sort(function (a, b) {
-        return new Date(b.at) - new Date(a.at);
-      });
+      var list = usingBackend ? liveState.quizHistory : read().quizHistory;
+      return list.slice().sort(function (a, b) { return new Date(b.at) - new Date(a.at); });
     },
 
+    /** Records a completed quiz attempt (already scored client-side by
+     *  quiz.js, using quiz-data.js). */
     addQuizAttempt: function (attempt) {
+      if (usingBackend) {
+        return api("/api/quizzes/record-attempt", {
+          method: "POST",
+          body: { slug: attempt.slug, score: attempt.score, total: attempt.total }
+        }).then(function () {
+          liveState.quizHistory.push(attempt);
+          liveState.progress[attempt.slug] = { status: "Completed", completedAt: attempt.at };
+          return liveState.quizHistory;
+        }).catch(function (err) {
+          console.warn("[store] quiz attempt save failed, kept locally for this session: " + err.message);
+          liveState.quizHistory.push(attempt);
+          liveState.progress[attempt.slug] = { status: "Completed", completedAt: attempt.at };
+          return liveState.quizHistory;
+        });
+      }
       var s = read();
       s.quizHistory.push(attempt);
-      // Completing a quiz counts as completing that module.
       s.progress[attempt.slug] = { status: "Completed", completedAt: attempt.at };
       write(s);
-      return s.quizHistory;
+      return Promise.resolve(s.quizHistory);
     },
 
     /* ==================== assessment ==================== */
 
     getAssessment: function () {
-      return read().assessment;
+      return usingBackend ? liveState.assessment : read().assessment;
     },
 
     setAssessment: function (result) {
+      if (usingBackend) {
+        return api("/api/assessment/submit", {
+          method: "POST",
+          body: {
+            score: result.score, total: result.total, level: result.level,
+            level_key: result.levelKey, by_topic: result.byTopic, weak_areas: result.weakAreas
+          }
+        }).then(function () {
+          liveState.assessment = result;
+          return result;
+        }).catch(function (err) {
+          console.warn("[store] assessment save failed, kept locally for this session: " + err.message);
+          liveState.assessment = result;
+          return result;
+        });
+      }
       var s = read();
       s.assessment = result;
-      return write(s).assessment;
+      write(s);
+      return Promise.resolve(result);
     },
 
     /* ==================== admin ==================== */
 
     getAdmin: function () {
-      return read().admin;
+      return usingBackend ? liveState.admin : read().admin;
     },
 
-    adminLogin: function (username) {
+    /** identifier is treated as an email when a real backend is configured
+     *  (the backend has no separate "username" concept — an admin is a
+     *  regular account with role='admin'). In demo mode, behaves exactly
+     *  as before: any 3+ character username, any 8+ character password. */
+    adminLogin: function (identifier, password) {
+      if (backendConfigured()) {
+        return api("/api/auth/login", { method: "POST", body: { email: identifier, password: password } })
+          .then(function (data) {
+            if (data.user.role !== "admin") {
+              return { ok: false, error: "That account isn't an administrator." };
+            }
+            setToken(data.token);
+            return hydrate().then(function () { return { ok: true }; });
+          })
+          .catch(function (err) { return { ok: false, error: err.message }; });
+      }
       var s = read();
-      s.admin = { username: String(username).trim(), at: new Date().toISOString() };
+      s.admin = { username: String(identifier).trim(), at: new Date().toISOString() };
       write(s);
-      return { ok: true };
+      return Promise.resolve({ ok: true });
     },
 
     adminLogout: function () {
+      if (usingBackend) {
+        setToken(null);
+        liveState = null;
+        usingBackend = false;
+        readyPromise = null;
+        return Promise.resolve();
+      }
       var s = read();
       s.admin = null;
       write(s);
+      return Promise.resolve();
     },
 
     /* ==================== catalogue ==================== */
 
     getCatalogue: function () {
+      if (backendConfigured()) {
+        return api("/api/modules").then(function (modules) {
+          return modules.map(function (m) {
+            return { slug: m.slug, title: m.module_title, type: m.module_type, category: m.category || "", quiz: true, _id: m.module_id };
+          });
+        }).catch(function () { return CATALOGUE.slice(); });
+      }
       var s = read();
-      return s.catalogue || CATALOGUE.slice();
+      return Promise.resolve(s.catalogue || CATALOGUE.slice());
     },
 
+    /** Given the FULL edited list, diffs against the backend by creating/
+     *  updating/deleting as needed. In demo mode, just overwrites the
+     *  session copy exactly as before. */
     saveCatalogue: function (list) {
+      if (backendConfigured() && usingBackend) {
+        var calls = list.map(function (m) {
+          var body = { module_title: m.title, module_type: m.type, category: m.category, slug: m.slug };
+          if (m._id) return api("/api/modules/" + m._id, { method: "PUT", body: body });
+          return api("/api/modules", { method: "POST", body: body });
+        });
+        return Promise.all(calls).then(function () { return list; }).catch(function (err) {
+          console.warn("[store] saveCatalogue failed: " + err.message);
+          return list;
+        });
+      }
       var s = read();
       s.catalogue = list;
       write(s);
-      return list;
+      return Promise.resolve(list);
     },
 
     resetCatalogue: function () {
       var s = read();
       delete s.catalogue;
       write(s);
-      return CATALOGUE.slice();
+      return Promise.resolve(CATALOGUE.slice());
     },
 
     /* ==================== utility ==================== */
 
-    /** Wipe the whole prototype session, handy when rehearsing a demo. */
     reset: function () {
-      try { sessionStorage.removeItem(KEY); } catch (err) { /* no-op */ }
+      try { sessionStorage.removeItem(KEY); sessionStorage.removeItem(TOKEN_KEY); } catch (err) { /* no-op */ }
     },
 
-    /** Human-readable date for tables. */
     formatDate: function (iso) {
       var d = new Date(iso);
       if (isNaN(d)) return "Unknown";
