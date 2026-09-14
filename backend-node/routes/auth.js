@@ -117,4 +117,29 @@ router.get('/me', requireAuth, async (req, res) => {
   }
 });
 
+// FR-10: change the plan directly, no payment involved.
+//
+// The paper's Scope and Limitations section excludes "online payment gateway
+// integration, automatic billing, or financial transaction processing" from
+// this study, and FR-10 itself covers account-level plan management only.
+// This endpoint is therefore the documented way a user moves between Free and
+// Premium: it records the plan on the account and nothing else. No money
+// changes hands, and the interface says so plainly.
+router.patch('/me/subscription', requireAuth, async (req, res) => {
+  const { subscription_type } = req.body;
+  if (!['Free', 'Premium'].includes(subscription_type)) {
+    return res.status(400).json({ error: 'subscription_type must be Free or Premium.' });
+  }
+  try {
+    await pool.query(
+      'UPDATE users SET subscription_type = ?, subscription_status = ? WHERE user_id = ?',
+      [subscription_type, 'active', req.user.user_id]
+    );
+    res.json({ message: 'Plan updated.', subscription_type, subscription_status: 'active' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update plan.' });
+  }
+});
+
 module.exports = router;

@@ -308,32 +308,52 @@
       return Promise.resolve();
     },
 
-    /** Starts a hosted Stripe Checkout session. Premium is granted only by
-     *  the verified Stripe webhook, never by this browser call. */
+    /** FR-10: moves the account between Free and Premium.
+     *
+     *  No payment is taken. The paper's Scope and Limitations section
+     *  excludes payment gateway integration, billing, and transaction
+     *  processing from this study, so the plan is simply recorded on the
+     *  account. The Stripe routes in the backend remain available for a
+     *  future build but are not part of this flow.
+     *
+     *  Offline, this updates the session copy so the free tier still
+     *  demonstrates the gate without a server. */
     upgrade: function () {
       if (backendConfigured() && usingBackend) {
-        return api("/api/payments/checkout-session", { method: "POST" })
-          .then(function (data) {
-            if (!data.url) throw new Error("Checkout URL was not returned.");
-            window.location.assign(data.url);
-            return { ok: true, redirecting: true };
+        return api("/api/auth/me/subscription", {
+          method: "PATCH",
+          body: { subscription_type: "Premium" }
+        })
+          .then(function () {
+            liveState.user.subscription = "Premium";
+            return { ok: true, user: liveState.user };
           })
           .catch(function (err) { return { ok: false, error: err.message }; });
       }
-      return Promise.resolve({ ok: false, error: "Payments require the live backend. Start the server and sign in first." });
+      var s = read();
+      if (!s.user) return Promise.resolve({ ok: false, error: "Sign in first." });
+      s.user.subscription = "Premium";
+      write(s);
+      return Promise.resolve({ ok: true, user: s.user });
     },
 
     downgrade: function () {
       if (backendConfigured() && usingBackend) {
-        return api("/api/payments/portal-session", { method: "POST" })
-          .then(function (data) {
-            if (!data.url) throw new Error("Billing portal URL was not returned.");
-            window.location.assign(data.url);
-            return { ok: true, redirecting: true };
+        return api("/api/auth/me/subscription", {
+          method: "PATCH",
+          body: { subscription_type: "Free" }
+        })
+          .then(function () {
+            liveState.user.subscription = "Free";
+            return { ok: true, user: liveState.user };
           })
           .catch(function (err) { return { ok: false, error: err.message }; });
       }
-      return Promise.resolve({ ok: false, error: "Billing management requires the live backend." });
+      var s = read();
+      if (!s.user) return Promise.resolve({ ok: false, error: "Sign in first." });
+      s.user.subscription = "Free";
+      write(s);
+      return Promise.resolve({ ok: true, user: s.user });
     },
 
     /* ==================== progress ==================== */
@@ -374,6 +394,45 @@
     getQuizHistory: function () {
       var list = usingBackend ? liveState.quizHistory : read().quizHistory;
       return list.slice().sort(function (a, b) { return new Date(b.at) - new Date(a.at); });
+    },
+
+    /** Fetches a module's quiz bank from the API so that questions edited
+     *  in the admin panel actually reach learners. The API deliberately
+     *  withholds correct_option_index here, so the answer key never travels
+     *  during the attempt itself.
+     *
+     *  Returns null when no backend is connected, which tells quiz.js to
+     *  fall back to the bundled quiz-data.js banks and keeps the free tier
+     *  working as a static site. */
+    fetchQuizBank: function (slug) {
+      if (!usingBackend) return Promise.resolve(null);
+      return api("/api/quizzes/by-module/" + encodeURIComponent(slug))
+        .then(function (data) {
+          if (!data || !Array.isArray(data.questions) || !data.questions.length) return null;
+          return {
+            quizId: data.quiz_id,
+            title: data.title ? data.title.replace(/\s*Quiz$/i, "") : slug,
+            questions: data.questions.map(function (q) {
+              var options = q.options;
+              if (typeof options === "string") {
+                try { options = JSON.parse(options); } catch (err) { options = []; }
+              }
+              return { id: q.question_id, q: q.question_text, options: options || [] };
+            })
+          };
+        })
+        .catch(function () { return null; });
+    },
+
+    /** Submits an attempt for server-side scoring. The response carries the
+     *  answer key, which is what lets the results page show a review without
+     *  the answers having been in the browser during the quiz. */
+    submitQuizAttempt: function (quizId, questionIds, answers) {
+      if (!usingBackend) return Promise.resolve(null);
+      return api("/api/quizzes/" + quizId + "/submit", {
+        method: "POST",
+        body: { answers: answers, questionIds: questionIds }
+      }).catch(function () { return null; });
     },
 
     /** Records a completed quiz attempt (already scored client-side by

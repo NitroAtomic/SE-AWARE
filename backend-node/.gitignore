@@ -1,0 +1,12 @@
+# Real credentials never belong in the repository. .env.example is the
+# committed template; .env is yours and stays local.
+.env
+.env.local
+
+# Regenerate with `npm install` rather than committing thousands of files.
+node_modules/
+
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

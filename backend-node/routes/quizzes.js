@@ -92,10 +92,26 @@ router.post('/:quizId/submit', requireAuth, async (req, res) => {
 
   const conn = await pool.getConnection();
   try {
-    const [questions] = await conn.query(
-      'SELECT question_id, correct_option_index FROM quiz_questions WHERE quiz_id = ? ORDER BY order_index',
-      [req.params.quizId]
-    );
+    // `questionIds` lets the client tell us which questions it actually drew,
+    // since each attempt pulls a random subset from a larger bank. Without it
+    // we would score the answers against the wrong questions.
+    const { questionIds } = req.body;
+    let questions;
+    if (Array.isArray(questionIds) && questionIds.length) {
+      const [rows] = await conn.query(
+        'SELECT question_id, correct_option_index FROM quiz_questions WHERE quiz_id = ? AND question_id IN (?)',
+        [req.params.quizId, questionIds]
+      );
+      // Preserve the order the client presented them in.
+      const byId = new Map(rows.map((r) => [r.question_id, r]));
+      questions = questionIds.map((id) => byId.get(id)).filter(Boolean);
+    } else {
+      const [rows] = await conn.query(
+        'SELECT question_id, correct_option_index FROM quiz_questions WHERE quiz_id = ? ORDER BY order_index',
+        [req.params.quizId]
+      );
+      questions = rows;
+    }
     if (questions.length === 0) return res.status(404).json({ error: 'Quiz has no questions.' });
 
     let score = 0;
@@ -118,7 +134,13 @@ router.post('/:quizId/submit', requireAuth, async (req, res) => {
     );
     await conn.commit();
 
-    res.json({ score, total });
+    // Releasing the answer key only after submission keeps it off the wire
+    // during the attempt, while still allowing the results review.
+    res.json({
+      score,
+      total,
+      answerKey: questions.map((q) => ({ question_id: q.question_id, correct_option_index: q.correct_option_index })),
+    });
   } catch (err) {
     await conn.rollback();
     console.error(err);

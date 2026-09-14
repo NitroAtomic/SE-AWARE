@@ -1,3 +1,7 @@
+-- Run after schema.sql. Adds Stripe subscription fields and the
+-- webhook idempotency table.
+USE se_aware;
+
 ALTER TABLE users
   ADD COLUMN stripe_customer_id VARCHAR(255) NULL UNIQUE,
   ADD COLUMN stripe_subscription_id VARCHAR(255) NULL UNIQUE,

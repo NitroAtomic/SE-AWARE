@@ -111,7 +111,7 @@
   }
 
   /* ======================================================================
-     GO PREMIUM  (simulated upgrade; scope excludes payment gateways)
+     GO PREMIUM  (plan change only; scope excludes payment gateways)
      ====================================================================== */
   function initUpgrade() {
     var btn = document.getElementById("seUpgradeBtn");
@@ -149,18 +149,26 @@
         return;
       }
 
-      btn.innerHTML = '<i class="bi bi-stars" aria-hidden="true"></i> Upgrade securely';
+      // Labelled plainly rather than dressed up as a checkout. No payment is
+      // taken, and a platform that teaches people to distrust convincing
+      // payment screens should not present a fake one of its own.
+      btn.innerHTML = '<i class="bi bi-stars" aria-hidden="true"></i> Switch to Premium';
       btn.disabled = false;
       btn.onclick = async function () {
         btn.disabled = true;
         var result = await window.SEStore.upgrade();
-        if (!result.ok) {
-          btn.disabled = false;
-          status.innerHTML = '<span class="text-danger">' + window.SEUtil.escapeHtml(result.error) + '</span>';
+        if (result.ok) {
+          render();
+          return;
         }
+        btn.disabled = false;
+        status.innerHTML = '<span class="text-danger">' + window.SEUtil.escapeHtml(result.error) + '</span>';
       };
       status.innerHTML =
-        '<span class="se-pill muted"><i class="bi bi-person" aria-hidden="true"></i> Free plan</span>';
+        '<span class="se-pill muted"><i class="bi bi-person" aria-hidden="true"></i> Free plan</span>' +
+        '<span class="d-block mt-2" style="font-size:.86rem;color:var(--se-muted);">' +
+        'No payment is taken. Billing and payment processing are outside this study\'s scope, ' +
+        'so switching plans simply records the change on your account.</span>';
     }
 
     render();

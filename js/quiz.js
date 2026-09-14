@@ -33,12 +33,35 @@
   /* ======================================================================
      QUIZ PAGE
      ====================================================================== */
-  function initQuiz() {
+  async function initQuiz() {
     var shell = document.getElementById("seQuizShell");
     if (!shell) return;
 
     var slug = window.SEUtil.getParam("module");
-    var bank = window.QUIZ_DATA ? window.QUIZ_DATA[slug] : null;
+    var localBank = window.QUIZ_DATA ? window.QUIZ_DATA[slug] : null;
+    var bank = localBank;
+
+    // Prefer the database bank when a backend is connected, so questions
+    // edited in the admin panel actually reach learners. The bundled
+    // quiz-data.js banks stay as the offline fallback, which is what keeps
+    // the free tier working as a plain static site.
+    //
+    // Note on the answer key: the API withholds correct_option_index while
+    // the quiz is in progress, so a database-backed attempt is scored on the
+    // server at submission. The bundled banks carry their answers locally and
+    // are still scored in the browser.
+    if (window.SEStore && window.SEStore.fetchQuizBank) {
+      var remote = await window.SEStore.fetchQuizBank(slug);
+      if (remote && remote.questions.length) {
+        bank = {
+          title: remote.title || (localBank && localBank.title) || slug,
+          premium: localBank ? localBank.premium : false,
+          questions: remote.questions,
+          quizId: remote.quizId,
+          serverScored: true
+        };
+      }
+    }
 
     if (!bank) {
       shell.innerHTML =
@@ -72,6 +95,8 @@
 
     state.slug = slug;
     state.title = bank.title;
+    state.quizId = bank.quizId || null;
+    state.serverScored = !!bank.serverScored;
     state.items = drawQuestions(bank.questions);
     state.index = 0;
     state.answers = [];
@@ -103,16 +128,25 @@
       });
       var shuffled = window.SEUtil.shuffle(paired);
 
-      var newCorrect = 0;
-      for (var i = 0; i < shuffled.length; i++) {
-        if (shuffled[i].original === q.answer) newCorrect = i;
+      // Database-backed questions arrive without an answer, so there is
+      // nothing to remap; the server scores them against the original
+      // indices, which is why `originalOrder` is carried through.
+      var hasLocalAnswer = typeof q.answer === "number";
+      var newCorrect = null;
+      if (hasLocalAnswer) {
+        newCorrect = 0;
+        for (var i = 0; i < shuffled.length; i++) {
+          if (shuffled[i].original === q.answer) newCorrect = i;
+        }
       }
 
       return {
+        id: q.id || null,
         type: q.type,
         scenario: q.scenario || null,
         q: q.q,
         options: shuffled.map(function (o) { return o.text; }),
+        originalOrder: shuffled.map(function (o) { return o.original; }),
         answer: newCorrect,
         why: q.why
       };
@@ -175,23 +209,31 @@
 
     var chosen = parseInt(e.currentTarget.getAttribute("data-choice"), 10);
     var item = state.items[state.index];
-    var isCorrect = chosen === item.answer;
 
-    // Lock every option and colour the outcome.
+    // With a database-backed bank the answer key stays on the server until
+    // the attempt is submitted, so correctness is unknown at this point.
+    var knowsAnswer = typeof item.answer === "number";
+    var isCorrect = knowsAnswer ? chosen === item.answer : null;
+
+    // Lock every option, and colour the outcome only when we can.
     var buttons = document.querySelectorAll(".se-option");
     for (var i = 0; i < buttons.length; i++) {
       var idx = parseInt(buttons[i].getAttribute("data-choice"), 10);
       buttons[i].disabled = true;
-      if (idx === item.answer) buttons[i].classList.add("is-correct");
-      if (idx === chosen && !isCorrect) buttons[i].classList.add("is-wrong");
+      if (knowsAnswer && idx === item.answer) buttons[i].classList.add("is-correct");
+      if (knowsAnswer && idx === chosen && !isCorrect) buttons[i].classList.add("is-wrong");
+      if (!knowsAnswer && idx === chosen) buttons[i].classList.add("is-chosen");
     }
 
     state.answers.push({
+      questionId: item.id || null,
       question: item.q,
       scenario: item.scenario,
       options: item.options,
       chosen: chosen,
-      correctIndex: item.answer,
+      // The index the server knows this option by, before shuffling.
+      chosenOriginal: item.originalOrder ? item.originalOrder[chosen] : chosen,
+      correctIndex: knowsAnswer ? item.answer : null,
       correct: isCorrect,
       why: item.why
     });
@@ -199,13 +241,18 @@
     var last = state.index === QUESTIONS_PER_QUIZ - 1;
     var fb = document.getElementById("seFeedback");
     fb.innerHTML =
-      '<div class="se-feedback ' + (isCorrect ? "ok" : "no") + '">' +
-      "  <h4>" +
-      '    <i class="bi ' + (isCorrect ? "bi-check-circle-fill" : "bi-x-circle-fill") + '" aria-hidden="true"></i>' +
-      (isCorrect ? "Correct" : "Not quite") +
-      "  </h4>" +
-      "  <p>" + item.why + "</p>" +
-      "</div>" +
+      (knowsAnswer
+        ? '<div class="se-feedback ' + (isCorrect ? "ok" : "no") + '">' +
+          "  <h4>" +
+          '    <i class="bi ' + (isCorrect ? "bi-check-circle-fill" : "bi-x-circle-fill") + '" aria-hidden="true"></i>' +
+          (isCorrect ? "Correct" : "Not quite") +
+          "  </h4>" +
+          "  <p>" + (item.why || "") + "</p>" +
+          "</div>"
+        : '<div class="se-feedback">' +
+          '  <h4><i class="bi bi-check2" aria-hidden="true"></i>Answer recorded</h4>' +
+          "  <p>Your answers are marked when you finish, so the correct ones stay on the server until then.</p>" +
+          "</div>") +
       '<div class="text-end mt-3">' +
       '  <button type="button" class="btn btn-se-primary" id="seNext">' +
       (last ? "See my results" : "Next question") +
@@ -230,6 +277,38 @@
 
   async function finish() {
     var score = state.answers.filter(function (a) { return a.correct; }).length;
+    var scoredOnServer = false;
+
+    // Database-backed attempts are scored server-side, because the answer key
+    // was never sent to the browser. The response carries the key back, which
+    // is what lets results.html still show a per-question review.
+    if (state.serverScored && state.quizId && window.SEStore && window.SEStore.submitQuizAttempt) {
+      var questionIds = state.answers.map(function (a) { return a.questionId; });
+      var chosenOriginals = state.answers.map(function (a) { return a.chosenOriginal; });
+      var result = await window.SEStore.submitQuizAttempt(state.quizId, questionIds, chosenOriginals);
+
+      if (result && typeof result.score === "number") {
+        score = result.score;
+        scoredOnServer = true;
+
+        var keyById = {};
+        (result.answerKey || []).forEach(function (k) {
+          keyById[k.question_id] = k.correct_option_index;
+        });
+
+        // Translate the server's original-index answer back into the shuffled
+        // position this attempt displayed, so the review highlights the right
+        // option rather than whichever one happens to sit at that index.
+        state.answers.forEach(function (a, i) {
+          var original = keyById[a.questionId];
+          if (typeof original !== "number") return;
+          var item = state.items[i];
+          var shownIndex = item && item.originalOrder ? item.originalOrder.indexOf(original) : original;
+          a.correctIndex = shownIndex;
+          a.correct = a.chosen === shownIndex;
+        });
+      }
+    }
 
     var payload = {
       slug: state.slug,
@@ -249,7 +328,9 @@
     // If someone is signed in, record the attempt so it appears in their
     // quiz history and marks the module complete on the dashboard (DB-01,
     // DB-02). Guests are unaffected, and nothing is recorded for them.
-    if (window.SEStore && window.SEStore.isSignedIn()) {
+    // `submitQuizAttempt` already wrote the result and progress row, so only
+    // record separately when scoring happened in the browser.
+    if (!scoredOnServer && window.SEStore && window.SEStore.isSignedIn()) {
       await window.SEStore.addQuizAttempt({
         slug: payload.slug,
         title: payload.title,

@@ -789,6 +789,11 @@ button:focus-visible,
 .se-option.is-wrong { border-color: var(--se-danger); background: var(--se-danger-soft); }
 .se-option.is-wrong .se-option-key { background: var(--se-danger); color: #fff; border-color: var(--se-danger); }
 
+/* Database-backed quizzes withhold the answer key until submission, so a
+   chosen option is acknowledged without claiming right or wrong yet. */
+.se-option.is-chosen { border-color: var(--se-accent, #3b6ea5); background: var(--se-accent-soft, rgba(59,110,165,.08)); }
+.se-option.is-chosen .se-option-key { background: var(--se-accent, #3b6ea5); color: #fff; border-color: var(--se-accent, #3b6ea5); }
+
 .se-feedback {
   margin-top: 1.1rem;
   border-radius: var(--se-radius-sm);
