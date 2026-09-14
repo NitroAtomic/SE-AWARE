@@ -19,6 +19,9 @@ router.post('/submit', requireAuth, async (req, res) => {
   if (typeof score !== 'number' || typeof total !== 'number' || !level || !by_topic || !weak_areas) {
     return res.status(400).json({ error: 'score, total, level, level_key, by_topic, and weak_areas are required.' });
   }
+  if (!Number.isInteger(score) || !Number.isInteger(total) || total < 1 || score < 0 || score > total || !Array.isArray(weak_areas) || typeof by_topic !== 'object') {
+    return res.status(400).json({ error: 'Assessment result is invalid.' });
+  }
 
   try {
     await pool.query(

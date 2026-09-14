@@ -73,20 +73,17 @@
   }
 
   /* ----------------------------------------------------------------------
-     2. Prototype badge
-     Every premium-tier page carries an honest label. We do not fake
-     persistence we do not have.
+     2. Connection status badge
      ---------------------------------------------------------------------- */
   function renderPrototypeBadge() {
     var host = document.querySelector("[data-prototype-badge]");
     if (!host) return;
-    host.innerHTML =
-      '<div class="se-proto-badge">' +
-      '  <i class="bi bi-cone-striped" aria-hidden="true"></i>' +
-      "  <div><strong>Prototype, session data only.</strong> " +
-      "  This part of the platform demonstrates the premium user journey. Nothing is sent to a server, no password is " +
-      "  stored, and everything here disappears when you close this browser tab.</div>" +
-      "</div>";
+    var live = window.SEStore.isUsingBackend();
+    host.innerHTML = live
+      ? '<div class="se-proto-badge"><i class="bi bi-database-check" aria-hidden="true"></i>' +
+        '<div><strong>Server-backed mode.</strong> Signed-in account, assessment, quiz history, and progress data are stored by the SE Aware backend.</div></div>'
+      : '<div class="se-proto-badge"><i class="bi bi-cone-striped" aria-hidden="true"></i>' +
+        '<div><strong>Offline demonstration.</strong> Start the backend to save account data and enable payments.</div></div>';
   }
 
   /* ----------------------------------------------------------------------

@@ -39,7 +39,7 @@
   var API = function () { return window.SE_API_BASE || ""; };
   function backendConfigured() { return !!API(); }
 
-  var usingBackend = false;   // becomes true only after a successful hydration
+  var usingBackend = false;   // true for HTTP(S) server-backed mode
   var liveState = null;       // in-memory cache when usingBackend is true
 
   /* ----------------------------------------------------------------------
@@ -185,8 +185,13 @@
   }
 
   function hydrate() {
-    if (!backendConfigured() || !getToken()) {
+    if (!backendConfigured()) {
       usingBackend = false;
+      return Promise.resolve();
+    }
+    usingBackend = true;
+    if (!getToken()) {
+      liveState = JSON.parse(JSON.stringify(DEFAULT_STATE));
       return Promise.resolve();
     }
     return Promise.all([api("/api/auth/me"), api("/api/dashboard")])
@@ -195,9 +200,9 @@
         usingBackend = true;
       })
       .catch(function () {
-        // Token invalid/expired, or backend unreachable — fall back cleanly.
+        // Do not fall back to spoofable demo state on a real deployment.
         setToken(null);
-        usingBackend = false;
+        liveState = JSON.parse(JSON.stringify(DEFAULT_STATE));
       });
   }
 
@@ -235,7 +240,7 @@
       if (backendConfigured()) {
         return api("/api/auth/register", {
           method: "POST",
-          body: { first_name: firstName, email: email, password: password, subscription_type: "Free" }
+          body: { first_name: firstName, last_name: lastName, email: email, password: password }
         }).then(function (data) {
           setToken(data.token);
           return hydrate().then(function () { return { ok: true, user: liveState.user }; });
@@ -251,7 +256,7 @@
         return Promise.resolve({ ok: false, error: "An account with that email already exists in this session." });
       }
       s.accounts.push(mail);
-      s.user = { firstName: String(firstName).trim(), lastName: String(lastName || "").trim(), email: mail, subscription: "Premium", createdAt: new Date().toISOString() };
+      s.user = { firstName: String(firstName).trim(), lastName: String(lastName || "").trim(), email: mail, subscription: "Free", createdAt: new Date().toISOString() };
       write(s);
       return Promise.resolve({ ok: true, user: s.user });
     },
@@ -282,7 +287,7 @@
         return Promise.resolve({ ok: false, error: "No account with that email was registered in this session. Register first." });
       }
       if (!s.user || s.user.email !== mail) {
-        s.user = { firstName: mail.split("@")[0], lastName: "", email: mail, subscription: "Premium", createdAt: new Date().toISOString() };
+        s.user = { firstName: mail.split("@")[0], lastName: "", email: mail, subscription: "Free", createdAt: new Date().toISOString() };
       }
       write(s);
       return Promise.resolve({ ok: true, user: s.user });
@@ -303,32 +308,32 @@
       return Promise.resolve();
     },
 
-    /** Simulated upgrade — real backend has no payment gateway either
-     *  (out of scope per FR-10), this just flips the plan field. */
+    /** Starts a hosted Stripe Checkout session. Premium is granted only by
+     *  the verified Stripe webhook, never by this browser call. */
     upgrade: function () {
       if (backendConfigured() && usingBackend) {
-        return api("/api/auth/me/subscription", { method: "PATCH", body: { subscription_type: "Premium" } })
-          .then(function () { liveState.user.subscription = "Premium"; return { ok: true, user: liveState.user }; })
+        return api("/api/payments/checkout-session", { method: "POST" })
+          .then(function (data) {
+            if (!data.url) throw new Error("Checkout URL was not returned.");
+            window.location.assign(data.url);
+            return { ok: true, redirecting: true };
+          })
           .catch(function (err) { return { ok: false, error: err.message }; });
       }
-      var s = read();
-      if (!s.user) return Promise.resolve({ ok: false, error: "Sign in first." });
-      s.user.subscription = "Premium";
-      write(s);
-      return Promise.resolve({ ok: true, user: s.user });
+      return Promise.resolve({ ok: false, error: "Payments require the live backend. Start the server and sign in first." });
     },
 
     downgrade: function () {
       if (backendConfigured() && usingBackend) {
-        return api("/api/auth/me/subscription", { method: "PATCH", body: { subscription_type: "Free" } })
-          .then(function () { liveState.user.subscription = "Free"; return { ok: true, user: liveState.user }; })
+        return api("/api/payments/portal-session", { method: "POST" })
+          .then(function (data) {
+            if (!data.url) throw new Error("Billing portal URL was not returned.");
+            window.location.assign(data.url);
+            return { ok: true, redirecting: true };
+          })
           .catch(function (err) { return { ok: false, error: err.message }; });
       }
-      var s = read();
-      if (!s.user) return Promise.resolve({ ok: false, error: "Sign in first." });
-      s.user.subscription = "Free";
-      write(s);
-      return Promise.resolve({ ok: true, user: s.user });
+      return Promise.resolve({ ok: false, error: "Billing management requires the live backend." });
     },
 
     /* ==================== progress ==================== */
@@ -342,8 +347,10 @@
      *  falls back to session-only for now when using the real backend. */
     markModuleComplete: function (slug) {
       if (usingBackend) {
-        liveState.progress[slug] = { status: "Completed", completedAt: new Date().toISOString() };
-        return Promise.resolve(liveState.progress);
+        return api("/api/progress/" + encodeURIComponent(slug), { method: "PUT" }).then(function (data) {
+          liveState.progress[slug] = { status: "Completed", completedAt: data.completed_at };
+          return liveState.progress;
+        });
       }
       var s = read();
       s.progress[slug] = { status: "Completed", completedAt: new Date().toISOString() };
@@ -352,8 +359,10 @@
 
     unmarkModule: function (slug) {
       if (usingBackend) {
-        delete liveState.progress[slug];
-        return Promise.resolve(liveState.progress);
+        return api("/api/progress/" + encodeURIComponent(slug), { method: "DELETE" }).then(function () {
+          delete liveState.progress[slug];
+          return liveState.progress;
+        });
       }
       var s = read();
       delete s.progress[slug];
@@ -496,6 +505,45 @@
       s.catalogue = list;
       write(s);
       return Promise.resolve(list);
+    },
+
+    deleteModule: function (module) {
+      if (backendConfigured() && usingBackend && module && module._id) {
+        return api("/api/modules/" + module._id, { method: "DELETE" });
+      }
+      return Promise.resolve();
+    },
+
+    adminGetUsers: function () {
+      return api("/api/admin/users");
+    },
+
+    adminUpdateUser: function (id, plan, status) {
+      return api("/api/admin/users/" + id, { method: "PATCH", body: { subscription_type: plan, subscription_status: status } });
+    },
+
+    adminDeleteUser: function (id) {
+      return api("/api/admin/users/" + id, { method: "DELETE" });
+    },
+
+    adminGetQuestions: function () {
+      return api("/api/admin/questions");
+    },
+
+    adminGetQuizzes: function () {
+      return api("/api/admin/quizzes");
+    },
+
+    adminAddQuestion: function (question) {
+      return api("/api/quizzes/" + question.quiz_id + "/questions", { method: "POST", body: question });
+    },
+
+    adminUpdateQuestion: function (question) {
+      return api("/api/quizzes/questions/" + question.question_id, { method: "PUT", body: question });
+    },
+
+    adminDeleteQuestion: function (id) {
+      return api("/api/quizzes/questions/" + id, { method: "DELETE" });
     },
 
     resetCatalogue: function () {

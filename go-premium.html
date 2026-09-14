@@ -107,7 +107,7 @@
                 <li>60 additional quiz questions</li>
               </ul>
               <div class="mt-auto">
-                <button class="btn btn-se-primary w-100" id="seUpgradeBtn" type="button">Simulate Upgrade</button>
+                <button class="btn btn-se-primary w-100" id="seUpgradeBtn" type="button">Upgrade securely</button>
                 <div class="text-center mt-3" id="seUpgradeStatus"></div>
               </div>
             </div>
@@ -202,10 +202,9 @@
         </div>
 
         <div class="se-callout" style="max-width:none;">
-          <strong>No payment is processed anywhere on this site.</strong> Payment gateway integration, automatic
-          billing, multiple subscription tiers, and financial transaction processing are all explicitly outside this
-          capstone's scope. The button above flips a flag in your browser tab so the premium journey can be
-          demonstrated end to end, and the price shown is illustrative only.
+          <strong>Payments are handled by Stripe Checkout.</strong> Card details are entered on Stripe's hosted page
+          and are never sent to or stored by SE Aware. Premium access is activated only after the backend verifies a
+          signed Stripe webhook.
         </div>
 
         <div class="row g-4 mt-2">

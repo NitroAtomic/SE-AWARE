@@ -1,5 +1,5 @@
 /* ==========================================================================
-   admin.js: administrator panel prototype
+   admin.js: administrator panel
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
@@ -10,11 +10,9 @@
    Test cases: AD-01 admin login, AD-02 content CRUD, AD-03 quiz CRUD,
                AD-04 module CRUD.
 
-   PROTOTYPE. The admin sign-in is a mock: it accepts any username with a
-   password of eight characters or more, because there is no server to
-   authenticate against. Edits operate on in-memory arrays held in
-   sessionStorage and are discarded when the tab closes. The purpose is to
-   demonstrate the management interface, not to implement access control.
+   With the backend running, authentication and all management writes are
+   enforced by admin-only API routes. File-based offline mode retains sample
+   data for demonstrations.
    ========================================================================== */
 
 (function () {
@@ -26,6 +24,45 @@
   var tab = "modules";
   var questions = null;   // working copy of the quiz banks
   var users = null;       // seeded demo accounts + the live session account
+  var quizzes = [];
+
+  function jsonValue(value, fallback) {
+    if (typeof value !== "string") return value || fallback;
+    try { return JSON.parse(value); } catch (err) { return fallback; }
+  }
+
+  async function loadAdminData() {
+    if (!window.SEStore.isUsingBackend()) {
+      questions = seedQuestions();
+      users = seedUsers();
+      return;
+    }
+    var result = await Promise.all([
+      window.SEStore.adminGetQuestions(),
+      window.SEStore.adminGetUsers(),
+      window.SEStore.adminGetQuizzes()
+    ]);
+    quizzes = result[2];
+    questions = result[0].map(function (q) {
+      var options = jsonValue(q.options, []);
+      return {
+        id: String(q.question_id), question_id: q.question_id, quiz_id: q.quiz_id,
+        module: q.module_title, slug: q.slug, type: "knowledge", text: q.question_text,
+        options: options, correct_option_index: q.correct_option_index,
+        order_index: q.order_index, answer: options[q.correct_option_index] || "Not set"
+      };
+    });
+    users = result[1].map(function (u) {
+      return {
+        id: u.user_id,
+        name: ((u.first_name || "") + " " + (u.last_name || "")).trim() || u.email,
+        email: u.email, plan: u.subscription_type,
+        status: u.subscription_status.charAt(0).toUpperCase() + u.subscription_status.slice(1),
+        joined: String(u.created_at).slice(0, 10), role: u.role,
+        isLive: u.email === (window.SEStore.getAdmin() || {}).username
+      };
+    });
+  }
 
   /* ======================================================================
      Seed data
@@ -127,8 +164,7 @@
      Panel
      ====================================================================== */
   async function renderPanel() {
-    if (!questions) questions = seedQuestions();
-    if (!users) users = seedUsers();
+    if (!questions || !users) await loadAdminData();
 
     var admin = window.SEStore.getAdmin();
 
@@ -171,8 +207,8 @@
       tabs[i].classList.toggle("active", tabs[i].getAttribute("data-tab") === tab);
     }
     if (tab === "modules") await renderModules();
-    else if (tab === "questions") renderQuestions();
-    else renderUsers();
+    else if (tab === "questions") await renderQuestions();
+    else await renderUsers();
   }
 
   /* ---------------------- Modules CRUD (AD-02, AD-04) ---------------------- */
@@ -183,10 +219,10 @@
       '<div class="d-flex flex-wrap align-items-center gap-2 mb-3">' +
       '  <div><h3 class="h6 mb-1">Learning modules</h3>' +
       '    <p class="text-body-secondary mb-0" style="font-size:.88rem;">' + list.length +
-      " modules. Edits apply to this browser tab only.</p></div>" +
+      " modules. Changes are saved immediately.</p></div>" +
       '  <button type="button" class="btn btn-se-primary btn-sm ms-auto" id="admAddModule">' +
       '    <i class="bi bi-plus-lg" aria-hidden="true"></i> Add module</button>' +
-      '  <button type="button" class="btn btn-se-outline btn-sm" id="admResetModules">Reset</button>' +
+      (window.SEStore.isUsingBackend() ? "" : '  <button type="button" class="btn btn-se-outline btn-sm" id="admResetModules">Reset</button>') +
       "</div>" +
       '<div class="se-table-wrap"><table class="se-table"><thead><tr>' +
       "<th>Title</th><th>Category</th><th>Type</th><th>Quiz</th><th style=\"width:96px;\">Actions</th>" +
@@ -205,8 +241,7 @@
           "</tr>";
       }).join("") +
       "</tbody></table></div>" +
-      '<p class="mt-3 mb-0" style="font-size:.86rem;color:var(--se-muted);">Editing a title or plan updates the ' +
-      "catalogue immediately. In production these writes would hit the modules table through the admin API.</p>";
+      '<p class="mt-3 mb-0" style="font-size:.86rem;color:var(--se-muted);">Editing a title or plan updates the catalogue immediately.</p>';
 
     // Inline edits
     var inputs = el("seAdminBody").querySelectorAll("[data-edit]");
@@ -223,8 +258,9 @@
     for (var d = 0; d < dels.length; d++) {
       dels[d].addEventListener("click", async function () {
         var list2 = await window.SEStore.getCatalogue();
-        list2.splice(parseInt(this.getAttribute("data-del"), 10), 1);
-        await window.SEStore.saveCatalogue(list2);
+        var removed = list2[parseInt(this.getAttribute("data-del"), 10)];
+        if (window.SEStore.isUsingBackend()) await window.SEStore.deleteModule(removed);
+        else { list2.splice(parseInt(this.getAttribute("data-del"), 10), 1); await window.SEStore.saveCatalogue(list2); }
         await renderModules();
       });
     }
@@ -243,14 +279,14 @@
       await renderModules();
     });
 
-    el("admResetModules").addEventListener("click", async function () {
+    if (el("admResetModules")) el("admResetModules").addEventListener("click", async function () {
       await window.SEStore.resetCatalogue();
       await renderModules();
     });
   }
 
   /* ---------------------- Quiz question CRUD (AD-03) ---------------------- */
-  function renderQuestions() {
+  async function renderQuestions() {
     var filter = (el("admQFilter") && el("admQFilter").value) || "all";
     var visible = questions.filter(function (q) { return filter === "all" || q.slug === filter; });
     var slugs = [];
@@ -291,25 +327,43 @@
 
     var edits = el("seAdminBody").querySelectorAll("[data-qedit]");
     for (var i = 0; i < edits.length; i++) {
-      edits[i].addEventListener("change", function () {
+      edits[i].addEventListener("change", async function () {
         var id = this.getAttribute("data-qedit");
         var val = this.value;
-        questions.forEach(function (q) { if (q.id === id) q.text = val; });
+        var selected = null;
+        questions.forEach(function (q) { if (q.id === id) { q.text = val; selected = q; } });
+        if (window.SEStore.isUsingBackend() && selected) {
+          await window.SEStore.adminUpdateQuestion({
+            question_id: selected.question_id, question_text: selected.text, options: selected.options,
+            correct_option_index: selected.correct_option_index, order_index: selected.order_index
+          });
+        }
       });
     }
 
     var dels = el("seAdminBody").querySelectorAll("[data-qdel]");
     for (var d = 0; d < dels.length; d++) {
-      dels[d].addEventListener("click", function () {
+      dels[d].addEventListener("click", async function () {
         var id = this.getAttribute("data-qdel");
+        if (window.SEStore.isUsingBackend()) await window.SEStore.adminDeleteQuestion(id);
         questions = questions.filter(function (q) { return q.id !== id; });
-        renderQuestions();
+        await renderQuestions();
       });
     }
 
-    el("admAddQ").addEventListener("click", function () {
+    el("admAddQ").addEventListener("click", async function () {
       var slug = filter === "all" ? "phishing" : filter;
       var n = questions.filter(function (q) { return q.slug === slug; }).length + 1;
+      var quiz = quizzes.filter(function (q) { return q.slug === slug; })[0];
+      if (window.SEStore.isUsingBackend() && !quiz) return;
+      if (window.SEStore.isUsingBackend()) {
+        await window.SEStore.adminAddQuestion({
+          quiz_id: quiz.quiz_id, question_text: "New question. Edit this text",
+          options: ["Option 1", "Option 2"], correct_option_index: 0, order_index: n
+        });
+        await loadAdminData();
+        return renderQuestions();
+      }
       questions.push({
         id: slug + "-" + n,
         module: window.QUIZ_DATA[slug].title,
@@ -323,12 +377,12 @@
   }
 
   /* ---------------------- Users & subscriptions ---------------------- */
-  function renderUsers() {
+  async function renderUsers() {
     el("seAdminBody").innerHTML =
       '<div class="d-flex flex-wrap align-items-center gap-2 mb-3">' +
       '  <div><h3 class="h6 mb-1">Users and subscriptions</h3>' +
       '    <p class="text-body-secondary mb-0" style="font-size:.88rem;">' + users.length +
-      " accounts. Demo records, plus your live session account where one exists.</p></div>" +
+      " accounts.</p></div>" +
       "</div>" +
       '<div class="se-table-wrap"><table class="se-table"><thead><tr>' +
       "<th>Name</th><th>Email</th><th style=\"width:130px;\">Plan</th><th style=\"width:120px;\">Status</th>" +
@@ -347,27 +401,25 @@
           "</tr>";
       }).join("") +
       "</tbody></table></div>" +
-      '<p class="mt-3 mb-0" style="font-size:.86rem;color:var(--se-muted);">Changing your own row\'s plan updates the ' +
-      "live session, so you can demonstrate premium gating without leaving this page.</p>";
+      '<p class="mt-3 mb-0" style="font-size:.86rem;color:var(--se-muted);">Subscription changes are restricted to administrators and saved immediately.</p>';
 
     var plans = el("seAdminBody").querySelectorAll("[data-uplan]");
     for (var i = 0; i < plans.length; i++) {
       plans[i].addEventListener("change", async function () {
         var idx = parseInt(this.getAttribute("data-uplan"), 10);
         users[idx].plan = this.value;
-        if (users[idx].isLive) {
-          if (this.value === "Premium") await window.SEStore.upgrade();
-          else await window.SEStore.downgrade();
-        }
-        renderUsers();
+        if (window.SEStore.isUsingBackend()) await window.SEStore.adminUpdateUser(users[idx].id, users[idx].plan, users[idx].status.toLowerCase());
+        await renderUsers();
       });
     }
 
     var dels = el("seAdminBody").querySelectorAll("[data-udel]");
     for (var d = 0; d < dels.length; d++) {
-      dels[d].addEventListener("click", function () {
-        users.splice(parseInt(this.getAttribute("data-udel"), 10), 1);
-        renderUsers();
+      dels[d].addEventListener("click", async function () {
+        var idx = parseInt(this.getAttribute("data-udel"), 10);
+        if (window.SEStore.isUsingBackend()) await window.SEStore.adminDeleteUser(users[idx].id);
+        users.splice(idx, 1);
+        await renderUsers();
       });
     }
   }

@@ -20,6 +20,9 @@ CREATE TABLE users (
   subscription_type ENUM('Free', 'Premium') NOT NULL DEFAULT 'Free',
   subscription_status ENUM('active', 'cancelled', 'expired') NOT NULL DEFAULT 'active',
   role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
+  stripe_customer_id VARCHAR(255) UNIQUE,
+  stripe_subscription_id VARCHAR(255) UNIQUE,
+  subscription_current_period_end TIMESTAMP NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -102,6 +105,12 @@ CREATE TABLE progress (
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   FOREIGN KEY (module_id) REFERENCES modules(module_id) ON DELETE CASCADE,
   UNIQUE KEY unique_user_module (user_id, module_id)
+);
+
+CREATE TABLE payment_events (
+  event_id VARCHAR(255) PRIMARY KEY,
+  event_type VARCHAR(100) NOT NULL,
+  processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ============================================================

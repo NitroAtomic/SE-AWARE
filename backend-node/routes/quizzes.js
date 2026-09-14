@@ -46,6 +46,9 @@ router.post('/record-attempt', requireAuth, async (req, res) => {
   if (!slug || typeof score !== 'number' || typeof total !== 'number') {
     return res.status(400).json({ error: 'slug, score, and total are required.' });
   }
+  if (!Number.isInteger(score) || !Number.isInteger(total) || total < 1 || score < 0 || score > total) {
+    return res.status(400).json({ error: 'score and total must be valid whole numbers.' });
+  }
   const conn = await pool.getConnection();
   try {
     const [modRows] = await conn.query('SELECT module_id FROM modules WHERE slug = ?', [slug]);

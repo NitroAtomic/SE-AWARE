@@ -4,10 +4,10 @@
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
    ARCHITECTURE
-     Browser  ->  n8n webhook  ->  Google Gemini API  ->  n8n  ->  Browser
+     Browser  ->  SE-AWARE backend  ->  n8n or Google Gemini  ->  Browser
 
-     The browser NEVER talks to Google directly. The Gemini API key lives
-     inside the n8n workflow on the server side. Putting an API key in
+     The browser NEVER talks to Google directly. Provider credentials live
+     on the backend. Putting an API key in
      client-side JavaScript would expose it to anyone who opens DevTools.
 
    REQUEST  (POST, JSON):  { "message": "user question" }
@@ -25,7 +25,10 @@
   /* ======================================================================
      CONFIGURATION: the only line the team needs to change to go live
      ====================================================================== */
-  var N8N_WEBHOOK_URL = "REPLACE_WITH_YOUR_N8N_PRODUCTION_WEBHOOK_URL";
+   function chatbotUrl() {
+     var base = window.SE_API_BASE || "";
+     return base + "/api/chat";
+   }
 
   /** Milliseconds before an unanswered request is treated as a timeout. */
   var REQUEST_TIMEOUT_MS = 20000;
@@ -522,13 +525,7 @@
   /* ======================================================================
      NETWORK
      ====================================================================== */
-  function isConfigured() {
-    return (
-      N8N_WEBHOOK_URL &&
-      N8N_WEBHOOK_URL.indexOf("REPLACE_WITH") === -1 &&
-      /^https?:\/\//i.test(N8N_WEBHOOK_URL)
-    );
-  }
+  function isConfigured() { return window.location.protocol !== "file:"; }
 
   function askWebhook(question) {
     var controller = new AbortController();
@@ -536,7 +533,7 @@
       controller.abort();
     }, REQUEST_TIMEOUT_MS);
 
-    return fetch(N8N_WEBHOOK_URL, {
+    return fetch(chatbotUrl(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: question }),

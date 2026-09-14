@@ -1,12 +1,9 @@
 /* ==========================================================================
    backend-config.js: Node.js + MySQL API connection
    --------------------------------------------------------------------------
-   Set API_BASE to your running backend, e.g. "http://localhost:3000" for
-   local development, or your deployed URL (Render, etc.) for production.
-
-   Leave it blank ("") to keep the platform running exactly as it did
-   before: sessionStorage-only, tab-scoped, no server involved. store.js
-   checks this and falls back automatically, so nothing breaks if the
-   backend isn't running.
+   The Node server serves the frontend and API together, so HTTP deployments
+   use the current origin automatically. Opening the files directly keeps the
+   offline demonstration mode. Set window.SE_API_BASE before this script only
+   when the API intentionally lives on another origin.
    ========================================================================== */
-window.SE_API_BASE = "http://localhost:3000";
+window.SE_API_BASE = window.SE_API_BASE || (window.location.protocol === "file:" ? "" : window.location.origin);

@@ -1,16 +1,10 @@
 /* ==========================================================================
-   auth.js: registration, sign-in, and the simulated upgrade
+   auth.js: registration, sign-in, and Stripe Checkout upgrade
    Web-Based Social Engineering Awareness Platform for Remote Workers
    Group 4 · S3102 · MO-IT200D1 Capstone 1
    --------------------------------------------------------------------------
-   PROTOTYPE ONLY. Validation here is client-side formatting only. No
-   credential is transmitted, and no password is stored anywhere, not in
-   memory, not in sessionStorage, not hashed. Real authentication belongs on
-   the server and is Capstone 2 work.
-
-   That is a deliberate choice rather than an omission: storing a password
-   client-side, even hashed, would teach exactly the habit this platform
-   spends six modules warning people about.
+   Client validation is backed by the Node API. Passwords are sent only to the
+   configured server and stored there as bcrypt hashes.
    ========================================================================== */
 
 (function () {
@@ -71,7 +65,7 @@
         ok = false;
       }
       if (pass !== confirm) { showError("errRegConfirm", "The two passwords do not match."); ok = false; }
-      if (!agreed) { showError("errRegTerms", "Please acknowledge the prototype notice."); ok = false; }
+      if (!agreed) { showError("errRegTerms", "Please acknowledge the account notice."); ok = false; }
 
       if (!ok) return;
 
@@ -155,11 +149,15 @@
         return;
       }
 
-      btn.innerHTML = '<i class="bi bi-stars" aria-hidden="true"></i> Simulate Upgrade';
+      btn.innerHTML = '<i class="bi bi-stars" aria-hidden="true"></i> Upgrade securely';
       btn.disabled = false;
       btn.onclick = async function () {
-        await window.SEStore.upgrade();
-        render();
+        btn.disabled = true;
+        var result = await window.SEStore.upgrade();
+        if (!result.ok) {
+          btn.disabled = false;
+          status.innerHTML = '<span class="text-danger">' + window.SEUtil.escapeHtml(result.error) + '</span>';
+        }
       };
       status.innerHTML =
         '<span class="se-pill muted"><i class="bi bi-person" aria-hidden="true"></i> Free plan</span>';

@@ -107,7 +107,7 @@
           <div class="form-check mt-3">
             <input class="form-check-input" type="checkbox" id="regTerms">
             <label class="form-check-label" for="regTerms" style="font-size:.9rem;">
-              I understand this is a capstone prototype and that no data I enter is stored on a server.
+              I understand that my account details and learning progress will be stored by the SE Aware server.
             </label>
             <div class="se-field-error" id="errRegTerms"></div>
           </div>
@@ -120,8 +120,8 @@
         </form>
 
         <p class="text-center mt-4 mb-0" style="font-size:.87rem;color:var(--se-muted);max-width:460px;margin-inline:auto;">
-          Your password is checked for format only. It is never stored, not in this browser, not hashed, not
-          anywhere. Storing one client-side would teach exactly the habit this platform warns against.
+          Your password is sent only to the configured SE Aware backend and is stored as a one-way bcrypt hash.
+          Card details, if you upgrade, are entered directly on Stripe's hosted checkout page.
         </p>
       </div>
     </section>
