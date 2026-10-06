@@ -113,21 +113,15 @@
         return;
       }
 
-      /* A plan was chosen before the account existed, so apply it now.
-         If this call fails the account is still perfectly good - it is
-         simply on Free - so say so plainly and send them to the plan page
-         rather than leaving them on a form that looks like it failed. */
+      /* The plan is applied at the end of the checkout, not here. Setting it
+         the moment the account exists would hand over Premium before the
+         payment step the person is about to be shown, which makes that step
+         look like a formality it can skip. */
       if (plan) {
-        var upgraded = await window.SEStore.upgrade(plan);
-        if (!upgraded.ok) {
-          formAlert(form, "ok",
-            "<strong>Account created</strong>, but the plan could not be set just now. " +
-            "You are on Free; you can switch to Premium from the plan page.");
-          setTimeout(function () { window.location.href = root() + "go-premium.html"; }, 1800);
-          return;
-        }
-        formAlert(form, "ok", "<strong>Premium account created.</strong> Taking you to your dashboard&hellip;");
-        setTimeout(function () { window.location.href = root() + "dashboard.html"; }, 700);
+        formAlert(form, "ok", "<strong>Account created.</strong> One more step&hellip;");
+        setTimeout(function () {
+          window.location.href = root() + "payment.html?plan=" + plan;
+        }, 700);
         return;
       }
 

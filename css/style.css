@@ -1626,3 +1626,37 @@ html[data-theme="dark"] .ratio iframe { background: #000; }
 .se-quick-locked:focus {
   opacity: 1;
 }
+
+/* Checkout step indicator */
+.se-steps {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.25rem;
+  padding: 0;
+  margin: 0;
+  font-size: .9rem;
+  color: var(--se-muted);
+}
+.se-steps li { display: flex; align-items: center; gap: .5rem; }
+.se-steps .n {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--se-border);
+  font-size: .82rem;
+  font-weight: 600;
+}
+.se-steps li.done { color: var(--se-heading); }
+.se-steps li.done .n { background: var(--se-accent); border-color: var(--se-accent); color: var(--se-bg); }
+.se-steps li.current { color: var(--se-heading); font-weight: 600; }
+.se-steps li.current .n { border-color: var(--se-accent); color: var(--se-accent); }
+
+/* A callout that needs to be read before the thing below it, not after.
+   Used for the prototype-checkout warning. */
+.se-callout-warn {
+  border-left: 3px solid var(--se-accent);
+  background: color-mix(in srgb, var(--se-accent) 10%, transparent);
+}

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | SE Aware</title>
+  <meta name="description" content="Prototype checkout for the SE Aware Premium plan. No payment is processed.">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0B2545">
+  <script src="js/theme.js?v=10"></script>
+  <meta property="og:title" content="Checkout | SE Aware">
+  <meta property="og:description" content="Prototype checkout for the SE Aware Premium plan. No payment is processed.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css?v=10">
+</head>
+<body data-page="" data-root="">
+  <a class="se-skip-link" href="#main">Skip to main content</a>
+
+  <nav class="navbar navbar-expand-lg se-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img class="se-brand-mark" src="assets/img/logo-mark.png" alt="" width="38" height="38">
+        <span>SE Aware<small>Stay Sharp Online</small></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#seNav"
+              aria-controls="seNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="seNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" data-nav="home" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="modules" href="modules.html">Modules</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="safe" href="modules/safe-practices.html">Safe Practices</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="about" href="about.html">About</a></li>
+          <li class="nav-item d-none d-lg-block"><span class="se-nav-divider" aria-hidden="true"></span></li>
+          <li class="nav-item">
+            <button type="button" class="se-theme-toggle" data-theme-toggle
+                    aria-pressed="false" aria-label="Switch to dark theme" title="Switch to dark theme">
+              <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
+              <span class="d-lg-none ms-2" data-theme-label>Dark theme</span>
+            </button>
+          </li>
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0" id="seNavAccount">
+          <!-- Populated by js/account.js: guest sees Go Premium + Log in,
+               a signed-in user sees Dashboard + an account menu. -->
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section class="se-pagehead">
+      <div class="container">
+        <nav aria-label="Breadcrumb">
+          <ol class="breadcrumb mb-2" style="font-size:.9rem;">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="go-premium.html">Go Premium</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+          </ol>
+        </nav>
+        <h1>Checkout</h1>
+        <p>Step three of three. Nothing is charged.</p>
+      </div>
+    </section>
+
+    <section class="se-section">
+      <div class="container" style="max-width:560px;">
+
+        <ol class="se-steps mb-4">
+          <li class="done"><span class="n"><i class="bi bi-check-lg" aria-hidden="true"></i></span> Plan</li>
+          <li class="done"><span class="n"><i class="bi bi-check-lg" aria-hidden="true"></i></span> Account</li>
+          <li class="current"><span class="n">3</span> Payment</li>
+        </ol>
+
+        <!-- The warning comes before the form, not under it. Someone who
+             reaches for their wallet out of habit should have been told
+             before they pick it up. -->
+        <div class="se-callout se-callout-warn mb-4">
+          <strong>This is a prototype checkout.</strong> Nothing is charged, no card details are sent
+          anywhere, and nothing is stored. <strong>Do not enter a real card number.</strong>
+          Use the demo card <code>4242 4242 4242 4242</code> with any future expiry and any 3-digit CVV.
+          A real card number is rejected on purpose.
+        </div>
+
+        <div class="se-card mb-4"><div class="card-body">
+          <h2 class="h6 mb-3">Your order</h2>
+          <div class="d-flex justify-content-between align-items-baseline">
+            <span>Premium plan</span>
+            <strong id="sePayPrice">&mdash;</strong>
+          </div>
+          <p class="mb-0 mt-1" id="sePayBilling" style="font-size:.86rem;color:var(--se-muted);"></p>
+        </div></div>
+
+        <form class="se-auth-card" id="sePaymentForm" novalidate>
+          <div class="se-form-alert"></div>
+
+          <div>
+            <label class="form-label" for="payName">Name on card</label>
+            <input class="form-control" type="text" id="payName" autocomplete="off" required>
+            <div class="se-field-error" id="errPayName"></div>
+          </div>
+
+          <div class="mt-3">
+            <label class="form-label" for="payCard">Card number</label>
+            <!-- autocomplete is off throughout: offering to remember a demo
+                 card, or to fill a real saved one, is the opposite of what
+                 this page is for. -->
+            <input class="form-control" type="text" id="payCard" inputmode="numeric"
+                   autocomplete="off" placeholder="4242 4242 4242 4242" required>
+            <div class="se-field-error" id="errPayCard"></div>
+          </div>
+
+          <div class="row g-3 mt-0">
+            <div class="col-6">
+              <label class="form-label" for="payExpiry">Expiry</label>
+              <input class="form-control" type="text" id="payExpiry" inputmode="numeric"
+                     autocomplete="off" placeholder="MM/YY" required>
+              <div class="se-field-error" id="errPayExpiry"></div>
+            </div>
+            <div class="col-6">
+              <label class="form-label" for="payCvv">CVV</label>
+              <input class="form-control" type="text" id="payCvv" inputmode="numeric"
+                     autocomplete="off" placeholder="123" required>
+              <div class="se-field-error" id="errPayCvv"></div>
+            </div>
+          </div>
+
+          <button class="btn btn-se-primary w-100 mt-4" type="submit" id="sePayBtn">
+            Complete the simulated payment
+          </button>
+
+          <p class="text-center mt-3 mb-0" style="font-size:.9rem;">
+            <a href="go-premium.html">Change plan</a>
+          </p>
+        </form>
+
+        <div class="se-callout mt-4">
+          <strong>Why there is no real payment.</strong> Payment gateway integration, billing, and
+          transaction processing are excluded from this study's scope. The plan is recorded on your
+          account and the access control around it is real; only the charge is simulated.
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="se-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <h2 class="h5"><i class="bi bi-shield-lock-fill me-2" aria-hidden="true"></i>SE Aware</h2>
+          <p class="mb-3" style="font-size:.9rem;">A free, public learning platform that helps remote workers,
+            freelancers, and virtual assistants recognise and respond to social engineering attacks.</p>
+          <p class="mb-0"><span class="se-pill amber"><i class="bi bi-unlock-fill" aria-hidden="true"></i> Free &middot; No account &middot; No signup</span></p>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h2 class="h5">Learn</h2>
+          <ul>
+            <li><a href="modules/phishing.html">Phishing</a></li>
+            <li><a href="modules/spear-phishing.html">Spear Phishing</a></li>
+            <li><a href="modules/smishing.html">Smishing</a></li>
+            <li><a href="modules/vishing.html">Vishing</a></li>
+            <li><a href="modules/pretexting.html">Pretexting</a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h2 class="h5">Platform</h2>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="modules.html">All Modules</a></li>
+            <li><a href="modules/safe-practices.html">Safe Practices</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="go-premium.html">Go Premium</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4">
+          <h2 class="h5">Important</h2>
+          <div class="se-footer-disclaimer">
+            This platform is for <strong>education and awareness only</strong>. It does not scan emails,
+            links, QR codes, or SMS messages, it does not detect threats in real time, and CyberWise, the
+            AI assistant, is not a substitute for professional cybersecurity consultation or incident response.
+          </div>
+        </div>
+      </div>
+      <div class="se-footer-note">
+        <div class="row gy-2 align-items-center">
+          <div class="col-md-8">
+            &copy; <span data-year>2026</span> Group 4, Section S3102. A Capstone Project of
+            Mapúa Malayan Digital College, BSIT major in Network and Cybersecurity.
+          </div>
+          <div class="col-md-4 text-md-end">
+            <span style="font-size:.82rem;">No personal data is collected on this site.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js?v=10"></script>
+  <script src="js/backend-config.js?v=10"></script>
+  <script src="js/store.js?v=10"></script>
+  <script src="js/account.js?v=10"></script>
+  <script src="js/auth.js?v=10"></script>
+  <script src="js/payment.js?v=10"></script>
+  <script src="js/exam-lock.js?v=10"></script>
+  <script src="js/chatbot.js?v=10"></script>
+</body>
+</html>
