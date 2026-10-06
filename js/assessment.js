@@ -55,6 +55,8 @@
 
     el("seAssessStart").addEventListener("click", function () {
       state = { index: 0, answers: [], locked: false };
+      // Same cross-tab flag the quizzes use, so the chatbot hides here too.
+      if (window.SEExam) window.SEExam.start();
       renderQuestion();
     });
   }
@@ -144,6 +146,8 @@
      SCORING  (AS-01, AS-02, RC-01)
      ====================================================================== */
   function finish() {
+    if (window.SEExam) window.SEExam.stop();
+
     var data = window.ASSESSMENT_DATA;
     var total = data.questions.length;
     var score = state.answers.filter(function (a) { return a.correct; }).length;
@@ -241,6 +245,8 @@
     el("seAssessShell").innerHTML = html.join("\n");
     el("seAssessAgain").addEventListener("click", function () {
       state = { index: 0, answers: [], locked: false };
+      // Same cross-tab flag the quizzes use, so the chatbot hides here too.
+      if (window.SEExam) window.SEExam.start();
       renderQuestion();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });

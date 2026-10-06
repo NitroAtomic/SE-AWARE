@@ -59,6 +59,10 @@ CREATE TABLE quiz_questions (
   question_text TEXT NOT NULL,
   options JSON NOT NULL,
   correct_option_index INT NOT NULL,
+  -- Why the right answer is right. This is the teaching part of a quiz, and
+  -- the review screen shows it after an attempt. Without the column, a
+  -- database-backed quiz had nothing to show and printed "undefined".
+  explanation TEXT,
   order_index INT NOT NULL DEFAULT 0,
   FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id) ON DELETE CASCADE
 );

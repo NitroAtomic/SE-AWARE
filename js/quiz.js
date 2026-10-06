@@ -101,6 +101,9 @@
     state.index = 0;
     state.answers = [];
 
+    // Raise the cross-tab flag so the chatbot hides for the duration.
+    if (window.SEExam) window.SEExam.start();
+
     var heading = document.getElementById("seQuizTitle");
     if (heading) heading.textContent = bank.title + " Quiz";
 
@@ -276,6 +279,9 @@
   }
 
   async function finish() {
+    // The test is over, so the assistant can come back.
+    if (window.SEExam) window.SEExam.stop();
+
     var score = state.answers.filter(function (a) { return a.correct; }).length;
     var scoredOnServer = false;
 
@@ -292,8 +298,12 @@
         scoredOnServer = true;
 
         var keyById = {};
+        var whyById = {};
         (result.answerKey || []).forEach(function (k) {
           keyById[k.question_id] = k.correct_option_index;
+          // Database-backed questions carry their explanation here; the
+          // bundled banks already have it on the question itself.
+          if (k.explanation) whyById[k.question_id] = k.explanation;
         });
 
         // Translate the server's original-index answer back into the shuffled
@@ -306,6 +316,7 @@
           var shownIndex = item && item.originalOrder ? item.originalOrder.indexOf(original) : original;
           a.correctIndex = shownIndex;
           a.correct = a.chosen === shownIndex;
+          if (whyById[a.questionId]) a.why = whyById[a.questionId];
         });
       }
     }
@@ -423,7 +434,12 @@
       }
       html.push('    <p class="se-review-line"><span class="lbl">Correct answer:</span> ' +
         letters[a.correctIndex] + ". " + esc(a.options[a.correctIndex]) + "</p>");
-      html.push('    <div class="se-feedback ' + (a.correct ? "ok" : "no") + '" style="margin-top:.8rem;"><p>' + a.why + "</p></div>");
+      // Guarded because a question may legitimately have no explanation -
+      // older rows, or a question added through the admin panel. Unguarded,
+      // this printed the literal word "undefined" on the review screen.
+      if (a.why) {
+        html.push('    <div class="se-feedback ' + (a.correct ? "ok" : "no") + '" style="margin-top:.8rem;"><p>' + a.why + "</p></div>");
+      }
       html.push("  </div>");
     });
 

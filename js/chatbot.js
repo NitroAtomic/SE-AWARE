@@ -409,6 +409,7 @@
     ].join("\n");
 
     document.body.appendChild(wrap);
+    els.root = wrap;
 
     els.fab = document.getElementById("seChatFab");
     els.panel = document.getElementById("seChatPanel");
@@ -668,6 +669,17 @@
      ====================================================================== */
   function init() {
     buildWidget();
+
+    /* A learner must not be able to ask the assistant for the answer during a
+       test. SEExam tracks that across tabs, so a quiz open in one tab also
+       hides the chatbot in another - the gap Shane found in QA. If the panel
+       happens to be open when a test starts, close it as well as hide it. */
+    if (window.SEExam && els.root) {
+      window.SEExam.subscribe(function (examRunning) {
+        els.root.style.display = examRunning ? "none" : "";
+        if (examRunning && isOpen) closePanel();
+      });
+    }
 
     els.fab.addEventListener("click", togglePanel);
     els.close.addEventListener("click", closePanel);

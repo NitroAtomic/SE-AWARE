@@ -99,7 +99,7 @@ router.post('/:quizId/submit', requireAuth, async (req, res) => {
     let questions;
     if (Array.isArray(questionIds) && questionIds.length) {
       const [rows] = await conn.query(
-        'SELECT question_id, correct_option_index FROM quiz_questions WHERE quiz_id = ? AND question_id IN (?)',
+        'SELECT question_id, correct_option_index, explanation FROM quiz_questions WHERE quiz_id = ? AND question_id IN (?)',
         [req.params.quizId, questionIds]
       );
       // Preserve the order the client presented them in.
@@ -107,7 +107,7 @@ router.post('/:quizId/submit', requireAuth, async (req, res) => {
       questions = questionIds.map((id) => byId.get(id)).filter(Boolean);
     } else {
       const [rows] = await conn.query(
-        'SELECT question_id, correct_option_index FROM quiz_questions WHERE quiz_id = ? ORDER BY order_index',
+        'SELECT question_id, correct_option_index, explanation FROM quiz_questions WHERE quiz_id = ? ORDER BY order_index',
         [req.params.quizId]
       );
       questions = rows;
@@ -139,7 +139,7 @@ router.post('/:quizId/submit', requireAuth, async (req, res) => {
     res.json({
       score,
       total,
-      answerKey: questions.map((q) => ({ question_id: q.question_id, correct_option_index: q.correct_option_index })),
+      answerKey: questions.map((q) => ({ question_id: q.question_id, correct_option_index: q.correct_option_index, explanation: q.explanation })),
     });
   } catch (err) {
     await conn.rollback();
