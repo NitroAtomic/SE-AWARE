@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const { randomInt } = require('crypto');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
-const { requireAuth, JWT_SECRET } = require('../middleware/auth');
+const { requireAuth, JWT_SECRET, setAuthCookie, clearAuthCookie } = require('../middleware/auth');
 const { sendOtpEmail } = require('../config/email');
 
 const router = express.Router();
@@ -123,6 +123,9 @@ router.post('/register', authRateLimit, async (req, res) => {
     );
 
     const token = jwt.sign({ user_id: result.insertId, role: 'user' }, JWT_SECRET, { expiresIn: '7d' });
+    // Same token, second delivery route: see middleware/auth.js for why a
+    // page request needs a cookie and a fetch() does not.
+    setAuthCookie(res, token);
     res.status(201).json({
       token,
       user: { user_id: result.insertId, first_name: String(first_name).trim(), last_name: last_name || '', email: normalizedEmail, subscription_type: 'Free', subscription_status: 'active', role: 'user' },
@@ -179,7 +182,9 @@ router.post('/login', authRateLimit, async (req, res) => {
       });
     }
 
-    res.json({ token: signInToken(user), user: publicUser(user) });
+    const token = signInToken(user);
+    setAuthCookie(res, token);
+    res.json({ token, user: publicUser(user) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Login failed.' });
@@ -251,7 +256,11 @@ router.post('/verify-otp', authRateLimit, async (req, res) => {
     if (userRows.length === 0) return res.status(404).json({ error: 'Account not found.' });
     const user = userRows[0];
 
-    res.json({ token: signInToken(user), user: publicUser(user) });
+    const token = signInToken(user);
+    // Only now, after the code was accepted. The pending token never gets a
+    // cookie, so a half-finished login cannot reach the paid pages either.
+    setAuthCookie(res, token);
+    res.json({ token, user: publicUser(user) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Verification failed.' });
@@ -297,6 +306,7 @@ router.post('/resend-otp', authRateLimit, async (req, res) => {
 // the token. This endpoint exists for a consistent API shape and so the
 // frontend has a single place to call regardless of backend implementation.
 router.post('/logout', requireAuth, (req, res) => {
+  clearAuthCookie(res);
   res.json({ message: 'Logged out.' });
 });
 

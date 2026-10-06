@@ -467,11 +467,25 @@
     logout: function () {
       setPendingToken(null);   // never leave a half-finished login behind
       if (usingBackend) {
-        setToken(null);
-        liveState = null;
-        usingBackend = false;
-        readyPromise = null;
-        return Promise.resolve();
+        /* Tell the server first, while the token is still here to prove who
+           is asking. Signing in now also drops an httpOnly session cookie,
+           and the browser will not let a script delete that one - only the
+           server can, with the Set-Cookie it sends back from here. Skipping
+           this call would clear the token locally while leaving the cookie
+           in place, and the premium pages would still open by URL after
+           what looked like a clean sign-out.
+
+           The local clear-out happens either way: if the request fails
+           because the network is down, refusing to sign the person out is
+           the wrong answer. */
+        var done = function () {
+          setToken(null);
+          liveState = null;
+          usingBackend = false;
+          readyPromise = null;
+        };
+        return api("/api/auth/logout", { method: "POST" })
+          .then(done, done);
       }
       var s = read();
       s.user = null;

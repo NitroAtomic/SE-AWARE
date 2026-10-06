@@ -17,6 +17,7 @@ const chatRoutes = require('./routes/chat');
 const paymentRoutes = require('./routes/payments');
 const progressRoutes = require('./routes/progress');
 const adminRoutes = require('./routes/admin');
+const { premiumGate } = require('./middleware/premium-gate');
 
 const app = express();
 const allowedOrigins = (process.env.CORS_ORIGINS || '').split(',').map((v) => v.trim()).filter(Boolean);
@@ -58,6 +59,12 @@ app.use('/api/admin', adminRoutes);
 // Serve the existing frontend from the same origin as the API. Block backend
 // source files before mounting the static directory.
 app.use('/backend-node', (req, res) => res.sendStatus(404));
+
+// Paid content is judged before any file is read off disk. This has to sit
+// above express.static: once static has answered, the lesson is already on
+// its way and no amount of browser-side JavaScript can call it back.
+app.use(premiumGate);
+
 app.use(express.static(path.join(__dirname, '..'), { extensions: ['html'] }));
 
 // Fallback error handler

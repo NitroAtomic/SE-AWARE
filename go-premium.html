@@ -107,7 +107,7 @@
                 <li>60 additional quiz questions</li>
               </ul>
               <div class="mt-auto">
-                <button class="btn btn-se-primary w-100" id="seUpgradeBtn" type="button">Upgrade securely</button>
+                <button class="btn btn-se-primary w-100" id="seUpgradeBtn" type="button">Switch to Premium</button>
                 <div class="text-center mt-3" id="seUpgradeStatus"></div>
               </div>
             </div>
@@ -208,9 +208,10 @@
         </div>
 
         <div class="se-callout mt-3" style="max-width:none;">
-          <strong>The access control is real.</strong> Your plan is read from the database on every request, never
-          from the browser, so a Free account cannot reach the role-based modules, their quizzes, or Premium answers
-          from the learning assistant by changing anything on its own side.
+          <strong>The access control is real.</strong> The server looks your plan up in the database before it sends
+          a role-based module or its question bank, so a Free account is refused the file outright rather than being
+          shown a page it could read from the source. Try it: open a role-based module while signed out, or use
+          view-source. You will get a refusal, not the lesson.
         </div>
 
         <div class="row g-4 mt-2">
