@@ -111,6 +111,18 @@ CREATE TABLE progress (
   UNIQUE KEY unique_user_module (user_id, module_id)
 );
 
+CREATE TABLE IF NOT EXISTS otpcode (
+  otp_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  code_hash VARCHAR(255) NOT NULL,
+  purpose ENUM('login') NOT NULL DEFAULT 'login',
+  expires_at DATETIME NOT NULL,
+  used TINYINT(1) NOT NULL DEFAULT 0,
+  attempts INT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 CREATE TABLE payment_events (
   event_id VARCHAR(255) PRIMARY KEY,
   event_type VARCHAR(100) NOT NULL,

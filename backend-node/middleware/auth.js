@@ -16,6 +16,16 @@ function requireAuth(req, res, next) {
   const token = header.slice(7);
   try {
     const payload = jwt.verify(token, JWT_SECRET);
+
+    /* A pendingToken is NOT a login. It is issued after the password but
+       before the one-time code, and it is signed with the same secret, so it
+       verifies here perfectly well. Accepting it would let anyone read the
+       pendingToken out of the login response and skip the code entirely,
+       which would make the whole second step decorative. */
+    if (payload.otp_pending) {
+      return res.status(401).json({ error: 'Finish verifying your login first.' });
+    }
+
     req.user = payload; // { user_id, role }
     next();
   } catch (err) {
@@ -40,7 +50,11 @@ function optionalAuth(req, res, next) {
   const header = req.headers.authorization;
   if (header && header.startsWith('Bearer ')) {
     try {
-      req.user = jwt.verify(header.slice(7), JWT_SECRET);
+      const payload = jwt.verify(header.slice(7), JWT_SECRET);
+      // Same rule as requireAuth: a half-finished login is not a login. On an
+      // optional route that means anonymous, not Premium - otherwise the
+      // pendingToken would unlock paid content without the code.
+      if (!payload.otp_pending) req.user = payload;
     } catch (err) {
       // invalid token on an optional route: just treat as anonymous
     }
