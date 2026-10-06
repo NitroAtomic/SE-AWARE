@@ -30,7 +30,11 @@ async function askN8n(message) {
 }
 
 async function askGemini(message) {
-  const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+  // Google retires model names, and a retired one fails as a 404 on the
+  // request URL - which reads like a broken endpoint rather than a stale
+  // default. gemini-2.0-flash was shut down, so this default moved on.
+  // Override with GEMINI_MODEL rather than editing this line.
+  const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`;
   const response = await fetch(url, {
     method: 'POST',
@@ -38,12 +42,27 @@ async function askGemini(message) {
     body: JSON.stringify({
       system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
       contents: [{ role: 'user', parts: [{ text: message }] }],
-      generationConfig: { temperature: 0.2, maxOutputTokens: 500 },
+      // maxOutputTokens caps the model's internal reasoning AND the visible
+      // answer TOGETHER. The newer Gemini models think before they answer, so
+      // a 500 ceiling left roughly forty words of actual reply and cut the
+      // rest off mid-sentence - which reads like a broken bot, not a limit.
+      // 2048 leaves room for both. The answers stay short because the system
+      // prompt asks them to, not because the budget ran out.
+      generationConfig: { temperature: 0.2, maxOutputTokens: 2048 },
     }),
     signal: AbortSignal.timeout(20_000),
   });
   if (!response.ok) throw new Error(`Gemini returned ${response.status}`);
   const data = await response.json();
+
+  // Say so in the log when the answer was cut short rather than finished.
+  // Without this a truncated reply is indistinguishable from a brief one,
+  // which is exactly how the 500-token ceiling went unnoticed.
+  const finish = data.candidates?.[0]?.finishReason;
+  if (finish && finish !== 'STOP') {
+    console.warn(`[chat] Gemini stopped early: ${finish}`);
+  }
+
   return data.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('').trim();
 }
 
