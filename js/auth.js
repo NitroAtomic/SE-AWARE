@@ -59,6 +59,15 @@
     var plan = chosenPlanFromUrl();
     var summary = document.getElementById("seRegisterPlan");
 
+    /* An account only exists because someone went Premium - the free tier
+       needs no signup at all. So arriving here with no plan chosen means
+       the first step was skipped, and the plan page is where it happens.
+       Someone already signed in is left alone; they are not registering. */
+    if (!plan && !window.SEStore.isSignedIn()) {
+      window.location.replace(root() + "go-premium.html");
+      return;
+    }
+
     // Say what they are signing up for, so the Premium account that appears
     // at the end is not a surprise.
     if (plan && summary) {

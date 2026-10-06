@@ -1,6 +1,68 @@
 const express = require('express');
+const pool = require('../config/db');
+const { optionalAuth } = require('../middleware/auth');
 
 const router = express.Router();
+
+/* ---------------------------------------------------------------------------
+   What the assistant will and will not discuss, by plan
+   ---------------------------------------------------------------------------
+   The role-based modules - client impersonation, invoice scams, fake
+   recruiters, client data handling - are the Premium half of the platform.
+   An assistant that happily explains all of it to anyone who asks hands over
+   the paid material through a side door.
+
+   The word list and the refusal below are the capstone's, kept word for word
+   so both sites answer the same question the same way. The test is deliberately
+   crude: a question that mentions a Premium subject by name is treated as a
+   Premium question. It costs the occasional free question that happened to use
+   the word "client", which is the safer way to be wrong.
+
+   Everything else - phishing, smishing, vishing, pretexting, passwords, home
+   network safety - is free for everyone, signed in or not.
+   --------------------------------------------------------------------------- */
+const PREMIUM_TOPIC_WORDS = [
+  'recruiter', 'recruiters', 'recruitment', 'invoice', 'invoices', 'invoicing',
+  'billing', 'payroll', 'contract', 'contracts', 'freelance', 'freelancer',
+  'client', 'clients', 'vendor', 'vendors', 'executive', 'impersonation',
+  'impersonating', 'impersonate',
+];
+
+const PREMIUM_ONLY_REPLY = [
+  'That one is covered in the Role-based modules, which are part of Premium.',
+  'They walk through client impersonation, invoice scams, fake recruiters and',
+  'client data handling, written for freelance and contract work.',
+  '',
+  'I can still help with phishing, smishing, vishing, pretexting and safe',
+  'practices for remote work, which are free for everyone.',
+].join(' ').trim();
+
+function mentionsPremiumTopic(text) {
+  const words = String(text).toLowerCase().match(/[a-z]+/g) || [];
+  return words.some((word) => PREMIUM_TOPIC_WORDS.includes(word));
+}
+
+/* The plan is read from the database, never from the request. A browser can
+   send whatever it likes; what it cannot do is change the row. */
+async function planFor(user) {
+  if (!user) return 'Free';
+  try {
+    const [rows] = await pool.query(
+      'SELECT subscription_type, subscription_status FROM users WHERE user_id = ?',
+      [user.user_id]
+    );
+    const row = rows[0];
+    if (row && row.subscription_type === 'Premium' && row.subscription_status === 'active') {
+      return 'Premium';
+    }
+    return 'Free';
+  } catch (err) {
+    // If the plan cannot be read, assume the cheaper one. Guessing Premium
+    // during a database wobble would give the paid answers away.
+    console.error('[chat] plan lookup failed:', err.message);
+    return 'Free';
+  }
+}
 const requests = new Map();
 const WINDOW_MS = 60_000;
 const MAX_REQUESTS = Number(process.env.CHAT_RATE_LIMIT || 20);
@@ -66,9 +128,20 @@ async function askGemini(message) {
   return data.candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('').trim();
 }
 
-router.post('/', rateLimit, async (req, res) => {
+router.post('/', optionalAuth, rateLimit, async (req, res) => {
   const message = typeof req.body?.message === 'string' ? req.body.message.trim() : '';
   if (!message || message.length > 2000) return res.status(400).json({ error: 'Message must be between 1 and 2000 characters.' });
+
+  /* Decided before any AI provider is contacted. Sending the question off and
+     then filtering the answer would still have put the paid material through
+     a third party, and would still leave a window where the reply came back
+     complete. Nothing leaves this server for a Premium question asked on a
+     Free plan. */
+  const plan = await planFor(req.user);
+  if (plan !== 'Premium' && mentionsPremiumTopic(message)) {
+    return res.json({ reply: PREMIUM_ONLY_REPLY, source: 'premium-only' });
+  }
+
   if (!process.env.N8N_WEBHOOK_URL && !process.env.GEMINI_API_KEY) return res.status(503).json({ error: 'Chat provider is not configured.' });
   try {
     const reply = process.env.N8N_WEBHOOK_URL ? await askN8n(message) : await askGemini(message);
