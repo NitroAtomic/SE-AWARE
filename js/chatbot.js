@@ -533,9 +533,22 @@
       controller.abort();
     }, REQUEST_TIMEOUT_MS);
 
+    var headers = { "Content-Type": "application/json" };
+
+    /* Send the signed-in token when there is one. /api/chat looks the plan
+       up in the database from this token (it never trusts a plan sent by
+       the browser) and filters Premium passages out before the AI ever
+       sees them. Without the header every question is answered on the Free
+       plan, so a paying Premium user would be told their own premium
+       topics are Premium-only. Signed out, there is no header and guest
+       behaviour is correct. */
+    var token = window.SEStore && window.SEStore.getAuthToken
+      ? window.SEStore.getAuthToken() : null;
+    if (token) headers["Authorization"] = "Bearer " + token;
+
     return fetch(chatbotUrl(), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: headers,
       body: JSON.stringify({ message: question }),
       signal: controller.signal
     })

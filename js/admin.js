@@ -25,6 +25,11 @@
   var questions = null;   // working copy of the quiz banks
   var users = null;       // seeded demo accounts + the live session account
   var quizzes = [];
+  /* Set to an explanation string when the backend we are connected to does
+     not expose that data at all (null = available). Lets each tab say why
+     it is empty instead of just looking broken. */
+  var usersUnavailable = null;
+  var questionsUnavailable = null;
 
   function jsonValue(value, fallback) {
     if (typeof value !== "string") return value || fallback;
@@ -37,13 +42,48 @@
       users = seedUsers();
       return;
     }
-    var result = await Promise.all([
+    /* Each of these three can be missing depending on which backend we are
+       talking to. The Render deployment, for example, manages modules and
+       quiz questions but has no /api/admin/* routes at all.
+       allSettled, not all: one missing endpoint must not take down the
+       whole panel. Before this, a single 404 here threw "Not found" out of
+       renderPanel() and the admin saw a blank page with no explanation. */
+    var settled = await Promise.allSettled([
       window.SEStore.adminGetQuestions(),
       window.SEStore.adminGetUsers(),
       window.SEStore.adminGetQuizzes()
     ]);
-    quizzes = result[2];
-    questions = result[0].map(function (q) {
+    var value = function (i) { return settled[i].status === "fulfilled" ? settled[i].value : null; };
+    var reason = function (i) {
+      return settled[i].status === "rejected" && settled[i].reason
+        ? settled[i].reason.message : null;
+    };
+
+    var rawQuestions = value(0);
+    var rawUsers = value(1);
+
+    questionsUnavailable = rawQuestions ? null : (reason(0) || "Quiz questions aren't available on this backend.");
+    usersUnavailable = rawUsers ? null : (reason(1) || "User management isn't available on this backend.");
+
+    quizzes = value(2) || [];
+
+    if (!rawQuestions) { questions = []; }
+    if (!rawUsers) { users = []; }
+
+    if (!rawQuestions || !rawUsers) {
+      // Fill in whatever did load, then stop before the mappers below run
+      // on a null.
+      if (rawQuestions) questions = mapQuestions(rawQuestions);
+      if (rawUsers) users = mapUsers(rawUsers);
+      return;
+    }
+
+    questions = mapQuestions(rawQuestions);
+    users = mapUsers(rawUsers);
+  }
+
+  function mapQuestions(rows) {
+    return rows.map(function (q) {
       var options = jsonValue(q.options, []);
       return {
         id: String(q.question_id), question_id: q.question_id, quiz_id: q.quiz_id,
@@ -52,13 +92,17 @@
         order_index: q.order_index, answer: options[q.correct_option_index] || "Not set"
       };
     });
-    users = result[1].map(function (u) {
+  }
+
+  function mapUsers(rows) {
+    return rows.map(function (u) {
+      var status = String(u.subscription_status || "");
       return {
         id: u.user_id,
         name: ((u.first_name || "") + " " + (u.last_name || "")).trim() || u.email,
         email: u.email, plan: u.subscription_type,
-        status: u.subscription_status.charAt(0).toUpperCase() + u.subscription_status.slice(1),
-        joined: String(u.created_at).slice(0, 10), role: u.role,
+        status: status ? status.charAt(0).toUpperCase() + status.slice(1) : "Unknown",
+        joined: String(u.created_at || "").slice(0, 10), role: u.role,
         isLive: u.email === (window.SEStore.getAdmin() || {}).username
       };
     });
@@ -126,7 +170,17 @@
       '  <div class="mt-3"><label class="form-label" for="admPass">Password</label>' +
       '    <input class="form-control" type="password" id="admPass" autocomplete="current-password">' +
       '    <div class="se-field-error" id="errAdmPass"></div></div>' +
-      '  <button class="btn btn-se-primary w-100 mt-4" type="submit">Sign in to admin panel</button>' +
+      '  <button class="btn btn-se-primary w-100 mt-4" type="submit" id="admSubmit">Sign in to admin panel</button>' +
+      /* Shown only if this admin's account is on the Premium plan, in which
+         case the backend emails a code instead of returning a token.
+         No maxlength on purpose - see the note in login.html. */
+      '  <div id="admOtpWrap" class="mt-3" hidden>' +
+      '    <label class="form-label" for="admOtp">Verification code sent to <strong id="admOtpEmail"></strong></label>' +
+      '    <input class="form-control" type="text" id="admOtp" inputmode="numeric" autocomplete="one-time-code"' +
+      '           placeholder="000000" style="letter-spacing:.4em;text-align:center;font-size:1.25rem;">' +
+      '    <div class="se-field-error" id="errAdmOtp"></div>' +
+      '    <button class="btn btn-se-primary w-100 mt-3" type="button" id="admOtpVerify">Verify and open panel</button>' +
+      "  </div>" +
       (window.SE_API_BASE
         ? '  <div class="se-callout mt-3 mb-0" style="max-width:none;">' +
           '    <span style="font-size:.86rem;color:var(--se-muted);">Connected to the live backend. Sign in with a real account whose role is set to admin in the database.</span></div>'
@@ -151,11 +205,66 @@
       if (!ok) return;
 
       var result = await window.SEStore.adminLogin(u, p);
+
+      // Premium admin: password was right, now the emailed code is needed.
+      if (result.requiresOtp) {
+        el("admOtpEmail").textContent = result.email || u;
+        el("admOtpWrap").hidden = false;
+        el("admUser").disabled = true;
+        el("admPass").disabled = true;
+        el("admSubmit").disabled = true;
+        el("admOtp").focus();
+        return;
+      }
+
       if (!result.ok) {
         el("errAdmPass").textContent = result.error || "Sign-in failed.";
         el("errAdmPass").classList.add("show");
         return;
       }
+      await renderPanel();
+    });
+
+    // Digits only, capped at 6 in script (not via maxlength).
+    el("admOtp").addEventListener("input", function () {
+      var digits = this.value.replace(/\D/g, "").slice(0, 6);
+      if (digits !== this.value) this.value = digits;
+    });
+
+    el("admOtp").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); el("admOtpVerify").click(); }
+    });
+
+    el("admOtpVerify").addEventListener("click", async function () {
+      var err = el("errAdmOtp");
+      err.classList.remove("show");
+
+      var code = el("admOtp").value.trim();
+      if (!/^\d{6}$/.test(code)) {
+        err.textContent = "Enter the 6-digit code from your email.";
+        err.classList.add("show");
+        return;
+      }
+
+      this.disabled = true;
+      var label = this.textContent;
+      this.textContent = "Verifying…";
+
+      var res = await window.SEStore.adminVerifyOtp(code);
+
+      this.disabled = false;
+      this.textContent = label;
+
+      if (!res.ok) {
+        err.textContent = res.error || "Verification failed.";
+        err.classList.add("show");
+        el("admOtp").value = "";
+        el("admOtp").focus();
+        return;
+      }
+
+      err.textContent = "";          // don't leave a stale failure on screen
+      err.classList.remove("show");
       await renderPanel();
     });
   }
@@ -287,6 +396,15 @@
 
   /* ---------------------- Quiz question CRUD (AD-03) ---------------------- */
   async function renderQuestions() {
+    if (questionsUnavailable) {
+      el("seAdminBody").innerHTML =
+        '<div><h3 class="h6 mb-1">Quiz questions</h3></div>' +
+        '<div class="se-callout mt-3" style="max-width:none;">' +
+        "  <strong>Not available here.</strong> " + esc(questionsUnavailable) +
+        "</div>";
+      return;
+    }
+
     var filter = (el("admQFilter") && el("admQFilter").value) || "all";
     var visible = questions.filter(function (q) { return filter === "all" || q.slug === filter; });
     var slugs = [];
@@ -378,6 +496,19 @@
 
   /* ---------------------- Users & subscriptions ---------------------- */
   async function renderUsers() {
+    // This backend has no user-management API. Say so plainly instead of
+    // drawing an empty table that looks like a loading failure.
+    if (usersUnavailable) {
+      el("seAdminBody").innerHTML =
+        '<div><h3 class="h6 mb-1">Users and subscriptions</h3></div>' +
+        '<div class="se-callout mt-3" style="max-width:none;">' +
+        "  <strong>Not available here.</strong> " + esc(usersUnavailable) +
+        '  <br><span style="font-size:.88rem;color:var(--se-muted);">Accounts can still be ' +
+        "  managed directly in the database. The Modules tab below works normally.</span>" +
+        "</div>";
+      return;
+    }
+
     el("seAdminBody").innerHTML =
       '<div class="d-flex flex-wrap align-items-center gap-2 mb-3">' +
       '  <div><h3 class="h6 mb-1">Users and subscriptions</h3>' +

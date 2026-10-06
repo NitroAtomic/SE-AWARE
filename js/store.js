@@ -34,6 +34,7 @@
 
   var KEY = "se-prototype-state";
   var TOKEN_KEY = "se-auth-token";
+  var PENDING_KEY = "se-otp-pending";
   var DEMO_EMAIL = "demo@seaware.ph";
 
   var API = function () { return window.SE_API_BASE || ""; };
@@ -131,6 +132,62 @@
     } catch (err) { /* no-op */ }
   }
 
+  /* The pendingToken is NOT a login. It only proves "this person just typed
+     the correct password, and a code was sent to them." It expires in a few
+     minutes and is useless on its own. It is kept separate from the real
+     token so it can never be mistaken for being signed in. */
+  function getPendingToken() {
+    try { return sessionStorage.getItem(PENDING_KEY); } catch (err) { return null; }
+  }
+  function setPendingToken(t) {
+    try {
+      if (t) sessionStorage.setItem(PENDING_KEY, t);
+      else sessionStorage.removeItem(PENDING_KEY);
+    } catch (err) { /* no-op */ }
+  }
+
+  /* ----------------------------------------------------------------------
+     Slug translation
+     ----------------------------------------------------------------------
+     This site and the shared database do not spell two module slugs the
+     same way:
+
+       this site        the database
+       ---------        ------------
+       phishing     ->  quishing
+       safe-practices-> essential-safe-practices-remote-environments
+
+     The other eight match exactly. This matters in BOTH directions:
+
+     Going out, /api/quizzes/record-attempt looks the module up by slug, so
+     an untranslated "phishing" comes back 404 "Module not found." The save
+     then fails quietly - the score is kept for the session and a warning
+     goes to the console, but it never reaches the database. A score that
+     looks saved and is not is worse than an obvious error.
+
+     Coming back, the dashboard returns the database's spelling. Left
+     untranslated, a finished Phishing module arrives as "quishing", does
+     not match this site's catalogue key, and the completed tick never
+     appears on the card the user actually clicked.
+
+     Keep these two maps as exact mirrors of each other.
+     ---------------------------------------------------------------------- */
+  var SLUG_TO_DB = {
+    "phishing": "quishing",
+    "safe-practices": "essential-safe-practices-remote-environments"
+  };
+  var SLUG_FROM_DB = {
+    "quishing": "phishing",
+    "essential-safe-practices-remote-environments": "safe-practices"
+  };
+
+  function toDbSlug(slug) {
+    return SLUG_TO_DB[slug] || slug;
+  }
+  function fromDbSlug(slug) {
+    return SLUG_FROM_DB[slug] || slug;
+  }
+
   function api(path, options) {
     options = options || {};
     var headers = options.headers || {};
@@ -155,11 +212,13 @@
   function mapDashboard(profile, dash) {
     var progress = {};
     (dash.progress || []).forEach(function (p) {
-      progress[p.slug] = { status: p.completion_status === "completed" ? "Completed" : "In progress", completedAt: p.completion_date };
+      // fromDbSlug: the completed tick has to land on the card this site
+      // actually shows, not on a slug only the database knows about.
+      progress[fromDbSlug(p.slug)] = { status: p.completion_status === "completed" ? "Completed" : "In progress", completedAt: p.completion_date };
     });
 
     var quizHistory = (dash.quiz_history || []).map(function (h) {
-      return { slug: h.slug, title: h.module_title, score: h.score, total: h.total, at: h.date_completed };
+      return { slug: fromDbSlug(h.slug), title: h.module_title, score: h.score, total: h.total, at: h.date_completed };
     });
 
     var assessment = null;
@@ -184,8 +243,23 @@
     };
   }
 
-  function hydrate() {
-    if (!backendConfigured()) {
+  /* hydrate() flips usingBackend to true the moment it starts, but liveState
+     is only filled in once the server actually answers. Between those two
+     moments every getter below was dereferencing null.
+
+     In normal use account.js gates the page on ready(), so nothing read
+     state that early. It still mattered on the live site: Render's free
+     tier cold-starts, so that gap can be 30 seconds or more, and a single
+     stray read during it took the page down with
+     "Cannot read properties of null".
+
+     live() closes the gap - an empty but valid state until the real data
+     lands, which is what the pages already render for a signed-out user. */
+  function live() {
+    return liveState || (liveState = JSON.parse(JSON.stringify(DEFAULT_STATE)));
+  }
+
+  function hydrate() {    if (!backendConfigured()) {
       usingBackend = false;
       return Promise.resolve();
     }
@@ -224,11 +298,11 @@
     /* ==================== identity ==================== */
 
     getUser: function () {
-      return usingBackend ? liveState.user : read().user;
+      return usingBackend ? live().user : read().user;
     },
 
     isSignedIn: function () {
-      return usingBackend ? !!liveState.user : !!read().user;
+      return usingBackend ? !!live().user : !!read().user;
     },
 
     isPremium: function () {
@@ -243,7 +317,7 @@
           body: { first_name: firstName, last_name: lastName, email: email, password: password }
         }).then(function (data) {
           setToken(data.token);
-          return hydrate().then(function () { return { ok: true, user: liveState.user }; });
+          return hydrate().then(function () { return { ok: true, user: live().user }; });
         }).catch(function (err) {
           return { ok: false, error: err.message };
         });
@@ -265,8 +339,22 @@
       if (backendConfigured()) {
         return api("/api/auth/login", { method: "POST", body: { email: email, password: password } })
           .then(function (data) {
+            // Premium accounts get a one-time code by email instead of a
+            // token. The password was already accepted at this point; we are
+            // not signed in yet, so there is nothing to hydrate. We hold the
+            // short-lived pendingToken and let the page ask for the code.
+            if (data.requiresOtp) {
+              setPendingToken(data.pendingToken);
+              return {
+                ok: true,
+                requiresOtp: true,
+                email: data.email || email,
+                expiresInMinutes: data.expiresInMinutes || null
+              };
+            }
+
             setToken(data.token);
-            return hydrate().then(function () { return { ok: true, user: liveState.user }; });
+            return hydrate().then(function () { return { ok: true, user: live().user }; });
           }).catch(function (err) {
             return { ok: false, error: err.message };
           });
@@ -293,7 +381,74 @@
       return Promise.resolve({ ok: true, user: s.user });
     },
 
+    /* Second half of a Premium login: trade the 6-digit code for a real
+       token. Only reachable after login() came back with requiresOtp. */
+    verifyOtp: function (code) {
+      if (!backendConfigured()) {
+        // Demo mode never sends a code, so there is nothing to verify.
+        return Promise.resolve({ ok: false, error: "Verification is only used when the live backend is connected." });
+      }
+
+      var pending = getPendingToken();
+      if (!pending) {
+        return Promise.resolve({ ok: false, error: "This verification session expired. Please log in again." });
+      }
+
+      return api("/api/auth/verify-otp", {
+        method: "POST",
+        body: { pendingToken: pending, code: String(code).trim() }
+      }).then(function (data) {
+        setPendingToken(null);          // single use — burn it immediately
+        setToken(data.token);
+        return hydrate().then(function () { return { ok: true, user: live().user }; });
+      }).catch(function (err) {
+        return { ok: false, error: err.message };
+      });
+    },
+
+    /* Ask for a fresh code. The backend hands back a NEW pendingToken, so we
+       have to replace the stored one or the next verify would use a dead id. */
+    resendOtp: function () {
+      if (!backendConfigured()) {
+        return Promise.resolve({ ok: false, error: "Verification is only used when the live backend is connected." });
+      }
+
+      var pending = getPendingToken();
+      if (!pending) {
+        return Promise.resolve({ ok: false, error: "This verification session expired. Please log in again." });
+      }
+
+      return api("/api/auth/resend-otp", { method: "POST", body: { pendingToken: pending } })
+        .then(function (data) {
+          if (data.pendingToken) setPendingToken(data.pendingToken);
+          return { ok: true, message: data.message || "A new code has been sent." };
+        }).catch(function (err) {
+          return { ok: false, error: err.message };
+        });
+    },
+
+    // True while a Premium login is waiting on its code.
+    isAwaitingOtp: function () {
+      return !!getPendingToken();
+    },
+
+    /* Read-only access to the signed-in token, for the chatbot.
+       /api/chat decides a user's plan from this token by looking the
+       subscription up in the database - it never trusts the browser. Sent
+       without it, every question is answered as if the user were on the
+       Free plan, so a paying Premium user would silently get the Free
+       answers to their own premium topics. Returns null when signed out,
+       which is the correct guest behaviour. */
+    getAuthToken: function () {
+      return getToken() || null;
+    },
+
+    cancelOtp: function () {
+      setPendingToken(null);
+    },
+
     logout: function () {
+      setPendingToken(null);   // never leave a half-finished login behind
       if (usingBackend) {
         setToken(null);
         liveState = null;
@@ -325,8 +480,11 @@
           body: { subscription_type: "Premium" }
         })
           .then(function () {
-            liveState.user.subscription = "Premium";
-            return { ok: true, user: liveState.user };
+            // live().user can still be null if the plan change lands before
+            // hydration finished; re-hydrate rather than throw.
+            if (!live().user) return hydrate().then(function () { return { ok: true, user: live().user }; });
+            live().user.subscription = "Premium";
+            return { ok: true, user: live().user };
           })
           .catch(function (err) { return { ok: false, error: err.message }; });
       }
@@ -344,8 +502,11 @@
           body: { subscription_type: "Free" }
         })
           .then(function () {
-            liveState.user.subscription = "Free";
-            return { ok: true, user: liveState.user };
+            // live().user can still be null if the plan change lands before
+            // hydration finished; re-hydrate rather than throw.
+            if (!live().user) return hydrate().then(function () { return { ok: true, user: live().user }; });
+            live().user.subscription = "Free";
+            return { ok: true, user: live().user };
           })
           .catch(function (err) { return { ok: false, error: err.message }; });
       }
@@ -359,18 +520,33 @@
     /* ==================== progress ==================== */
 
     getProgress: function () {
-      return usingBackend ? liveState.progress : read().progress;
+      return usingBackend ? live().progress : read().progress;
     },
 
-    /** Manual toggle from a module page (not through a quiz). No dedicated
-     *  backend route for this exists yet without a quiz attempt attached —
-     *  falls back to session-only for now when using the real backend. */
+    /** Manual toggle from a module page (not through a quiz).
+     *
+     *  The Render backend has no /api/progress route — it only records
+     *  progress as a side effect of finishing a quiz. So this call is
+     *  expected to fail there, and that is fine: we still move the tick
+     *  in the page so the user sees their click, we just can't persist it.
+     *
+     *  The important part is that a missing route must NOT throw. An
+     *  unhandled rejection here used to leave the module page's button
+     *  stuck mid-click with no explanation. */
     markModuleComplete: function (slug) {
       if (usingBackend) {
-        return api("/api/progress/" + encodeURIComponent(slug), { method: "PUT" }).then(function (data) {
-          liveState.progress[slug] = { status: "Completed", completedAt: data.completed_at };
-          return liveState.progress;
-        });
+        var done = { status: "Completed", completedAt: new Date().toISOString() };
+        return api("/api/progress/" + encodeURIComponent(toDbSlug(slug)), { method: "PUT" })
+          .then(function (data) {
+            live().progress[slug] = { status: "Completed", completedAt: data.completed_at };
+            return live().progress;
+          })
+          .catch(function () {
+            // Route absent on this backend. Show it locally for this session;
+            // finishing the module's quiz is what records it for real.
+            live().progress[slug] = done;
+            return live().progress;
+          });
       }
       var s = read();
       s.progress[slug] = { status: "Completed", completedAt: new Date().toISOString() };
@@ -379,10 +555,15 @@
 
     unmarkModule: function (slug) {
       if (usingBackend) {
-        return api("/api/progress/" + encodeURIComponent(slug), { method: "DELETE" }).then(function () {
-          delete liveState.progress[slug];
-          return liveState.progress;
-        });
+        return api("/api/progress/" + encodeURIComponent(toDbSlug(slug)), { method: "DELETE" })
+          .then(function () {
+            delete live().progress[slug];
+            return live().progress;
+          })
+          .catch(function () {
+            delete live().progress[slug];
+            return live().progress;
+          });
       }
       var s = read();
       delete s.progress[slug];
@@ -392,7 +573,7 @@
     /* ==================== quiz history ==================== */
 
     getQuizHistory: function () {
-      var list = usingBackend ? liveState.quizHistory : read().quizHistory;
+      var list = usingBackend ? live().quizHistory : read().quizHistory;
       return list.slice().sort(function (a, b) { return new Date(b.at) - new Date(a.at); });
     },
 
@@ -406,7 +587,7 @@
      *  working as a static site. */
     fetchQuizBank: function (slug) {
       if (!usingBackend) return Promise.resolve(null);
-      return api("/api/quizzes/by-module/" + encodeURIComponent(slug))
+      return api("/api/quizzes/by-module/" + encodeURIComponent(toDbSlug(slug)))
         .then(function (data) {
           if (!data || !Array.isArray(data.questions) || !data.questions.length) return null;
           return {
@@ -441,16 +622,16 @@
       if (usingBackend) {
         return api("/api/quizzes/record-attempt", {
           method: "POST",
-          body: { slug: attempt.slug, score: attempt.score, total: attempt.total }
+          body: { slug: toDbSlug(attempt.slug), score: attempt.score, total: attempt.total }
         }).then(function () {
-          liveState.quizHistory.push(attempt);
-          liveState.progress[attempt.slug] = { status: "Completed", completedAt: attempt.at };
-          return liveState.quizHistory;
+          live().quizHistory.push(attempt);
+          live().progress[attempt.slug] = { status: "Completed", completedAt: attempt.at };
+          return live().quizHistory;
         }).catch(function (err) {
           console.warn("[store] quiz attempt save failed, kept locally for this session: " + err.message);
-          liveState.quizHistory.push(attempt);
-          liveState.progress[attempt.slug] = { status: "Completed", completedAt: attempt.at };
-          return liveState.quizHistory;
+          live().quizHistory.push(attempt);
+          live().progress[attempt.slug] = { status: "Completed", completedAt: attempt.at };
+          return live().quizHistory;
         });
       }
       var s = read();
@@ -463,7 +644,7 @@
     /* ==================== assessment ==================== */
 
     getAssessment: function () {
-      return usingBackend ? liveState.assessment : read().assessment;
+      return usingBackend ? live().assessment : read().assessment;
     },
 
     setAssessment: function (result) {
@@ -475,11 +656,11 @@
             level_key: result.levelKey, by_topic: result.byTopic, weak_areas: result.weakAreas
           }
         }).then(function () {
-          liveState.assessment = result;
+          live().assessment = result;
           return result;
         }).catch(function (err) {
           console.warn("[store] assessment save failed, kept locally for this session: " + err.message);
-          liveState.assessment = result;
+          live().assessment = result;
           return result;
         });
       }
@@ -492,7 +673,7 @@
     /* ==================== admin ==================== */
 
     getAdmin: function () {
-      return usingBackend ? liveState.admin : read().admin;
+      return usingBackend ? live().admin : read().admin;
     },
 
     /** identifier is treated as an email when a real backend is configured
@@ -503,7 +684,22 @@
       if (backendConfigured()) {
         return api("/api/auth/login", { method: "POST", body: { email: identifier, password: password } })
           .then(function (data) {
-            if (data.user.role !== "admin") {
+            /* If the admin's account is on the Premium plan, the backend
+               sends a code instead of a token and there is NO data.user at
+               all. Reading data.user.role here used to throw a TypeError
+               that surfaced as a meaningless "Sign-in failed", locking
+               Premium admins out of the portal entirely. */
+            if (data.requiresOtp) {
+              setPendingToken(data.pendingToken);
+              return {
+                ok: false,
+                requiresOtp: true,
+                email: data.email || identifier,
+                expiresInMinutes: data.expiresInMinutes || null
+              };
+            }
+
+            if (!data.user || data.user.role !== "admin") {
               return { ok: false, error: "That account isn't an administrator." };
             }
             setToken(data.token);
@@ -517,7 +713,40 @@
       return Promise.resolve({ ok: true });
     },
 
+    /* Finishes a Premium admin's sign-in. Deliberately re-checks the role
+       AFTER the code is verified, and throws the token away if the account
+       is not an admin — so a normal Premium learner who reaches this page
+       still cannot get into the portal. */
+    adminVerifyOtp: function (code) {
+      if (!backendConfigured()) {
+        return Promise.resolve({ ok: false, error: "Verification is only used when the live backend is connected." });
+      }
+
+      var pending = getPendingToken();
+      if (!pending) {
+        return Promise.resolve({ ok: false, error: "This verification session expired. Please sign in again." });
+      }
+
+      return api("/api/auth/verify-otp", {
+        method: "POST",
+        body: { pendingToken: pending, code: String(code).trim() }
+      }).then(function (data) {
+        setPendingToken(null);
+
+        if (!data.user || data.user.role !== "admin") {
+          setToken(null);
+          return { ok: false, error: "That account isn't an administrator." };
+        }
+
+        setToken(data.token);
+        return hydrate().then(function () { return { ok: true }; });
+      }).catch(function (err) {
+        return { ok: false, error: err.message };
+      });
+    },
+
     adminLogout: function () {
+      setPendingToken(null);
       if (usingBackend) {
         setToken(null);
         liveState = null;
@@ -537,7 +766,7 @@
       if (backendConfigured()) {
         return api("/api/modules").then(function (modules) {
           return modules.map(function (m) {
-            return { slug: m.slug, title: m.module_title, type: m.module_type, category: m.category || "", quiz: true, _id: m.module_id };
+            return { slug: fromDbSlug(m.slug), title: m.module_title, type: m.module_type, category: m.category || "", quiz: true, _id: m.module_id };
           });
         }).catch(function () { return CATALOGUE.slice(); });
       }
@@ -573,16 +802,30 @@
       return Promise.resolve();
     },
 
+    /* ---- admin ----------------------------------------------------------
+       The Render backend exposes module and quiz-question management, but
+       it has no /api/admin/* routes: there is no user-management API there.
+       Rather than let the Users tab fail with a raw "Request failed", these
+       raise one clear, honest message the admin page can display. */
+    ADMIN_USERS_UNAVAILABLE: "User management isn't available on this backend. Modules and quiz questions are.",
+
     adminGetUsers: function () {
-      return api("/api/admin/users");
+      var self = this;
+      return api("/api/admin/users").catch(function () {
+        throw new Error(self.ADMIN_USERS_UNAVAILABLE);
+      });
     },
 
     adminUpdateUser: function (id, plan, status) {
-      return api("/api/admin/users/" + id, { method: "PATCH", body: { subscription_type: plan, subscription_status: status } });
+      var self = this;
+      return api("/api/admin/users/" + id, { method: "PATCH", body: { subscription_type: plan, subscription_status: status } })
+        .catch(function () { throw new Error(self.ADMIN_USERS_UNAVAILABLE); });
     },
 
     adminDeleteUser: function (id) {
-      return api("/api/admin/users/" + id, { method: "DELETE" });
+      var self = this;
+      return api("/api/admin/users/" + id, { method: "DELETE" })
+        .catch(function () { throw new Error(self.ADMIN_USERS_UNAVAILABLE); });
     },
 
     adminGetQuestions: function () {

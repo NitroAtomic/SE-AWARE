@@ -105,9 +105,121 @@
         return;
       }
 
-      formAlert(form, "ok", "<strong>Signed in.</strong> Taking you to your dashboard&hellip;");
-      setTimeout(function () { window.location.href = root() + "dashboard.html"; }, 600);
+      // Premium accounts are not signed in yet — the backend emailed a code.
+      if (res.requiresOtp) {
+        showOtpStep(form, res);
+        return;
+      }
+
+      goToDashboard(form);
     });
+
+    initOtpStep(form);
+  }
+
+  function goToDashboard(form) {
+    formAlert(form, "ok", "<strong>Signed in.</strong> Taking you to your dashboard&hellip;");
+    setTimeout(function () { window.location.href = root() + "dashboard.html"; }, 600);
+  }
+
+  /* ----------------------------------------------------------------------
+     One-time code step (Premium logins only)
+     ---------------------------------------------------------------------- */
+  function showOtpStep(form, res) {
+    var passStep = document.getElementById("loginStepPassword");
+    var otpStep = document.getElementById("loginStepOtp");
+    if (!passStep || !otpStep) return;   // older copy of login.html
+
+    var mailLabel = document.getElementById("otpEmail");
+    if (mailLabel && res.email) mailLabel.textContent = res.email;
+
+    passStep.hidden = true;
+    otpStep.hidden = false;
+
+    var note = "We sent a 6-digit code to your email.";
+    if (res.expiresInMinutes) {
+      note = "We sent a 6-digit code to your email. It expires in "
+           + res.expiresInMinutes + " minutes.";
+    }
+    formAlert(form, "ok", "<strong>Password accepted.</strong> " + note);
+
+    var input = document.getElementById("loginOtp");
+    if (input) { input.value = ""; input.focus(); }
+  }
+
+  function hideOtpStep() {
+    var passStep = document.getElementById("loginStepPassword");
+    var otpStep = document.getElementById("loginStepOtp");
+    if (passStep) passStep.hidden = false;
+    if (otpStep) otpStep.hidden = true;
+  }
+
+  function initOtpStep(form) {
+    var verify = document.getElementById("otpVerifyBtn");
+    var resend = document.getElementById("otpResendBtn");
+    var cancel = document.getElementById("otpCancelBtn");
+    var input = document.getElementById("loginOtp");
+    if (!verify || !input) return;
+
+    // Digits only, 6 max. Stops a pasted "012-345" failing the regex check.
+    input.addEventListener("input", function () {
+      var digits = input.value.replace(/\D/g, "").slice(0, 6);
+      if (digits !== input.value) input.value = digits;
+    });
+
+    // Enter inside the code box should verify, not re-submit the password.
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); verify.click(); }
+    });
+
+    verify.addEventListener("click", async function () {
+      clearErrors(form);
+
+      var code = input.value.trim();
+      if (!/^\d{6}$/.test(code)) {
+        showError("errLoginOtp", "Enter the 6-digit code from your email.");
+        return;
+      }
+
+      verify.disabled = true;
+      var original = verify.textContent;
+      verify.textContent = "Verifying…";
+
+      var res = await window.SEStore.verifyOtp(code);
+
+      verify.disabled = false;
+      verify.textContent = original;
+
+      if (!res.ok) {
+        formAlert(form, "err", res.error);
+        input.value = "";
+        input.focus();
+        return;
+      }
+
+      goToDashboard(form);
+    });
+
+    if (resend) {
+      resend.addEventListener("click", async function (e) {
+        e.preventDefault();
+        clearErrors(form);
+        var res = await window.SEStore.resendOtp();
+        formAlert(form, res.ok ? "ok" : "err", res.ok ? res.message : res.error);
+        if (res.ok && input) { input.value = ""; input.focus(); }
+      });
+    }
+
+    if (cancel) {
+      cancel.addEventListener("click", function (e) {
+        e.preventDefault();
+        window.SEStore.cancelOtp();
+        clearErrors(form);
+        hideOtpStep();
+        var pass = document.getElementById("loginPass");
+        if (pass) pass.value = "";
+      });
+    }
   }
 
   /* ======================================================================
