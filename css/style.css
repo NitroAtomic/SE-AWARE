@@ -1612,3 +1612,17 @@ html[data-theme="dark"] .ratio iframe { background: #000; }
     transition: background-color .2s ease, border-color .2s ease, color .2s ease;
   }
 }
+
+/* Quick links row
+   A Premium destination shown to someone who is not on Premium. It stays
+   visible rather than disappearing, so the free visitor can see what the
+   plan adds - but it is plainly not available, and it leads to the plan
+   page rather than to a locked door. */
+.se-quick-locked {
+  opacity: .55;
+  border-style: dashed;
+}
+.se-quick-locked:hover,
+.se-quick-locked:focus {
+  opacity: 1;
+}

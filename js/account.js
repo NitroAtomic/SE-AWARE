@@ -153,6 +153,54 @@
      Injected into module pages only when someone is signed in, so the guest
      view of a module page is byte-for-byte the free experience.
      ---------------------------------------------------------------------- */
+  /* ----------------------------------------------------------------------
+     Quick links row
+     One definition, rendered into any page carrying [data-quick-links], so
+     the dashboard and the modules page cannot drift apart.
+
+     The two Premium destinations stay on screen for a free visitor rather
+     than vanishing: someone who cannot see a feature exists has no reason
+     to want it. They are visibly unavailable and lead to the plan page, so
+     nobody is sent to a locked door to be turned away there.
+     ---------------------------------------------------------------------- */
+  var QUICK_LINKS = [
+    { href: "assessment.html",      icon: "bi-clipboard-check", label: "Awareness assessment", premium: true },
+    { href: "modules.html",         icon: "bi-grid",            label: "Browse modules",       premium: false },
+    { href: "premium-modules.html", icon: "bi-stars",           label: "Role-based modules",   premium: true }
+  ];
+
+  function renderQuickLinks() {
+    var hosts = document.querySelectorAll("[data-quick-links]");
+    if (!hosts.length) return;
+
+    var premium = window.SEStore.isPremium();
+    var r = root();
+    var here = (document.body.getAttribute("data-page") || "").toLowerCase();
+
+    var html = QUICK_LINKS.map(function (link) {
+      // Don't offer a button that just reloads the page you are already on.
+      if (link.href.replace(".html", "") === here) return "";
+
+      var locked = link.premium && !premium;
+      var href = locked ? r + "go-premium.html" : r + link.href;
+      var cls = locked
+        ? "btn btn-se-outline se-quick-locked"
+        : (link.premium ? "btn btn-se-primary" : "btn btn-se-outline");
+
+      return '<a class="' + cls + '" href="' + href + '"' +
+        (locked ? ' title="Part of Premium - see what it includes"' : "") + '>' +
+        '<i class="bi ' + (locked ? "bi-lock-fill" : link.icon) + '" aria-hidden="true"></i> ' +
+        link.label +
+        (locked ? ' <span class="visually-hidden">(Premium)</span>' : "") +
+        "</a>";
+    }).join("");
+
+    for (var i = 0; i < hosts.length; i++) {
+      hosts[i].className = "d-flex flex-wrap gap-2 " + (hosts[i].getAttribute("data-quick-links") || "");
+      hosts[i].innerHTML = html;
+    }
+  }
+
   function renderModuleProgress() {
     var host = document.getElementById("seModuleProgress");
     if (!host) return;
@@ -196,6 +244,7 @@
       renderNavAccount();
       renderPrototypeBadge();
       var allowed = applyGate();
+      renderQuickLinks();
       renderModuleProgress();
 
       // Let page scripts know whether the gate let them through.
