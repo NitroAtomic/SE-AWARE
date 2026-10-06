@@ -202,9 +202,15 @@
         </div>
 
         <div class="se-callout" style="max-width:none;">
-          <strong>Payments are handled by Stripe Checkout.</strong> Card details are entered on Stripe's hosted page
-          and are never sent to or stored by SE Aware. Premium access is activated only after the backend verifies a
-          signed Stripe webhook.
+          <strong>Payment is not part of this prototype.</strong> Choosing Premium switches the plan on your account
+          straight away, with no card and no charge. Payment gateway integration was scoped out of this build; the
+          Stripe Checkout path exists in the codebase but is not enabled.
+        </div>
+
+        <div class="se-callout mt-3" style="max-width:none;">
+          <strong>The access control is real.</strong> Your plan is read from the database on every request, never
+          from the browser, so a Free account cannot reach the role-based modules, their quizzes, or Premium answers
+          from the learning assistant by changing anything on its own side.
         </div>
 
         <div class="row g-4 mt-2">
