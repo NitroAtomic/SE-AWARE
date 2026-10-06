@@ -40,9 +40,38 @@
   /* ======================================================================
      REGISTER  (test case AU-01)
      ====================================================================== */
+  /* Which plan the visitor picked on go-premium.html before coming here.
+     It arrives in the query string, which anyone could edit by hand - but
+     no money changes hands, and the server only accepts "monthly" or
+     "yearly", so the worst an edited URL achieves is picking the other
+     price on a plan that is free to switch either way. */
+  function chosenPlanFromUrl() {
+    var match = /[?&]plan=([a-z]+)/i.exec(window.location.search);
+    if (!match) return null;
+    var plan = match[1].toLowerCase();
+    return (plan === "monthly" || plan === "yearly") ? plan : null;
+  }
+
   function initRegister() {
     var form = document.getElementById("seRegisterForm");
     if (!form) return;
+
+    var plan = chosenPlanFromUrl();
+    var summary = document.getElementById("seRegisterPlan");
+
+    // Say what they are signing up for, so the Premium account that appears
+    // at the end is not a surprise.
+    if (plan && summary) {
+      var p = PLANS[plan];
+      summary.innerHTML =
+        '<div class="se-callout mb-4">' +
+        '<strong>You are creating a Premium account.</strong> ' +
+        p.price + p.unit + ' &middot; ' + p.billing +
+        '<span class="d-block mt-2" style="font-size:.88rem;">' +
+        'No payment is taken. Billing and payment processing are outside this ' +
+        'study\'s scope, so the plan is simply recorded on your account.' +
+        '</span></div>';
+    }
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -72,6 +101,24 @@
       var res = await window.SEStore.register(first, last, email, pass);
       if (!res.ok) {
         formAlert(form, "err", res.error);
+        return;
+      }
+
+      /* A plan was chosen before the account existed, so apply it now.
+         If this call fails the account is still perfectly good - it is
+         simply on Free - so say so plainly and send them to the plan page
+         rather than leaving them on a form that looks like it failed. */
+      if (plan) {
+        var upgraded = await window.SEStore.upgrade(plan);
+        if (!upgraded.ok) {
+          formAlert(form, "ok",
+            "<strong>Account created</strong>, but the plan could not be set just now. " +
+            "You are on Free; you can switch to Premium from the plan page.");
+          setTimeout(function () { window.location.href = root() + "go-premium.html"; }, 1800);
+          return;
+        }
+        formAlert(form, "ok", "<strong>Premium account created.</strong> Taking you to your dashboard&hellip;");
+        setTimeout(function () { window.location.href = root() + "dashboard.html"; }, 700);
         return;
       }
 
@@ -291,11 +338,18 @@
       var r = root();
 
       if (!user) {
-        btn.textContent = "Sign in to upgrade";
+        // The plan is picked first and the account made second, so the
+        // choice has to survive the trip to the registration page.
+        btn.textContent = "Continue";
         btn.disabled = false;
-        btn.onclick = function () { window.location.href = r + "login.html"; };
+        btn.onclick = function () {
+          window.location.href = r + "register.html?plan=" + period();
+        };
         status.innerHTML =
-          '<span class="se-pill muted"><i class="bi bi-person" aria-hidden="true"></i> Not signed in</span>';
+          '<span class="d-block" style="font-size:.88rem;color:var(--se-muted);">' +
+          'You will create your account in the next step. No payment is taken.</span>' +
+          '<span class="d-block mt-2" style="font-size:.88rem;">Already have an account? ' +
+          '<a href="' + r + 'login.html">Log in</a></span>';
         return;
       }
 
