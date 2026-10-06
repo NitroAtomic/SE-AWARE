@@ -64,9 +64,17 @@
     return sum % 10 === 0;
   }
 
+  /* .se-field-error and .se-form-alert are display:none until they carry the
+     "show" class, and the alert colours come from "err" / "ok" - not "is-err"
+     / "is-ok". Setting only the text left every message on this page
+     invisible, including the real-card refusal, so the form appeared to do
+     nothing at all when it refused. These now match js/auth.js exactly. */
   function showError(id, message) {
     var node = el(id);
-    if (node) node.textContent = message || "";
+    if (!node) return;
+    node.textContent = message || "";
+    if (message) node.classList.add("show");
+    else node.classList.remove("show");
   }
 
   function clearErrors() {
@@ -74,13 +82,17 @@
       showError(id, "");
     });
     var alertBox = document.querySelector(".se-form-alert");
-    if (alertBox) { alertBox.className = "se-form-alert"; alertBox.innerHTML = ""; }
+    if (alertBox) {
+      alertBox.classList.remove("show", "err", "ok");
+      alertBox.innerHTML = "";
+    }
   }
 
   function formAlert(kind, html) {
     var alertBox = document.querySelector(".se-form-alert");
     if (!alertBox) return;
-    alertBox.className = "se-form-alert is-" + kind;
+    alertBox.classList.remove("err", "ok");
+    alertBox.classList.add("show", kind);
     alertBox.innerHTML = html;
   }
 

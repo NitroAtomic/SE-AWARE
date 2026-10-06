@@ -783,11 +783,19 @@
     adminLogout: function () {
       setPendingToken(null);
       if (usingBackend) {
-        setToken(null);
-        liveState = null;
-        usingBackend = false;
-        readyPromise = null;
-        return Promise.resolve();
+        /* Same reason as logout() above: an admin signs in through the same
+           endpoint and gets the same httpOnly cookie, which a script cannot
+           delete. Clearing only the local token left that cookie alive for a
+           week - and the premium gate waves administrators straight through,
+           so the paid pages stayed open after signing out of the admin
+           panel. The server has to be told. */
+        var done = function () {
+          setToken(null);
+          liveState = null;
+          usingBackend = false;
+          readyPromise = null;
+        };
+        return api("/api/auth/logout", { method: "POST" }).then(done, done);
       }
       var s = read();
       s.admin = null;

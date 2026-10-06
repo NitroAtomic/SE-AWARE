@@ -35,21 +35,54 @@ const GUARDED_PAGES = new Set([
   '/modules/client-impersonation',
   '/modules/fake-recruiters',
   '/modules/invoice-scams',
+  // The comparison table sells the awareness assessment as Premium, so it
+  // belongs here with the rest. Its question bank is below.
+  '/assessment',
 ]);
 
 const GUARDED_SCRIPTS = new Set([
   '/js/quiz-data-premium.js',
+  '/js/assessment-data.js',
 ]);
 
-function classify(rawPath) {
-  let p;
+/* The path has to be reduced to one canonical spelling before it is compared
+   to anything, because express.static normalizes before it reads from disk
+   and this middleware runs first.
+
+   Comparing the raw path was a hole wide enough to drive the whole feature
+   through: "/modules/invoice-scams.html" was refused, while
+   "//modules/invoice-scams.html" missed the set, fell through to the static
+   handler, and served all 21 KB of the lesson to a stranger. "/js//quiz-data-
+   premium.js" did the same for the question bank. Adding those spellings to
+   the set would not have helped - there are unlimited variations - so the
+   path is normalized instead, the way the thing it is protecting does it. */
+function canonical(rawPath) {
+  let p = String(rawPath || '');
+
+  // %2f decodes to a separator, and express/send decodes before resolving,
+  // so decode here too or the two disagree about where the path points.
   try {
-    p = decodeURIComponent(rawPath);
+    p = decodeURIComponent(p);
   } catch (err) {
-    p = rawPath;
+    // Malformed escapes: carry on with the raw text rather than throwing.
   }
-  p = p.toLowerCase();
-  if (p.length > 1 && p.endsWith('/')) p = p.slice(0, -1);
+
+  p = p.replace(/\\/g, '/');          // a backslash reaches the filesystem as a separator on some platforms
+  p = p.split('?')[0].split('#')[0];  // defensive: req.path should not carry these
+
+  // Resolve the segments by hand. '' covers both leading and doubled slashes.
+  const out = [];
+  for (const segment of p.split('/')) {
+    if (segment === '' || segment === '.') continue;
+    if (segment === '..') { out.pop(); continue; }
+    out.push(segment);
+  }
+
+  return '/' + out.join('/').toLowerCase();
+}
+
+function classify(rawPath) {
+  const p = canonical(rawPath);
 
   if (GUARDED_SCRIPTS.has(p)) return 'script';
 

@@ -54,7 +54,9 @@
       (isPremium ? "Premium" : "Free") + " plan</span></span></li>" +
       '    <li><hr class="dropdown-divider"></li>' +
       '    <li><a class="dropdown-item" href="' + r + 'dashboard.html">Dashboard</a></li>' +
-      '    <li><a class="dropdown-item" href="' + r + 'assessment.html">Awareness assessment</a></li>' +
+      (isPremium
+        ? '    <li><a class="dropdown-item" href="' + r + 'assessment.html">Awareness assessment</a></li>'
+        : '') +
       (isPremium
         ? '    <li><a class="dropdown-item" href="' + r + 'premium-modules.html">Premium modules</a></li>'
         : '    <li><a class="dropdown-item" href="' + r + 'go-premium.html">Upgrade to Premium</a></li>') +
@@ -107,7 +109,7 @@
         "This page is part of the premium experience. Sign in, or create an account, to see it.",
         [
           { href: r + "login.html", label: "Log in", primary: true },
-          { href: r + "register.html", label: "Create an account", primary: false }
+          { href: r + "go-premium.html", label: "See the plans", primary: false }
         ]
       );
       return false;
@@ -124,7 +126,7 @@
           ? [{ href: r + "go-premium.html", label: "See what Premium includes", primary: true },
              { href: r + "modules.html", label: "Back to free modules", primary: false }]
           : [{ href: r + "login.html", label: "Log in", primary: true },
-             { href: r + "register.html", label: "Create an account", primary: false }]
+             { href: r + "go-premium.html", label: "See the plans", primary: false }]
       );
       return false;
     }

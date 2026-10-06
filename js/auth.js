@@ -377,17 +377,15 @@
       // Labelled plainly rather than dressed up as a checkout. No payment is
       // taken, and a platform that teaches people to distrust convincing
       // payment screens should not present a fake one of its own.
-      btn.innerHTML = '<i class="bi bi-stars" aria-hidden="true"></i> Switch to Premium';
+      /* Signed in but not on Premium - someone who abandoned the checkout, or
+         reverted to Free. They go through the same checkout as a new signup
+         rather than having the plan applied from here. Granting it on this
+         button made payment.html skippable: close the checkout, come back to
+         this page, press the button, and Premium arrived anyway. */
+      btn.innerHTML = '<i class="bi bi-stars" aria-hidden="true"></i> Continue to checkout';
       btn.disabled = false;
-      btn.onclick = async function () {
-        btn.disabled = true;
-        var result = await window.SEStore.upgrade(period());
-        if (result.ok) {
-          render();
-          return;
-        }
-        btn.disabled = false;
-        status.innerHTML = '<span class="text-danger">' + window.SEUtil.escapeHtml(result.error) + '</span>';
+      btn.onclick = function () {
+        window.location.href = r + "payment.html?plan=" + period();
       };
       status.innerHTML =
         '<span class="se-pill muted"><i class="bi bi-person" aria-hidden="true"></i> Free plan</span>' +
