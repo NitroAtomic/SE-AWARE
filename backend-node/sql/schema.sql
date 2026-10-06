@@ -19,6 +19,9 @@ CREATE TABLE users (
   password_hash VARCHAR(255) NOT NULL,
   subscription_type ENUM('Free', 'Premium') NOT NULL DEFAULT 'Free',
   subscription_status ENUM('active', 'cancelled', 'expired') NOT NULL DEFAULT 'active',
+  -- Monthly and yearly unlock the same features; this records which price
+  -- was chosen. NULL for Free accounts, which are not billed at all.
+  subscription_period ENUM('monthly', 'yearly') NULL DEFAULT NULL,
   role ENUM('user', 'admin') NOT NULL DEFAULT 'user',
   stripe_customer_id VARCHAR(255) UNIQUE,
   stripe_subscription_id VARCHAR(255) UNIQUE,

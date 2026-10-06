@@ -504,11 +504,15 @@
      *
      *  Offline, this updates the session copy so the free tier still
      *  demonstrates the gate without a server. */
-    upgrade: function () {
+    upgrade: function (period) {
+      // Monthly and yearly unlock exactly the same features. The choice only
+      // decides when the plan next renews, so it is passed to the server
+      // rather than being decided in the browser.
+      var billing = period === "yearly" ? "yearly" : "monthly";
       if (backendConfigured() && usingBackend) {
         return api("/api/auth/me/subscription", {
           method: "PATCH",
-          body: { subscription_type: "Premium" }
+          body: { subscription_type: "Premium", subscription_period: billing }
         })
           .then(function () {
             // live().user can still be null if the plan change lands before

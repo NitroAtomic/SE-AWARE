@@ -335,16 +335,54 @@ router.get('/me', requireAuth, async (req, res) => {
 // Premium: it records the plan on the account and nothing else. No money
 // changes hands, and the interface says so plainly.
 router.patch('/me/subscription', requireAuth, async (req, res) => {
-  const { subscription_type } = req.body;
+  const { subscription_type, subscription_period } = req.body;
   if (!['Free', 'Premium'].includes(subscription_type)) {
     return res.status(400).json({ error: 'subscription_type must be Free or Premium.' });
   }
+
+  // Monthly and yearly unlock the same features. What actually differs is
+  // when the plan next comes up for renewal, so that is what gets stored.
+  // A Free account is not billed, so it has no billing period and no renewal
+  // date. Writing 'monthly' onto one would leave the row claiming a plan that
+  // is not being paid for.
+  let period = null;
+  let periodEnd = null;
+  if (subscription_type === 'Premium') {
+    period = subscription_period === 'yearly' ? 'yearly' : 'monthly';
+    periodEnd = new Date();
+    if (period === 'yearly') periodEnd.setFullYear(periodEnd.getFullYear() + 1);
+    else periodEnd.setMonth(periodEnd.getMonth() + 1);
+  }
+
   try {
-    await pool.query(
-      'UPDATE users SET subscription_type = ?, subscription_status = ? WHERE user_id = ?',
-      [subscription_type, 'active', req.user.user_id]
-    );
-    res.json({ message: 'Plan updated.', subscription_type, subscription_status: 'active' });
+    try {
+      await pool.query(
+        'UPDATE users SET subscription_type = ?, subscription_status = ?, '
+        + 'subscription_period = ?, subscription_current_period_end = ? WHERE user_id = ?',
+        [subscription_type, 'active', period, periodEnd, req.user.user_id]
+      );
+    } catch (err) {
+      /* subscription_period is a newer column. If the database has not had
+         the ALTER run against it yet, changing plan should still work rather
+         than failing outright - the renewal date is recorded either way, and
+         the column can be added whenever. Only this one error is caught;
+         anything else is a real failure and belongs in the outer handler. */
+      if (err.code !== 'ER_BAD_FIELD_ERROR') throw err;
+      console.warn('[subscription] subscription_period column missing; see sql/billing-period.sql');
+      await pool.query(
+        'UPDATE users SET subscription_type = ?, subscription_status = ?, '
+        + 'subscription_current_period_end = ? WHERE user_id = ?',
+        [subscription_type, 'active', periodEnd, req.user.user_id]
+      );
+    }
+
+    res.json({
+      message: 'Plan updated.',
+      subscription_type,
+      subscription_status: 'active',
+      subscription_period: period,
+      subscription_current_period_end: periodEnd,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to update plan.' });

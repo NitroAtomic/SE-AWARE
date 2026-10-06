@@ -70,6 +70,21 @@
       <div class="container">
         <div data-prototype-badge></div>
 
+        <!-- Billing period. Monthly and yearly buy exactly the same thing;
+             the only difference is how often it renews and what it costs
+             over a year, so the toggle changes the price and the renewal
+             line, never the feature list. -->
+        <div class="text-center mb-4">
+          <div class="btn-group" role="group" aria-label="Billing period">
+            <button type="button" class="btn btn-se-primary" id="sePeriodMonthly"
+                    data-period="monthly" aria-pressed="true">Monthly</button>
+            <button type="button" class="btn btn-se-outline" id="sePeriodYearly"
+                    data-period="yearly" aria-pressed="false">
+              Yearly <span class="se-pill amber ms-1" style="font-size:.72rem;">Save 33%</span>
+            </button>
+          </div>
+        </div>
+
         <div class="row g-4 mb-5">
           <div class="col-lg-6">
             <div class="se-plan h-100">
@@ -93,7 +108,8 @@
           <div class="col-lg-6">
             <div class="se-plan is-featured">
               <p class="se-eyebrow mb-1">Premium</p>
-              <div class="se-plan-price">₱149<span style="font-size:1rem;font-weight:500;color:var(--se-muted);"> / month</span></div>
+              <div class="se-plan-price" id="sePremiumPrice">₱149<span style="font-size:1rem;font-weight:500;color:var(--se-muted);"> / month</span></div>
+              <p class="mb-0" id="sePremiumBilling" style="font-size:.86rem;color:var(--se-muted);">Billed monthly, cancel anytime</p>
               <p class="text-body-secondary mt-2 mb-0" style="font-size:.94rem;">Adds the personalised learning layer:
                 know where you stand, then work on what you are weakest at.</p>
               <ul>

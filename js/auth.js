@@ -225,10 +225,66 @@
   /* ======================================================================
      GO PREMIUM  (plan change only; scope excludes payment gateways)
      ====================================================================== */
+  /* The two billing periods buy the same features. Keeping the numbers in
+     one place means the price on screen and the price quoted in the saving
+     line can never drift apart. */
+  var PLANS = {
+    monthly: {
+      price: "₱149", unit: " / month",
+      billing: "Billed monthly, cancel anytime"
+    },
+    yearly: {
+      price: "₱1,199", unit: " / year",
+      billing: "Billed yearly, cancel anytime. ₱1,199 instead of ₱1,788 — you save ₱589."
+    }
+  };
+
+  function initPeriodToggle(onChange) {
+    var buttons = document.querySelectorAll("[data-period]");
+    if (!buttons.length) return "monthly";
+
+    var priceEl = document.getElementById("sePremiumPrice");
+    var billingEl = document.getElementById("sePremiumBilling");
+    var chosen = "monthly";
+
+    function paint(period) {
+      var plan = PLANS[period] || PLANS.monthly;
+      chosen = PLANS[period] ? period : "monthly";
+
+      if (priceEl) {
+        priceEl.innerHTML = plan.price +
+          '<span style="font-size:1rem;font-weight:500;color:var(--se-muted);">' + plan.unit + "</span>";
+      }
+      if (billingEl) billingEl.textContent = plan.billing;
+
+      for (var i = 0; i < buttons.length; i++) {
+        var isOn = buttons[i].getAttribute("data-period") === chosen;
+        buttons[i].classList.toggle("btn-se-primary", isOn);
+        buttons[i].classList.toggle("btn-se-outline", !isOn);
+        buttons[i].setAttribute("aria-pressed", isOn ? "true" : "false");
+      }
+      if (onChange) onChange(chosen);
+    }
+
+    for (var j = 0; j < buttons.length; j++) {
+      buttons[j].addEventListener("click", function () {
+        paint(this.getAttribute("data-period"));
+      });
+    }
+
+    paint("monthly");
+    return function () { return chosen; };
+  }
+
   function initUpgrade() {
     var btn = document.getElementById("seUpgradeBtn");
     var status = document.getElementById("seUpgradeStatus");
     if (!btn) return;
+
+    var currentPeriod = initPeriodToggle();
+    function period() {
+      return typeof currentPeriod === "function" ? currentPeriod() : "monthly";
+    }
 
     function render() {
       var user = window.SEStore.getUser();
@@ -268,7 +324,7 @@
       btn.disabled = false;
       btn.onclick = async function () {
         btn.disabled = true;
-        var result = await window.SEStore.upgrade();
+        var result = await window.SEStore.upgrade(period());
         if (result.ok) {
           render();
           return;
