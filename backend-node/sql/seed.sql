@@ -185,8 +185,12 @@ INSERT INTO quiz_questions (quiz_id, question_text, options, correct_option_inde
   ((SELECT q.quiz_id FROM quizzes q JOIN modules m ON m.module_id = q.module_id WHERE m.slug = 'client-data'), 'Which sentence summarises this module?', JSON_ARRAY('Hold as little as possible, for as short a time as possible, in a place the client can see', 'Encrypt everything and keep a backup of every project', 'Never accept access to a client''s live systems', 'Store client data only on removable drives'), 0, 14);
 
 -- Refresh each quiz's question count to match what was just inserted.
+-- The WHERE looks redundant, but MySQL Workbench runs with safe update mode
+-- on by default and refuses any UPDATE whose WHERE does not use a key column.
+-- quiz_id is the primary key, so this satisfies it and still covers every row.
 UPDATE quizzes q SET q.number_of_questions =
-  (SELECT COUNT(*) FROM quiz_questions qq WHERE qq.quiz_id = q.quiz_id);
+  (SELECT COUNT(*) FROM quiz_questions qq WHERE qq.quiz_id = q.quiz_id)
+WHERE q.quiz_id > 0;
 
 -- ============================================================
 -- Create the first admin account manually after running this file:
