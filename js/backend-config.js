@@ -1,54 +1,104 @@
 /* ==========================================================================
-   backend-config.js: Node.js + MySQL API connection
+   backend-config.js: which API this site talks to
    --------------------------------------------------------------------------
-   This is the ONE place the backend URL is decided. Every page loads this
-   file before store.js, so changing it here changes the whole site.
+   This is the ONE place the backend is chosen. Every page loads this file
+   before store.js, so changing it here changes the whole site.
 
-   There are three situations, and the site handles all three on its own:
+   ==========================================================================
+   STEP 1 - put your own Render URL in SE_AWARE_API below
+   ==========================================================================
 
-   1. Opening the .html files straight off your computer (file://)
-      -> no backend. The site runs in offline demo mode, exactly as it did
-         before any of this backend work existed. Nothing to configure.
+   After you create the Render web service for this site's own backend
+   (the /backend-node folder in this same repository), Render gives you a
+   URL that looks like:
 
-   2. Running the Node server locally (http://localhost:3000)
-      -> the Node server serves BOTH the pages and the API, so the API is
-         simply the same origin the page came from.
+       https://se-aware.onrender.com
 
-   3. Published on GitHub Pages (https://nitroatomic.github.io/SE-AWARE/)
-      -> GitHub Pages can only serve static files. It has no backend of its
-         own and never will. So the pages have to call the API that is
-         already running on Render.
+   Paste it into SE_AWARE_API below. That is the only edit needed here.
 
-   IMPORTANT for case 3: the Render backend keeps a strict CORS allowlist.
-   "https://nitroatomic.github.io" must be in the CORS_ORIGINS environment
-   variable on Render, or the browser blocks every request before it even
-   leaves the page. Setting the URL here is only half the job.
+   Until you do, the GitHub Pages site keeps running in offline demo mode,
+   exactly as it always has. Nothing breaks while the value is empty.
+
+   ==========================================================================
+   Why there are two "flavors" of backend
+   ==========================================================================
+
+   This site can talk to either of two different backends, and they are NOT
+   the same shape:
+
+   "se-aware"  - this repository's own backend, in /backend-node.
+                 It has every route this site calls, including
+                 /api/progress and /api/admin, and its module slugs match
+                 this site exactly. Login is a single step.
+
+   "group"     - the shared capstone backend at se-aware-group.onrender.com.
+                 It has no /api/progress or /api/admin routes, it spells two
+                 module slugs differently, and Premium accounts need an
+                 emailed code to finish signing in.
+
+   store.js reads SE_API_FLAVOR to know which of those it is dealing with.
+   Getting this wrong matters: the slug translation that is REQUIRED for the
+   group backend would actively BREAK the se-aware backend, by rewriting
+   "phishing" to "quishing" - a slug that does not exist in its database.
+
+   So: whenever you change SE_API_BASE, check SE_API_FLAVOR matches it.
    ========================================================================== */
 (function () {
-  // The live API on Render. Change this one string if the service is renamed.
-  var RENDER_API = "https://se-aware-group.onrender.com";
+  /* ---- STEP 1: your own backend's Render URL goes here ------------------
+     Leave it as "" until the service exists. No trailing slash.            */
+  var SE_AWARE_API = "";
 
-  // Anything already set by hand (a <script> earlier in the page, or a
-  // developer testing in the console) always wins. We never overwrite it.
+  /* The shared capstone backend. Only used if you deliberately switch to it
+     below - and note it also requires "https://nitroatomic.github.io" to be
+     added to CORS_ORIGINS on that service, which is a change to the live
+     capstone deployment. */
+  var GROUP_API = "https://se-aware-group.onrender.com";
+
+  // Anything set by hand earlier in the page, or from the console while
+  // testing, always wins. We never overwrite a deliberate choice.
   if (typeof window.SE_API_BASE === "string" && window.SE_API_BASE !== "") {
+    window.SE_API_FLAVOR = window.SE_API_FLAVOR || "se-aware";
     return;
   }
 
   var protocol = window.location.protocol;
   var host = window.location.hostname;
 
-  // Case 1: opened as a local file. No server exists, so no API.
+  // Opened as a plain file. There is no server, so there is no API, and the
+  // site runs its offline demo exactly as before.
   if (protocol === "file:") {
     window.SE_API_BASE = "";
+    window.SE_API_FLAVOR = "se-aware";
     return;
   }
 
-  // Case 3: published on GitHub Pages. Borrow the Render API.
+  // Published on GitHub Pages. Pages serves static files only and has no
+  // backend of its own, so it has to call one somewhere else.
   if (host === "nitroatomic.github.io" || /\.github\.io$/.test(host)) {
-    window.SE_API_BASE = RENDER_API;
+    if (SE_AWARE_API) {
+      window.SE_API_BASE = SE_AWARE_API;
+      window.SE_API_FLAVOR = "se-aware";
+    } else {
+      // Not set up yet - stay in demo mode rather than firing requests at a
+      // URL that does not exist and filling the console with errors.
+      window.SE_API_BASE = "";
+      window.SE_API_FLAVOR = "se-aware";
+    }
     return;
   }
 
-  // Case 2: the Node server is serving this page, so it also serves the API.
+  // The Node server is serving this page, so it serves the API too.
   window.SE_API_BASE = window.location.origin;
+  window.SE_API_FLAVOR = "se-aware";
+
+  /* ----------------------------------------------------------------------
+     To point this site at the shared capstone backend instead, replace the
+     two lines above with:
+
+         window.SE_API_BASE = GROUP_API;
+         window.SE_API_FLAVOR = "group";
+
+     Both lines together, never just one.
+     ---------------------------------------------------------------------- */
+  void GROUP_API;
 })();

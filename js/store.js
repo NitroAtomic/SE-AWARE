@@ -181,10 +181,27 @@
     "essential-safe-practices-remote-environments": "safe-practices"
   };
 
+  /* The translation applies to ONE backend only - the shared capstone one.
+     This repository's own backend already uses the same slugs this site
+     does, so translating there would do real damage: it would rewrite
+     "phishing" to "quishing", which that database has never heard of, and
+     every Phishing quiz result would 404 instead of saving.
+
+     So the rule is: translate only when backend-config.js has said we are
+     talking to the group backend. Anything else, leave the slug alone.
+     Defaults to no translation, because that is the safe direction - a
+     missed translation is a wrong slug on two modules, an unwanted one is
+     a wrong slug on all ten. */
+  function isGroupBackend() {
+    return window.SE_API_FLAVOR === "group";
+  }
+
   function toDbSlug(slug) {
+    if (!isGroupBackend()) return slug;
     return SLUG_TO_DB[slug] || slug;
   }
   function fromDbSlug(slug) {
+    if (!isGroupBackend()) return slug;
     return SLUG_FROM_DB[slug] || slug;
   }
 

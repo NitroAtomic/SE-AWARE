@@ -3,3 +3,4 @@ backend-node/.env
 backend-node/node_modules/
 npm-debug.log*
 .DS_Store
+SE-AWARE/
