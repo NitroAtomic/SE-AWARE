@@ -152,7 +152,10 @@
 
     state.answers.push({ topic: item.topic, correct: correct, q: item.q, why: item.why });
 
-    var last = state.index === data.questions.length - 1;
+    // state.items is the shuffled copy built when the assessment started,
+    // and it is the only list this screen walks through. The raw bank in
+    // window.ASSESSMENT_DATA is not read here at all.
+    var last = state.index === state.items.length - 1;
     el("seAssessFeedback").innerHTML =
       '<div class="se-feedback ' + (correct ? "ok" : "no") + '">' +
       '  <h4><i class="bi ' + (correct ? "bi-check-circle-fill" : "bi-x-circle-fill") + '" aria-hidden="true"></i>' +
@@ -162,7 +165,7 @@
 
     var next = el("seAssessNext");
     next.addEventListener("click", function () {
-      if (state.index < data.questions.length - 1) {
+      if (state.index < state.items.length - 1) {
         state.index++;
         renderQuestion();
         window.scrollTo({ top: 0, behavior: "smooth" });
